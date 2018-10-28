@@ -1,0 +1,2 @@
+Electric Parens is a Lisp machine written in Dart. It runs on a server
+or as a mobile app on Android/iOS.
