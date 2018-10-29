@@ -18,9 +18,10 @@
 import "package:electric/electric.dart" as electric;
 
 main() {
-  var source = "(foo (bar baz qux))";
+  var scope = electric.Scope.initial();
+  var source = "(debug (foo bar baz))";
   var values = electric.read(source);
-  for (var value in values) {
-    print(value);
+  for (var lhs in values) {
+    lhs.eval(scope, print);
   }
 }
