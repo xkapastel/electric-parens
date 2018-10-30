@@ -26,6 +26,9 @@ class Scope extends Value {
     frame = new HashMap();
   }
 
+  factory Scope.empty() =>
+    Scope(null);
+
   dynamic operator[](dynamic key) {
     key = key.toString();
     if (frame.containsKey(key)) {

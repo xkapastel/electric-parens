@@ -23,13 +23,11 @@ class Pair extends Value {
   dynamic snd;
   bool isList;
   
-  Pair(dynamic fstA, dynamic sndA) {
-    fst = fstA;
-    snd = sndA;
-    if (sndA is Unit) {
+  Pair(dynamic this.fst, dynamic this.snd) {
+    if (snd is Unit) {
       isList = true;
-    } else if (sndA is Pair) {
-      isList = sndA.isList;
+    } else if (snd is Pair) {
+      isList = snd.isList;
     } else {
       isList = false;
     }
