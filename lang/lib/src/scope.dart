@@ -15,13 +15,34 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/electric.dart" as electric;
+import "dart:collection";
+import "package:electric/src/value.dart";
 
-main() {
-  var scope = electric.initialScope();
-  var source = "(debug (foo bar baz))";
-  var values = electric.read(source);
-  for (var lhs in values) {
-    lhs.eval(scope, print);
+class Scope extends Value {
+  Scope parent;
+  Map<String, dynamic> frame;
+
+  Scope(Scope this.parent) {
+    frame = new HashMap();
   }
+
+  dynamic operator[](dynamic key) {
+    key = key.toString();
+    if (frame.containsKey(key)) {
+      return frame[key];
+    }
+    if (parent != null) {
+      return parent[key];
+    }
+    throw "undefined";
+  }
+
+  void operator[]=(dynamic key, dynamic value) {
+    key = key.toString();
+    frame[key] = value;
+  }
+
+  @override
+  String toString() =>
+    "<scope>";
 }

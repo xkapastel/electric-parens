@@ -15,13 +15,18 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/electric.dart" as electric;
+import "package:electric/src/value.dart";
 
-main() {
-  var scope = electric.initialScope();
-  var source = "(debug (foo bar baz))";
-  var values = electric.read(source);
-  for (var lhs in values) {
-    lhs.eval(scope, print);
-  }
+class Symbol extends Value {
+  final String value;
+
+  Symbol(String this.value);
+
+  @override
+  dynamic eval(dynamic scope, Function rest) =>
+    rest(scope[this]);
+
+  @override
+  String toString() =>
+    value;
 }

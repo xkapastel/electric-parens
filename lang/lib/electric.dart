@@ -16,5 +16,36 @@
 // <https://www.gnu.org/licenses/.
 
 export "src/value.dart";
+export "src/unit.dart";
+export "src/pair.dart";
+export "src/symbol.dart";
+export "src/scope.dart";
+export "src/procedure.dart";
+export "src/primitive.dart";
+export "src/applicative.dart";
+export "src/operative.dart";
 export "src/read.dart";
 
+import "src/value.dart";
+import "src/unit.dart";
+import "src/pair.dart";
+import "src/symbol.dart";
+import "src/scope.dart";
+import "src/procedure.dart";
+import "src/primitive.dart";
+import "src/applicative.dart";
+import "src/operative.dart";
+import "src/read.dart";
+
+Scope initialScope() {
+  var scope = Scope(null);
+
+  dynamic debug(dynamic args, dynamic scope, Function rest) {
+    print("debugging...");
+    return rest(Unit());
+  }
+
+  scope["debug"] = Primitive(debug);
+  
+  return scope;
+}

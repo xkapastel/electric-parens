@@ -15,13 +15,15 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/electric.dart" as electric;
+import "package:electric/src/value.dart";
+import "package:electric/src/procedure.dart";
 
-main() {
-  var scope = electric.initialScope();
-  var source = "(debug (foo bar baz))";
-  var values = electric.read(source);
-  for (var lhs in values) {
-    lhs.eval(scope, print);
-  }
+class Applicative extends Procedure {
+  final Procedure body;
+
+  Applicative(Procedure this.body);
+
+  @override
+  dynamic call(dynamic args, dynamic scope, Function rest) =>
+    args.evlis(scope, (args) => body(args, scope, rest));
 }

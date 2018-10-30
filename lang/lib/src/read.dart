@@ -15,7 +15,10 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/value.dart" as api;
+import "package:electric/src/value.dart";
+import "package:electric/src/unit.dart";
+import "package:electric/src/pair.dart";
+import "package:electric/src/symbol.dart";
 
 enum Tag {
   lparen,
@@ -35,7 +38,7 @@ class Token {
   factory Token.symbol(String value) => Token(Tag.symbol, value);
 }
 
-List<api.Value> read(String src) {
+List<Value> read(String src) {
   var tokens = tokenize(src);
   return parse(tokens);
 }
@@ -90,10 +93,10 @@ List<Token> tokenize(String runes) {
   return buf;
 }
 
-List<api.Value> parse(List<Token> tokens) {
+List<Value> parse(List<Token> tokens) {
   int index = 0;
-  List<api.Value> buf = [];
-  List<List<api.Value>> stack = [];
+  List<Value> buf = [];
+  List<List<Value>> stack = [];
 
   while (index < tokens.length) {
     var token = tokens[index];
@@ -107,9 +110,9 @@ List<api.Value> parse(List<Token> tokens) {
       if (stack.isEmpty) {
         throw "parens";
       }
-      api.Value xs = api.Unit();
+      Value xs = Unit();
       for (var value in buf.reversed) {
-        xs = api.Pair(value, xs);
+        xs = Pair(value, xs);
       }
       buf = stack.removeLast();
       buf.add(xs);
@@ -119,7 +122,7 @@ List<api.Value> parse(List<Token> tokens) {
       index++;
       break;
     case Tag.symbol:
-      var value = api.Symbol(token.value);
+      var value = Symbol(token.value);
       buf.add(value);
       index++;
       break;
