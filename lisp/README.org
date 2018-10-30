@@ -1,0 +1,2 @@
+Electric Lisp is a lexically scoped Lisp-1 with FEXPRs and delimited
+continuations (via ~shift~ / ~reset~).

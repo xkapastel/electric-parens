@@ -1,0 +1,2 @@
+The Electric Parens mobile app provides an intuitive interface to
+simple computational tasks.
