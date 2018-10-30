@@ -15,11 +15,11 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/value.dart";
-import "package:electric/src/unit.dart";
-import "package:electric/src/pair.dart";
-import "package:electric/src/scope.dart";
-import "package:electric/src/procedure.dart";
+import "package:electric/src/lisp/value.dart";
+import "package:electric/src/lisp/unit.dart";
+import "package:electric/src/lisp/pair.dart";
+import "package:electric/src/lisp/scope.dart";
+import "package:electric/src/lisp/procedure.dart";
 
 class Operative extends Procedure {
   final dynamic args;

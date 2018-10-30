@@ -15,8 +15,8 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/value.dart";
-import "package:electric/src/unit.dart";
+import "package:electric/src/lisp/value.dart";
+import "package:electric/src/lisp/unit.dart";
 
 class Pair extends Value {
   dynamic fst;
