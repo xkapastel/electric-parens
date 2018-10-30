@@ -42,6 +42,7 @@ Scope init() {
 
   dynamic debug(dynamic args, dynamic scope, Function rest) {
     print("debugging...");
+    print(args);
     return rest(Unit());
   }
 
@@ -55,17 +56,8 @@ Scope init() {
     });
   }
 
-  dynamic apply(dynamic args, dynamic scope, Function rest) {
-    assert(args is Pair);
-    assert(args.fst is Procedure);
-    assert(args.snd is Pair);
-    assert(args.snd.snd is Unit);
-    return args.fst.apply(args.snd.fst, scope, rest);
-  }
-
   init["debug"] = Primitive(debug);
   init["eval"]  = Primitive(eval);
-  init["apply"] = Applicative(Primitive(apply));
   
   return init;
 }

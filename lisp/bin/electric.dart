@@ -16,12 +16,17 @@
 // <https://www.gnu.org/licenses/.
 
 import "package:electric/lisp.dart" as elisp;
+import "dart:io" as io;
 
 void main() {
   var scope = elisp.init();
-  var source = "(debug (foo bar baz))";
-  var values = elisp.read(source);
-  for (var lhs in values) {
-    lhs.eval(scope, print);
+  while (true) {
+    io.stdout.write("> ");
+    var line = io.stdin.readLineSync();
+    var values = elisp.read(line);
+    for (var value in values) {
+      value.eval(scope, print);
+    }
   }
+
 }
