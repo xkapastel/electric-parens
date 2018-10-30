@@ -20,30 +20,30 @@ import "package:electric/src/unit.dart";
 import "package:electric/src/pair.dart";
 import "package:electric/src/symbol.dart";
 
-enum Tag {
+enum _Tag {
   lparen,
   rparen,
   space,
   symbol,
 }
 
-class Token {
-  final Tag tag;
+class _Token {
+  final _Tag tag;
   final String value;
-  const Token(Tag this.tag, String this.value);
+  const _Token(_Tag this.tag, String this.value);
 
-  factory Token.lparen() => Token(Tag.lparen, "(");
-  factory Token.rparen() => Token(Tag.rparen, ")");
-  factory Token.space(String value) => Token(Tag.space, value);
-  factory Token.symbol(String value) => Token(Tag.symbol, value);
+  factory _Token.lparen() => _Token(_Tag.lparen, "(");
+  factory _Token.rparen() => _Token(_Tag.rparen, ")");
+  factory _Token.space(String value) => _Token(_Tag.space, value);
+  factory _Token.symbol(String value) => _Token(_Tag.symbol, value);
 }
 
 List<Value> read(String src) {
-  var tokens = tokenize(src);
-  return parse(tokens);
+  var tokens = _tokenize(src);
+  return _parse(tokens);
 }
 
-List<Token> tokenize(String runes) {
+List<_Token> _tokenize(String runes) {
   var isLparen = (rune) => rune == "(";
   var isRparen = (rune) => rune == ")";
   var isSpace = (rune) =>
@@ -52,16 +52,16 @@ List<Token> tokenize(String runes) {
     isLparen(rune) || isRparen(rune) || isSpace(rune);
 
   int index = 0;
-  List<Token> buf = [];
+  List<_Token> buf = [];
 
   while (index < runes.length) {
     var rune = runes[index];
     if (isLparen(rune)) {
-      var token = Token.lparen();
+      var token = _Token.lparen();
       buf.add(token);
       index++;
     } else if (isRparen(rune)) {
-      var token = Token.rparen();
+      var token = _Token.rparen();
       buf.add(token);
       index++;
     } else if (isSpace(rune)) {
@@ -74,7 +74,7 @@ List<Token> tokenize(String runes) {
         index++;
       }
       var value = runes.substring(start, index);
-      var token = Token.space(value);
+      var token = _Token.space(value);
       buf.add(token);
     } else {
       int start = index;
@@ -86,14 +86,14 @@ List<Token> tokenize(String runes) {
         index++;
       }
       var value = runes.substring(start, index);
-      var token = Token.symbol(value);
+      var token = _Token.symbol(value);
       buf.add(token);
     }
   }
   return buf;
 }
 
-List<Value> parse(List<Token> tokens) {
+List<Value> _parse(List<_Token> tokens) {
   int index = 0;
   List<Value> buf = [];
   List<List<Value>> stack = [];
@@ -101,12 +101,12 @@ List<Value> parse(List<Token> tokens) {
   while (index < tokens.length) {
     var token = tokens[index];
     switch (token.tag) {
-    case Tag.lparen:
+    case _Tag.lparen:
       stack.add(buf);
       buf = [];
       index++;
       break;
-    case Tag.rparen:
+    case _Tag.rparen:
       if (stack.isEmpty) {
         throw "parens";
       }
@@ -118,10 +118,10 @@ List<Value> parse(List<Token> tokens) {
       buf.add(xs);
       index++;
       break;
-    case Tag.space:
+    case _Tag.space:
       index++;
       break;
-    case Tag.symbol:
+    case _Tag.symbol:
       var value = Symbol(token.value);
       buf.add(value);
       index++;

@@ -15,12 +15,12 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/electric.dart" as electric;
+import "package:electric/lisp.dart" as elisp;
 
-main() {
-  var scope = electric.initialScope();
+void main() {
+  var scope = elisp.init();
   var source = "(debug (foo bar baz))";
-  var values = electric.read(source);
+  var values = elisp.read(source);
   for (var lhs in values) {
     lhs.eval(scope, print);
   }
