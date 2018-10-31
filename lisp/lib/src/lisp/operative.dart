@@ -51,6 +51,6 @@ class Operative extends Procedure {
       }
     }
     local[dynamik] = scope;
-    return body.eval(local, rest);
+    return body.exec(local, rest);
   }
 }

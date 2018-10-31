@@ -18,6 +18,13 @@
 import "package:electric/src/lisp/value.dart";
 import "package:electric/src/lisp/unit.dart";
 
+dynamic or(dynamic lhs, dynamic rhs) {
+  if (lhs is! Unit) {
+    return lhs;
+  }
+  return rhs;
+}
+
 class Pair extends Value {
   dynamic fst;
   dynamic snd;
@@ -40,6 +47,10 @@ class Pair extends Value {
   @override
   dynamic evlis(dynamic scope, Function rest) =>
     fst.eval(scope, (fst) => snd.evlis(scope, (snd) => rest(Pair(fst, snd))));
+
+  @override
+  dynamic exec(dynamic scope, Function rest) =>
+    fst.eval(scope, (fst) => snd.exec(scope, (snd) => rest(or(snd, fst))));
 
   @override
   String toString() {

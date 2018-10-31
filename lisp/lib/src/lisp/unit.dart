@@ -23,6 +23,10 @@ class Unit extends Value {
     rest(this);
 
   @override
+  dynamic exec(dynamic scope, Function rest) =>
+    rest(this);
+
+  @override
   String toString() =>
     "unit";
 }
