@@ -46,6 +46,28 @@ Scope init() {
     return rest(Unit());
   }
 
+  dynamic vau(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.snd is Pair);
+    assert(args.snd.fst is Symbol);
+    var proc = Operative(args.fst, args.snd.snd, scope, args.snd.fst);
+    return rest(proc);
+  }
+
+  dynamic wrap(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.fst is Procedure);
+    assert(args.snd is Unit);
+    return rest(Applicative(args.fst));
+  }
+
+  dynamic unwrap(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.fst is Applicative);
+    assert(args.snd is Unit);
+    return rest(args.fst.body);
+  }
+
   dynamic eval(dynamic args, dynamic scope, Function rest) {
     assert(args is Pair);
     assert(args.snd is Pair);
@@ -56,8 +78,33 @@ Scope init() {
     });
   }
 
-  init["debug"] = Primitive(debug);
-  init["eval"]  = Primitive(eval);
+  dynamic reset(dynamic args, dynamic scope, Function rest) {
+    return rest(args.exec(scope, (x) => x));
+  }
+
+  dynamic shift(dynamic args, dynamic scope, Function rest0) {
+    assert(args is Pair);
+    assert(args.fst is Procedure);
+    assert(args.snd is Unit);
+
+    dynamic continuationBody(dynamic args, dynamic scope, dynamic rest1) {
+      assert(args is Pair);
+      assert(args.snd is Unit);
+      return rest1(rest0(args.fst));
+    }
+
+    var continuation = Applicative(Primitive(continuationBody));
+    var list = Pair(continuation, Unit());
+    return args.fst(list, scope, (x) => x);
+  }
+
+  init["debug"]  = Primitive(debug);
+  init["vau"]    = Primitive(vau);
+  init["wrap"]   = Applicative(Primitive(wrap));
+  init["unwrap"] = Applicative(Primitive(unwrap));
+  init["eval"]   = Primitive(eval);
+  init["reset"]  = Applicative(Primitive(reset));
+  init["shift"]  = Applicative(Primitive(shift));
   
   return init;
 }

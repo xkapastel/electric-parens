@@ -25,7 +25,8 @@ void main() {
     var line = io.stdin.readLineSync();
     var values = elisp.read(line);
     for (var value in values) {
-      value.eval(scope, print);
+      var result = value.eval(scope, (x) => x);
+      print(result);
     }
   }
 
