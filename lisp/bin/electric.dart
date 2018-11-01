@@ -20,13 +20,21 @@ import "dart:io" as io;
 
 void main() {
   var scope = elisp.init();
+  var uid = 0;
   while (true) {
     io.stdout.write("> ");
     var line = io.stdin.readLineSync();
-    var values = elisp.read(line);
-    for (var value in values) {
-      var result = value.eval(scope, (x) => x);
-      print(result);
+    try {
+      var values = elisp.read(line);
+      for (var value in values) {
+        var result = value.eval(scope, (x) => x);
+        var name = "\$${uid}";
+        uid++;
+        scope[name] = result;
+        print("${name} = ${result}");
+      }
+    } catch(e) {
+      continue;
     }
   }
 
