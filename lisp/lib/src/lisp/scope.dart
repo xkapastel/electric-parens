@@ -29,6 +29,17 @@ class Scope extends Value {
   factory Scope.empty() =>
     Scope(null);
 
+  bool isDefined(dynamic key) {
+    key = key.toString();
+    if (frame.containsKey(key)) {
+      return true;
+    }
+    if (parent != null) {
+      return parent.isDefined(key);
+    }
+    return false;
+  }
+
   dynamic operator[](dynamic key) {
     key = key.toString();
     if (frame.containsKey(key)) {
@@ -37,7 +48,7 @@ class Scope extends Value {
     if (parent != null) {
       return parent[key];
     }
-    throw "undefined";
+    throw "`${key}` is undefined";
   }
 
   void operator[]=(dynamic key, dynamic value) {

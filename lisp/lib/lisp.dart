@@ -39,13 +39,7 @@ export "src/lisp/operative.dart";
 export "src/lisp/read.dart";
 
 Scope init() {
-  var init = Scope.empty();
-
-  dynamic debug(dynamic args, dynamic scope, Function rest) {
-    print("debugging...");
-    print(args);
-    return rest(Unit());
-  }
+  var ctx = Scope.empty();
 
   dynamic vau(dynamic args, dynamic scope, Function rest) {
     assert(args is Pair);
@@ -69,16 +63,6 @@ Scope init() {
     return rest(args.fst.body);
   }
 
-  dynamic eval(dynamic args, dynamic scope, Function rest) {
-    assert(args is Pair);
-    assert(args.snd is Pair);
-    assert(args.snd.snd is Unit);
-    return args.snd.fst.eval(scope, (local) {
-      assert(local is Scope);
-      return args.fst.eval(local, rest);
-    });
-  }
-
   dynamic reset(dynamic args, dynamic scope, Function rest) {
     return rest(args.exec(scope, (x) => x));
   }
@@ -97,6 +81,50 @@ Scope init() {
     var continuation = Applicative(Primitive(continuationBody));
     var list = Pair(continuation, Unit());
     return args.fst(list, scope, (x) => x);
+  }
+
+  dynamic eval(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.snd is Pair);
+    assert(args.snd.snd is Unit);
+    return args.snd.fst.eval(scope, (local) {
+      assert(local is Scope);
+      return args.fst.eval(local, rest);
+    });
+  }
+
+  dynamic define(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.fst is Symbol);
+    assert(args.snd is Pair);
+    assert(args.snd.snd is Unit);
+    scope[args.fst] = args.snd.fst;
+    return rest(Unit());
+  }
+
+  dynamic initialScope(dynamic args, dynamic scope, Function rest) {
+    return rest(init());
+  }
+
+  dynamic pair(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.snd is Pair);
+    assert(args.snd.snd is Unit);
+    return rest(Pair(args.fst, args.snd.fst));
+  }
+
+  dynamic fst(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.fst is Pair);
+    assert(args.snd is Unit);
+    return rest(args.fst.fst);
+  }
+
+  dynamic snd(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.fst is Pair);
+    assert(args.snd is Unit);
+    return rest(args.fst.snd);
   }
 
   dynamic add(dynamic args, dynamic scope, Function rest) {
@@ -155,17 +183,28 @@ Scope init() {
     return rest(Number(state));
   }
 
-  init["debug"]  = Primitive(debug);
-  init["vau"]    = Primitive(vau);
-  init["wrap"]   = Applicative(Primitive(wrap));
-  init["unwrap"] = Applicative(Primitive(unwrap));
-  init["eval"]   = Primitive(eval);
-  init["reset"]  = Applicative(Primitive(reset));
-  init["shift"]  = Applicative(Primitive(shift));
-  init["+"]      = Applicative(Primitive(add));
-  init["-"]      = Applicative(Primitive(subtract));
-  init["*"]      = Applicative(Primitive(multiply));
-  init["/"]      = Applicative(Primitive(divide));
-  
-  return init;
+  dynamic pr(dynamic args, dynamic scope, Function rest) {
+    print(args);
+    return rest(Unit());
+  }
+
+  ctx["vau"]    = Primitive(vau);
+  ctx["wrap"]   = Applicative(Primitive(wrap));
+  ctx["unwrap"] = Applicative(Primitive(unwrap));
+  ctx["reset"]  = Applicative(Primitive(reset));
+  ctx["shift"]  = Applicative(Primitive(shift));
+  ctx["eval"]   = Primitive(eval);
+  ctx["define"] = Primitive(define);
+  ctx["init"]   = Applicative(Primitive(initialScope));
+  ctx["pair"]   = Applicative(Primitive(pair));
+  ctx["fst"]    = Applicative(Primitive(fst));
+  ctx["snd"]    = Applicative(Primitive(snd));
+  ctx["unit"]   = Unit();
+  ctx["+"]      = Applicative(Primitive(add));
+  ctx["-"]      = Applicative(Primitive(subtract));
+  ctx["*"]      = Applicative(Primitive(multiply));
+  ctx["/"]      = Applicative(Primitive(divide));
+  ctx["pr"]     = Applicative(Primitive(pr));
+
+  return ctx;
 }
