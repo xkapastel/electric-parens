@@ -42,11 +42,11 @@ Message parse(String src) {
   var verb       = match.group(3);
   var parameters = match.group(4);
   var trailing   = match.group(5);
-  var arguments  = [];
-  if (parameters != "") {
+  List<String> arguments  = [];
+  if (parameters != null) {
     arguments = parameters.split(" ");
   }
-  if (trailing != "") {
+  if (trailing != null) {
     arguments.add(trailing);
   }
   return Message(source, verb, arguments, src);
