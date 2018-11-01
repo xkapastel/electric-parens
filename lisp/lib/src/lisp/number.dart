@@ -15,19 +15,14 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/lisp.dart" as elisp;
-import "dart:io" as io;
+import "package:electric/src/lisp/value.dart";
 
-void main() {
-  var scope = elisp.init();
-  while (true) {
-    io.stdout.write("> ");
-    var line = io.stdin.readLineSync();
-    var values = elisp.read(line);
-    for (var value in values) {
-      var result = value.eval(scope, (x) => x);
-      print(result);
-    }
-  }
+class Number extends Value {
+  final double value;
 
+  Number(double this.value);
+
+  @override
+  String toString() =>
+    value.toString();
 }

@@ -19,23 +19,27 @@ import "package:electric/src/lisp/value.dart";
 import "package:electric/src/lisp/unit.dart";
 import "package:electric/src/lisp/pair.dart";
 import "package:electric/src/lisp/symbol.dart";
+import "package:electric/src/lisp/number.dart";
 
 enum _Tag {
   lparen,
   rparen,
   space,
   symbol,
+  number,
 }
 
 class _Token {
   final _Tag tag;
-  final String value;
-  const _Token(_Tag this.tag, String this.value);
+  final dynamic value;
 
-  factory _Token.lparen() => _Token(_Tag.lparen, "(");
-  factory _Token.rparen() => _Token(_Tag.rparen, ")");
-  factory _Token.space(String value) => _Token(_Tag.space, value);
+  const _Token(_Tag this.tag, dynamic this.value);
+
+  factory _Token.lparen()             => _Token(_Tag.lparen, "(");
+  factory _Token.rparen()             => _Token(_Tag.rparen, ")");
+  factory _Token.space(String value)  => _Token(_Tag.space, value);
   factory _Token.symbol(String value) => _Token(_Tag.symbol, value);
+  factory _Token.number(double value) => _Token(_Tag.number, value);
 }
 
 List<Value> read(String src) {
@@ -85,8 +89,14 @@ List<_Token> _tokenize(String runes) {
         }
         index++;
       }
-      var value = runes.substring(start, index);
-      var token = _Token.symbol(value);
+      var string = runes.substring(start, index);
+      var maybeNumber = double.tryParse(string);
+      var token;
+      if (maybeNumber != null) {
+        token = _Token.number(maybeNumber);
+      } else {
+        token = _Token.symbol(string);
+      }
       buf.add(token);
     }
   }
@@ -122,7 +132,12 @@ List<Value> _parse(List<_Token> tokens) {
       index++;
       break;
     case _Tag.symbol:
-      var value = Symbol(token.value);
+      var value = Symbol(token.value as String);
+      buf.add(value);
+      index++;
+      break;
+    case _Tag.number:
+      var value = Number(token.value as double);
       buf.add(value);
       index++;
       break;

@@ -19,6 +19,7 @@ import "src/lisp/value.dart";
 import "src/lisp/unit.dart";
 import "src/lisp/pair.dart";
 import "src/lisp/symbol.dart";
+import "src/lisp/number.dart";
 import "src/lisp/scope.dart";
 import "src/lisp/procedure.dart";
 import "src/lisp/primitive.dart";
@@ -98,6 +99,62 @@ Scope init() {
     return args.fst(list, scope, (x) => x);
   }
 
+  dynamic add(dynamic args, dynamic scope, Function rest) {
+    double state = 0.0;
+    while (args is! Unit) {
+      assert(args is Pair);
+      assert(args.fst is Number);
+      state += args.fst.value;
+      args = args.snd;
+    }
+    return rest(Number(state));
+  }
+
+  dynamic subtract(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.fst is Number);
+    if (args.snd is Unit) {
+      return rest(Number(0.0 - args.fst.value));
+    }
+    double state = args.fst.value;
+    args = args.snd;
+    while (args is! Unit) {
+      assert(args is Pair);
+      assert(args.fst is Number);
+      state -= args.fst.value;
+      args = args.snd;
+    }
+    return rest(Number(state));
+  }
+
+  dynamic multiply(dynamic args, dynamic scope, Function rest) {
+    double state = 1.0;
+    while (args is! Unit) {
+      assert(args is Pair);
+      assert(args.fst is Number);
+      state *= args.fst.value;
+      args = args.snd;
+    }
+    return rest(Number(state));
+  }
+
+  dynamic divide(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.fst is Number);
+    if (args.snd is Unit) {
+      return rest(Number(1.0 / args.fst.value));
+    }
+    double state = args.fst.value;
+    args = args.snd;
+    while (args is! Unit) {
+      assert(args is Pair);
+      assert(args.fst is Number);
+      state /= args.fst.value;
+      args = args.snd;
+    }
+    return rest(Number(state));
+  }
+
   init["debug"]  = Primitive(debug);
   init["vau"]    = Primitive(vau);
   init["wrap"]   = Applicative(Primitive(wrap));
@@ -105,6 +162,10 @@ Scope init() {
   init["eval"]   = Primitive(eval);
   init["reset"]  = Applicative(Primitive(reset));
   init["shift"]  = Applicative(Primitive(shift));
+  init["+"]      = Applicative(Primitive(add));
+  init["-"]      = Applicative(Primitive(subtract));
+  init["*"]      = Applicative(Primitive(multiply));
+  init["/"]      = Applicative(Primitive(divide));
   
   return init;
 }
