@@ -34,6 +34,7 @@ void main() {
         print("${name} = ${result}");
       }
     } catch(e) {
+      print("ERROR: ${e}");
       continue;
     }
   }

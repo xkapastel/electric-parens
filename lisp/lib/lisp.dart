@@ -193,7 +193,7 @@ Scope init() {
   ctx["unwrap"] = Applicative(Primitive(unwrap));
   ctx["reset"]  = Applicative(Primitive(reset));
   ctx["shift"]  = Applicative(Primitive(shift));
-  ctx["eval"]   = Primitive(eval);
+  ctx["eval"]   = Applicative(Primitive(eval));
   ctx["define"] = Primitive(define);
   ctx["init"]   = Applicative(Primitive(initialScope));
   ctx["pair"]   = Applicative(Primitive(pair));
