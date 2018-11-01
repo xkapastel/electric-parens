@@ -98,7 +98,7 @@ Scope init() {
     assert(args.fst is Symbol);
     assert(args.snd is Pair);
     assert(args.snd.snd is Unit);
-    scope[args.fst] = args.snd.fst;
+    scope[args.fst] = args.snd.fst.eval(scope, (x) => x);
     return rest(Unit());
   }
 

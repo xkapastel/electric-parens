@@ -18,25 +18,27 @@
 import "package:electric/src/lisp/value.dart";
 import "package:electric/src/lisp/unit.dart";
 import "package:electric/src/lisp/pair.dart";
+import "package:electric/src/lisp/symbol.dart";
 import "package:electric/src/lisp/scope.dart";
 import "package:electric/src/lisp/procedure.dart";
 
 class Operative extends Procedure {
-  final dynamic args;
+  final dynamic params;
   final dynamic body;
   final dynamic statik;
   final dynamic dynamik;
 
   Operative(
-    dynamic this.args,
+    dynamic this.params,
     dynamic this.body,
     dynamic this.statik,
-    dynamic this.dynamik);
+    dynamic this.dynamik) {
+  }
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
     Scope local = Scope(statik);
-    dynamic lhs = this.args;
+    dynamic lhs = params;
     if (lhs is Symbol) {
       local[lhs] = args;
     } else {
