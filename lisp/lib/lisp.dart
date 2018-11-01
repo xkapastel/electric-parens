@@ -19,6 +19,7 @@ import "src/lisp/value.dart";
 import "src/lisp/unit.dart";
 import "src/lisp/pair.dart";
 import "src/lisp/symbol.dart";
+import "src/lisp/boolean.dart";
 import "src/lisp/number.dart";
 import "src/lisp/scope.dart";
 import "src/lisp/procedure.dart";
@@ -127,6 +128,54 @@ Scope init() {
     return rest(args.fst.snd);
   }
 
+  dynamic ifz(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.snd is Pair);
+    if (args.snd.snd is Pair) {
+      assert(args.snd.snd.snd is Unit);
+    }
+    return args.fst.eval(scope, (flag) {
+      assert(flag is Boolean);
+      if (flag.value) {
+        return args.snd.fst.eval(scope, rest);
+      } else {
+        if (args.snd.snd is Pair) {
+          return args.snd.snd.fst.eval(scope, rest);
+        }
+        return rest(Unit());
+      }
+    });
+  }
+
+  dynamic not(dynamic args, dynamic scope, Function rest) {
+    assert(args is Pair);
+    assert(args.fst is Boolean);
+    assert(args.snd is Unit);
+    return rest(Boolean(!args.fst.value));
+  }
+
+  dynamic and(dynamic args, dynamic scope, Function rest) {
+    bool state = true;
+    while (args is! Unit) {
+      assert(args is Pair);
+      assert(args.fst is Boolean);
+      state = state && args.fst.value;
+      args = args.snd;
+    }
+    return rest(Boolean(state));
+  }
+
+  dynamic or(dynamic args, dynamic scope, Function rest) {
+    bool state = false;
+    while (args is! Unit) {
+      assert(args is Pair);
+      assert(args.fst is Boolean);
+      state = state || args.fst.value;
+      args = args.snd;
+    }
+    return rest(Boolean(state));
+  }
+
   dynamic add(dynamic args, dynamic scope, Function rest) {
     double state = 0.0;
     while (args is! Unit) {
@@ -183,7 +232,7 @@ Scope init() {
     return rest(Number(state));
   }
 
-  dynamic pr(dynamic args, dynamic scope, Function rest) {
+  dynamic printz(dynamic args, dynamic scope, Function rest) {
     print(args);
     return rest(Unit());
   }
@@ -200,11 +249,17 @@ Scope init() {
   ctx["fst"]    = Applicative(Primitive(fst));
   ctx["snd"]    = Applicative(Primitive(snd));
   ctx["unit"]   = Unit();
+  ctx["if"]     = Primitive(ifz);
+  ctx["not"]    = Applicative(Primitive(not));
+  ctx["and"]    = Applicative(Primitive(and));
+  ctx["or"]     = Applicative(Primitive(or));
+  ctx["true"]   = Boolean(true);
+  ctx["false"]  = Boolean(false);
   ctx["+"]      = Applicative(Primitive(add));
   ctx["-"]      = Applicative(Primitive(subtract));
   ctx["*"]      = Applicative(Primitive(multiply));
   ctx["/"]      = Applicative(Primitive(divide));
-  ctx["pr"]     = Applicative(Primitive(pr));
+  ctx["pr"]     = Applicative(Primitive(printz));
 
   return ctx;
 }
