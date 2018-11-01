@@ -16,8 +16,60 @@
 // <https://www.gnu.org/licenses/.
 
 import "package:electric/lisp.dart" as elisp;
-import "dart:io" as io;
+import "package:electric/irc.dart" as irc;
+import "dart:io";
+import "dart:async";
 
+Future main() async {
+  var server   = Platform.environment["ELECTRIC_IRC_SERVER"];
+  var nickname = Platform.environment["ELECTRIC_IRC_NICKNAME"];
+  var password = Platform.environment["ELECTRIC_IRC_PASSWORD"];
+  var channel  = Platform.environment["ELECTRIC_IRC_CHANNEL"];
+  var signal   = "${nickname}:";
+
+  var socket = await Socket.connect(server, 6667);
+  var client = irc.Client(socket);
+
+  var scope  = elisp.init();
+  var uid    = 0;
+
+  client.pass(password);
+  client.nick(nickname);
+  client.join(channel);
+
+  await for (var message in client.messages) {
+    switch (message.type) {
+    case "JOIN":
+      break;
+    case "PING":
+      client.pong(message.args(0));
+      break;
+    case "PRIVMSG":
+      var target = message.args(0);
+      var string = message.args(1);
+      if (target == channel && string.startsWith(signal)) {
+        var body = string.replaceFirst(signal, "");
+        try {
+          var values = elisp.read(body);
+          for (var value in values) {
+            var result = value.eval(scope, (x) => x);
+            var name = "\$${uid}";
+            uid++;
+            scope[name] = result;
+            client.privmsg(channel, "${name} = ${result}");
+          }
+        } catch(e) {
+          continue;
+        }
+      }
+      break;
+    default:
+      break;
+    }
+  }
+}
+
+/***
 void main() {
   var scope = elisp.init();
   while (true) {
@@ -31,3 +83,4 @@ void main() {
   }
 
 }
+***/
