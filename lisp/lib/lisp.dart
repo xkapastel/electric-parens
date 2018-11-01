@@ -88,7 +88,7 @@ Scope init() {
     assert(args.fst is Procedure);
     assert(args.snd is Unit);
 
-    dynamic continuationBody(dynamic args, dynamic scope, dynamic rest1) {
+    dynamic continuationBody(dynamic args, dynamic scope, Function rest1) {
       assert(args is Pair);
       assert(args.snd is Unit);
       return rest1(rest0(args.fst));
