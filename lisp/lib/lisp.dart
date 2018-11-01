@@ -32,6 +32,8 @@ export "src/lisp/value.dart";
 export "src/lisp/unit.dart";
 export "src/lisp/pair.dart";
 export "src/lisp/symbol.dart";
+export "src/lisp/boolean.dart";
+export "src/lisp/number.dart";
 export "src/lisp/scope.dart";
 export "src/lisp/procedure.dart";
 export "src/lisp/primitive.dart";
