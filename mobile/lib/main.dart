@@ -15,20 +15,20 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import 'package:flutter/material.dart';
+import 'package:flutter/material.dart' as material;
 import 'package:lisp/lisp.dart' as lisp;
 
-void main() {
-  runApp(App());
+main() {
+  material.runApp(Index());
 }
 
-class App extends StatelessWidget {
+class Index extends material.StatelessWidget {
   // This widget is the root of your application.
   @override
-  Widget build(BuildContext context) {
-    return new MaterialApp(
+  material.Widget build(material.BuildContext context) {
+    return new material.MaterialApp(
       title: 'Electric Parens',
-      theme: new ThemeData(
+      theme: new material.ThemeData(
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -37,15 +37,15 @@ class App extends StatelessWidget {
         // "hot reload" (press "r" in the console where you ran "flutter run",
         // or press Run > Flutter Hot Reload in IntelliJ). Notice that the
         // counter didn't reset back to zero; the application is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: material.Colors.blue,
       ),
       home: Home(title: 'Lisp will be here soon.'),
     );
   }
 }
 
-class Home extends StatefulWidget {
-  Home({Key key, String this.title}) : super(key: key);
+class Home extends material.StatefulWidget {
+  Home({material.Key key, String this.title}) : super(key: key);
 
   // This widget is the home page of your application. It is stateful, meaning
   // that it has a State object (defined below) that contains fields that affect
@@ -62,7 +62,7 @@ class Home extends StatefulWidget {
   _HomeState createState() => _HomeState();
 }
 
-class _HomeState extends State<Home> {
+class _HomeState extends material.State<Home> {
   int _counter = 0;
 
   void _incrementCounter() {
@@ -77,23 +77,23 @@ class _HomeState extends State<Home> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  material.Widget build(material.BuildContext context) {
     // This method is rerun every time setState is called, for instance as done
     // by the _incrementCounter method above.
     //
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
-    return new Scaffold(
-      appBar: new AppBar(
+    return material.Scaffold(
+      appBar: material.AppBar(
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
-        title: new Text(widget.title),
+        title: material.Text(widget.title),
       ),
-      body: new Center(
+      body: material.Center(
         // Center is a layout widget. It takes a single child and positions it
         // in the middle of the parent.
-        child: new Column(
+        child: material.Column(
           // Column is also layout widget. It takes a list of children and
           // arranges them vertically. By default, it sizes itself to fit its
           // children horizontally, and tries to be as tall as its parent.
@@ -107,22 +107,22 @@ class _HomeState extends State<Home> {
           // center the children vertically; the main axis here is the vertical
           // axis because Columns are vertical (the cross axis would be
           // horizontal).
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            new Text(
+          mainAxisAlignment: material.MainAxisAlignment.center,
+          children: <material.Widget>[
+            material.Text(
               'You have pushed the button this many times:',
             ),
-            new Text(
+            material.Text(
               '$_counter',
-              style: Theme.of(context).textTheme.display1,
+              style: material.Theme.of(context).textTheme.display1,
             ),
           ],
         ),
       ),
-      floatingActionButton: new FloatingActionButton(
+      floatingActionButton: material.FloatingActionButton(
         onPressed: _incrementCounter,
         tooltip: 'Increment',
-        child: new Icon(Icons.add),
+        child: material.Icon(material.Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
