@@ -15,14 +15,16 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/lisp/value.dart";
+class Value {  
+  dynamic eval(dynamic scope, Function rest) =>
+    rest(this);
 
-class Boolean extends Value {
-  final bool value;
+  dynamic evlis(dynamic scope, Function rest) =>
+    throw "not a list";
 
-  Boolean(bool this.value);
+  dynamic exec(dynamic scope, Function rest) =>
+    throw "not a list";
 
-  @override
-  String toString() =>
-    value.toString();
+  dynamic call(dynamic args, dynamic scope, Function rest) =>
+    throw "not a procedure";
 }

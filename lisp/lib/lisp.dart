@@ -15,31 +15,31 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "src/lisp/value.dart";
-import "src/lisp/unit.dart";
-import "src/lisp/pair.dart";
-import "src/lisp/symbol.dart";
-import "src/lisp/boolean.dart";
-import "src/lisp/number.dart";
-import "src/lisp/scope.dart";
-import "src/lisp/procedure.dart";
-import "src/lisp/primitive.dart";
-import "src/lisp/applicative.dart";
-import "src/lisp/operative.dart";
-import "src/lisp/read.dart";
+import "src/value.dart";
+import "src/unit.dart";
+import "src/pair.dart";
+import "src/symbol.dart";
+import "src/boolean.dart";
+import "src/number.dart";
+import "src/scope.dart";
+import "src/procedure.dart";
+import "src/primitive.dart";
+import "src/applicative.dart";
+import "src/operative.dart";
+import "src/read.dart";
 
-export "src/lisp/value.dart";
-export "src/lisp/unit.dart";
-export "src/lisp/pair.dart";
-export "src/lisp/symbol.dart";
-export "src/lisp/boolean.dart";
-export "src/lisp/number.dart";
-export "src/lisp/scope.dart";
-export "src/lisp/procedure.dart";
-export "src/lisp/primitive.dart";
-export "src/lisp/applicative.dart";
-export "src/lisp/operative.dart";
-export "src/lisp/read.dart";
+export "src/value.dart";
+export "src/unit.dart";
+export "src/pair.dart";
+export "src/symbol.dart";
+export "src/boolean.dart";
+export "src/number.dart";
+export "src/scope.dart";
+export "src/procedure.dart";
+export "src/primitive.dart";
+export "src/applicative.dart";
+export "src/operative.dart";
+export "src/read.dart";
 
 Scope init() {
   var ctx = Scope.empty();

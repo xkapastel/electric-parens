@@ -15,15 +15,15 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/lisp/value.dart";
-import "package:electric/src/lisp/procedure.dart";
+import "package:lisp/src/value.dart";
+import "package:lisp/src/pair.dart";
 
-class Primitive extends Procedure {
-  final Function body;
-
-  Primitive(Function this.body);
-
+class Procedure extends Value {
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) =>
-    body(args, scope, rest);
+    rest(Pair(this, args));
+
+  @override
+  String toString() =>
+    "<procedure>";
 }

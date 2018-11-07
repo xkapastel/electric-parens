@@ -1,0 +1,10 @@
+name: irc
+description: IRC client/server libraries.
+version: 0.1.0
+
+environment:
+  sdk: ">=2.0.0"
+
+dependencies:
+  lisp:
+    path: ../lisp

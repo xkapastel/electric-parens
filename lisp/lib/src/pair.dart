@@ -15,8 +15,8 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/lisp/value.dart";
-import "package:electric/src/lisp/unit.dart";
+import "package:lisp/src/value.dart";
+import "package:lisp/src/unit.dart";
 
 dynamic or(dynamic lhs, dynamic rhs) {
   if (lhs is! Unit) {

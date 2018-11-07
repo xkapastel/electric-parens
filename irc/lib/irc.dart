@@ -15,27 +15,5 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/lisp.dart" as elisp;
-import "dart:io" as io;
-
-void main() {
-  var scope = elisp.init();
-  var uid = 0;
-  while (true) {
-    io.stdout.write("> ");
-    var line = io.stdin.readLineSync();
-    try {
-      var values = elisp.read(line);
-      for (var value in values) {
-        var result = value.eval(scope, (x) => x);
-        var name = "\$${uid}";
-        uid++;
-        scope[name] = result;
-        print("${name} = ${result}");
-      }
-    } catch(e) {
-      print("ERROR: ${e}");
-      continue;
-    }
-  }
-}
+export "package:irc/src/message.dart";
+export "package:irc/src/client.dart";

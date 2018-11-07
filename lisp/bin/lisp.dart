@@ -15,15 +15,27 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/lisp/value.dart";
-import "package:electric/src/lisp/procedure.dart";
+import "package:lisp/lisp.dart" as elisp;
+import "dart:io" as io;
 
-class Applicative extends Procedure {
-  final Procedure body;
-
-  Applicative(Procedure this.body);
-
-  @override
-  dynamic call(dynamic args, dynamic scope, Function rest) =>
-    args.evlis(scope, (args) => body(args, scope, rest));
+void main() {
+  var scope = elisp.init();
+  var uid = 0;
+  while (true) {
+    io.stdout.write("> ");
+    var line = io.stdin.readLineSync();
+    try {
+      var values = elisp.read(line);
+      for (var value in values) {
+        var result = value.eval(scope, (x) => x);
+        var name = "\$${uid}";
+        uid++;
+        scope[name] = result;
+        print("${name} = ${result}");
+      }
+    } catch(e) {
+      print("ERROR: ${e}");
+      continue;
+    }
+  }
 }

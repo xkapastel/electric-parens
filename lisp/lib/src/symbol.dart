@@ -15,14 +15,18 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/lisp/value.dart";
+import "package:lisp/src/value.dart";
 
-class Number extends Value {
-  final double value;
+class Symbol extends Value {
+  final String value;
 
-  Number(double this.value);
+  Symbol(String this.value);
+
+  @override
+  dynamic eval(dynamic scope, Function rest) =>
+    rest(scope[this]);
 
   @override
   String toString() =>
-    value.toString();
+    value;
 }

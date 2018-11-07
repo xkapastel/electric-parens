@@ -20,9 +20,9 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^0.1.2
 
-  # Electric Parens runtime
-  electric:
-    path: ../lang
+  # The Electric Lisp runtime
+  lisp:
+    path: ../lisp
 
 dev_dependencies:
   flutter_test:

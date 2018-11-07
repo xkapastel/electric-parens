@@ -15,7 +15,7 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/lisp/value.dart";
+import "package:lisp/src/value.dart";
 
 class Unit extends Value {  
   @override

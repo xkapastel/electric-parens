@@ -15,8 +15,8 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/lisp.dart" as elisp;
-import "package:electric/irc.dart" as irc;
+import "package:lisp/lisp.dart" as lisp;
+import "package:irc/irc.dart" as irc;
 import "dart:io" as io;
 import "dart:async" as async;
 
@@ -30,7 +30,7 @@ main() async {
   var socket = await io.Socket.connect(server, 6667);
   var client = irc.Client(socket);
 
-  var scope  = elisp.init();
+  var scope  = lisp.init();
   var uid    = 0;
 
   client.pass(password);
@@ -50,7 +50,7 @@ main() async {
       if (target == channel && string.startsWith(signal)) {
         var body = string.replaceFirst(signal, "");
         try {
-          var values = elisp.read(body);
+          var values = lisp.read(body);
           for (var value in values) {
             var result = value.eval(scope, (x) => x);
             var name = "\$${uid}";
@@ -59,7 +59,7 @@ main() async {
             client.privmsg(channel, "${name} = ${result}");
           }
         } catch(e) {
-          continue;
+          client.privmsg(channel, "?");
         }
       }
       break;

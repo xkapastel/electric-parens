@@ -16,7 +16,7 @@
 // <https://www.gnu.org/licenses/.
 
 import "dart:collection";
-import "package:electric/src/lisp/value.dart";
+import "package:lisp/src/value.dart";
 
 class Scope extends Value {
   Scope parent;

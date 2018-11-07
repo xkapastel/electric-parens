@@ -15,13 +15,14 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-class Value {  
-  dynamic eval(dynamic scope, Function rest) =>
-    rest(this);
+import "package:lisp/src/value.dart";
 
-  dynamic evlis(dynamic scope, Function rest) =>
-    throw "not a list";
+class Boolean extends Value {
+  final bool value;
 
-  dynamic call(dynamic args, dynamic scope, Function rest) =>
-    throw "not a procedure";
+  Boolean(bool this.value);
+
+  @override
+  String toString() =>
+    value.toString();
 }

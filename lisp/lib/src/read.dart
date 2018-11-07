@@ -15,11 +15,11 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:electric/src/lisp/value.dart";
-import "package:electric/src/lisp/unit.dart";
-import "package:electric/src/lisp/pair.dart";
-import "package:electric/src/lisp/symbol.dart";
-import "package:electric/src/lisp/number.dart";
+import "package:lisp/src/value.dart";
+import "package:lisp/src/unit.dart";
+import "package:lisp/src/pair.dart";
+import "package:lisp/src/symbol.dart";
+import "package:lisp/src/number.dart";
 
 enum _Tag {
   lparen,

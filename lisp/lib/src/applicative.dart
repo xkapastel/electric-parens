@@ -15,5 +15,15 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-export "package:electric/src/irc/message.dart";
-export "package:electric/src/irc/client.dart";
+import "package:lisp/src/value.dart";
+import "package:lisp/src/procedure.dart";
+
+class Applicative extends Procedure {
+  final Procedure body;
+
+  Applicative(Procedure this.body);
+
+  @override
+  dynamic call(dynamic args, dynamic scope, Function rest) =>
+    args.evlis(scope, (args) => body(args, scope, rest));
+}
