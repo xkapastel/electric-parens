@@ -16,7 +16,7 @@
 // <https://www.gnu.org/licenses/.
 
 import 'package:flutter/material.dart';
-import 'package:electric/electric.dart' as electric;
+import 'package:lisp/lisp.dart' as lisp;
 
 void main() {
   runApp(App());
