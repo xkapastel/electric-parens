@@ -1,5 +1,4 @@
-Electric Parens is a Lisp machine written in Dart. It runs on a
-server, or as a mobile app on Android and iOS.
+Electric Parens is a Lisp machine written in Dart.
 
 Electric Parens is available under the GNU Affero General Public
 License, version 3; see the ~LICENSE~ file for details.

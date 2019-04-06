@@ -1,0 +1,10 @@
+name: eparens
+description: Lisp, but not as we know it.
+version: 0.1.0
+
+environment:
+  sdk: ">=2.0.0"
+
+executables:
+  eparens:
+  eparens-irc:
