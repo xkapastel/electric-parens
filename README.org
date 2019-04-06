@@ -1,4 +1,20 @@
 Electric Parens is a Lisp machine written in Dart.
 
+** Electric Lisp
+Electric Lisp is a /Lisp-1/, with /fexprs/ and /delimited continuations/:
+
+- Lisp-1 means there's just one namespace for both values and
+  functions, as opposed to a Lisp-2 like Emacs Lisp.
+
+- Fexprs are kind of like "first class macros": the primitive
+  constructor of procedures is ~vau~, not ~lambda~, and it creates
+  procedures that receive their arguments /unevaluated/, in addition
+  to the environment at the call site.
+
+- Delimited continuations are like purely functional macros: they
+  enable more well-behaved synactic abstraction than fexprs or macros,
+  and in particular they allow the concise expression of /monadic/
+  design patterns.
+
 Electric Parens is available under the GNU Affero General Public
 License, version 3; see the ~LICENSE~ file for details.
