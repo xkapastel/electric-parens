@@ -48,7 +48,6 @@ class Client {
 
   Stream<Message> get messages async* {
     await for (var line in stringify(socket)) {
-      print(line);
       yield parse(line);
     }
   }

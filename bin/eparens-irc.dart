@@ -20,6 +20,12 @@ import "package:eparens/irc.dart" as irc;
 import "dart:io" as io;
 import "dart:async" as async;
 
+class Task {
+  final String code;
+  final Function sink;
+  Task(String this.code, Function this.sink);
+}
+
 main() async {
   var server   = io.Platform.environment["ELECTRIC_IRC_SERVER"];
   var nickname = io.Platform.environment["ELECTRIC_IRC_NICKNAME"];
@@ -33,38 +39,50 @@ main() async {
   var scope  = lisp.init();
   var uid    = 0;
 
+  Stream<Task> parse(Stream<irc.Message> messages) async* {
+    await for (var message in messages) {
+      print(message.line);
+      switch (message.type) {
+      case "PING":
+        var body = message.args(0);
+        client.pong(body);
+        break;
+      case "PRIVMSG":
+        var target = message.args(0);
+        var string = message.args(1);
+        if (target == channel && string.startsWith(signal)) {
+          var code = string.replaceFirst(signal, "");
+          var sink = (data) => client.privmsg(channel, data);
+          yield Task(code, sink);
+        } else if (target == nickname) {
+          var source = message.source.split("!")[0];
+          var code = string;
+          var sink = (data) => client.privmsg(source, data);
+          yield Task(code, sink);
+        }
+        break;
+      default:
+        break;
+      }
+    }
+  }
+
   client.pass(password);
   client.nick(nickname);
   client.join(channel);
 
-  await for (var message in client.messages) {
-    switch (message.type) {
-    case "JOIN":
-      break;
-    case "PING":
-      client.pong(message.args(0));
-      break;
-    case "PRIVMSG":
-      var target = message.args(0);
-      var string = message.args(1);
-      if (target == channel && string.startsWith(signal)) {
-        var body = string.replaceFirst(signal, "");
-        try {
-          var values = lisp.read(body);
-          for (var value in values) {
-            var result = value.eval(scope, (x) => x);
-            var name = "\$${uid}";
-            uid++;
-            scope[name] = result;
-            client.privmsg(channel, "${name} = ${result}");
-          }
-        } catch(e) {
-          client.privmsg(channel, "?");
-        }
+  await for (var task in parse(client.messages)) {
+    try {
+      var values = lisp.read(task.code);
+      for (var value in values) {
+        var result = value.eval(scope, (x) => x);
+        var name = "\$${uid}";
+        uid++;
+        scope[name] = result;
+        task.sink("${name} = ${result}");
       }
-      break;
-    default:
-      break;
+    } catch(e) {
+      task.sink("?");
     }
   }
 }
