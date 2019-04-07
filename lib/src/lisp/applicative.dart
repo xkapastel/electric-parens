@@ -15,7 +15,6 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:eparens/src/lisp/value.dart";
 import "package:eparens/src/lisp/procedure.dart";
 
 class Applicative extends Procedure {

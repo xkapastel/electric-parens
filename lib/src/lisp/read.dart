@@ -20,6 +20,7 @@ import "package:eparens/src/lisp/unit.dart";
 import "package:eparens/src/lisp/pair.dart";
 import "package:eparens/src/lisp/symbol.dart";
 import "package:eparens/src/lisp/number.dart";
+import "package:eparens/src/lisp/stringz.dart";
 
 enum _Tag {
   lparen,
@@ -27,6 +28,7 @@ enum _Tag {
   space,
   symbol,
   number,
+  string,
 }
 
 class _Token {
@@ -40,6 +42,7 @@ class _Token {
   factory _Token.space(String value)  => _Token(_Tag.space, value);
   factory _Token.symbol(String value) => _Token(_Tag.symbol, value);
   factory _Token.number(double value) => _Token(_Tag.number, value);
+  factory _Token.string(String value) => _Token(_Tag.string, value);
 }
 
 List<Value> read(String src) {
@@ -50,6 +53,7 @@ List<Value> read(String src) {
 List<_Token> _tokenize(String runes) {
   var isLparen = (rune) => rune == "(";
   var isRparen = (rune) => rune == ")";
+  var isQuote  = (rune) => rune == '"';
   var isSpace = (rune) =>
     [" ", "\t", "\r", "\n"].contains(rune);
   var isSeparator = (rune) =>
@@ -80,6 +84,21 @@ List<_Token> _tokenize(String runes) {
       var value = runes.substring(start, index);
       var token = _Token.space(value);
       buf.add(token);
+    } else if (isQuote(rune)) {
+      index++;
+      int start = index;
+      while (index < runes.length) {
+        var rune = runes[index];
+        if (isQuote(rune)) {
+          break;
+        }
+        index++;
+      }
+      assert(index < runes.length);
+      var value = runes.substring(start, index);
+      var token = _Token.string(value);
+      buf.add(token);
+      index++;
     } else {
       int start = index;
       while (index < runes.length) {
@@ -89,13 +108,13 @@ List<_Token> _tokenize(String runes) {
         }
         index++;
       }
-      var string = runes.substring(start, index);
-      var maybeNumber = double.tryParse(string);
-      var token;
+      var token = null;
+      var value = runes.substring(start, index);
+      var maybeNumber = double.tryParse(value);
       if (maybeNumber != null) {
         token = _Token.number(maybeNumber);
       } else {
-        token = _Token.symbol(string);
+        token = _Token.symbol(value);
       }
       buf.add(token);
     }
@@ -138,6 +157,11 @@ List<Value> _parse(List<_Token> tokens) {
       break;
     case _Tag.number:
       var value = Number(token.value as double);
+      buf.add(value);
+      index++;
+      break;
+    case _Tag.string:
+      var value = Stringz(token.value as String);
       buf.add(value);
       index++;
       break;

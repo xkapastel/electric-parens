@@ -15,16 +15,12 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-export "src/lisp/value.dart";
-export "src/lisp/unit.dart";
-export "src/lisp/pair.dart";
-export "src/lisp/symbol.dart";
-export "src/lisp/boolean.dart";
-export "src/lisp/number.dart";
-export "src/lisp/scope.dart";
-export "src/lisp/procedure.dart";
-export "src/lisp/primitive.dart";
-export "src/lisp/applicative.dart";
-export "src/lisp/operative.dart";
-export "src/lisp/read.dart";
-export "src/lisp/init.dart";
+import "package:eparens/src/lisp/value.dart";
+
+class Stringz extends Value {
+  final String value;
+  Stringz(String this.value);
+
+  @override
+  String toString() => '"${value}"';
+}
