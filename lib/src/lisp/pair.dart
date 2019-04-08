@@ -15,8 +15,8 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:eparens/src/lisp/value.dart";
-import "package:eparens/src/lisp/unit.dart";
+import "value.dart";
+import "unit.dart";
 
 dynamic or(dynamic lhs, dynamic rhs) {
   if (lhs is! Unit) {

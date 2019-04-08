@@ -15,7 +15,7 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:eparens/src/lisp/value.dart";
+import "value.dart";
 
 class Stringz extends Value {
   final String value;

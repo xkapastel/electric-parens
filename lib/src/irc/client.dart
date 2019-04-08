@@ -18,7 +18,7 @@
 import "dart:io";
 import "dart:async";
 
-import "package:eparens/src/irc/message.dart";
+import "message.dart";
 
 class Client {
   final Socket socket;

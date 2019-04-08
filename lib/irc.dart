@@ -15,5 +15,5 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-export "package:eparens/src/irc/message.dart";
-export "package:eparens/src/irc/client.dart";
+export "src/irc/message.dart";
+export "src/irc/client.dart";
