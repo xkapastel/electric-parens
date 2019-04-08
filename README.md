@@ -48,6 +48,8 @@ export ELECTRIC_IRC_PASSWORD="password123"
 export ELECTRIC_IRC_CHANNEL="#help"
 ```
 
+[API documentation for the Dart implementation](https://xkapastel.github.io/electric-parens/api/index.html) is available on [GitHub Pages](https://xkapastel.github.io/electric-parens/api/index.html).
+
 ## Electric Lisp
 Electric Lisp is a *Lisp-1*, with *fexprs* and *delimited
 continuations*:
