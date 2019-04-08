@@ -66,7 +66,6 @@ class Scope extends Value {
     for (var value in read(src)) {
       result = value.eval(this, (x) => x);
     }
-    print("evalString => ${result}");
     return result;
   }
 

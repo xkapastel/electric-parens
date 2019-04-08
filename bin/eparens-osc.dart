@@ -17,8 +17,10 @@
 
 import "package:eparens/lisp.dart" as lisp;
 import "dart:io";
+import "dart:math";
 import "dart:async";
 import "dart:convert";
+import "dart:typed_data";
 
 Future<String> drain(Stream<String> stream) async {
   var buf = new StringBuffer();
@@ -32,16 +34,18 @@ Future main() async {
   String src = await drain(stdin.transform(utf8.decoder));
   lisp.Scope ctx = lisp.init();
   lisp.Value proc = ctx.evalString(src);
-  int rate = 22050;
+  int rate = 44100;
   double time = 0.0;
   while (true) {
-    List<int> buf = new List(rate);
+    Float64List buf = new Float64List(rate);
     for (var i = 0; i < buf.length; i++) {
-      double sample = ctx.apply1d(proc, time);
-      buf[i] = (sample * 255.0).toInt();
-      time += 1 / rate;
+      buf[i] = ctx.apply1d(proc, time);
+      time += 1.0 / rate;
     }
-    stdout.add(buf);
+    Uint8List view = buf.buffer.asUint8List(
+      buf.offsetInBytes,
+      buf.lengthInBytes);
+    stdout.add(view);
     try {
       await stdout.flush();
     } catch(e) {

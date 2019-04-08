@@ -35,8 +35,8 @@ pub global activate --source path .
 
 `eparens-osc` executes Lisp source code provided on standard
 input. The last expression must create a procedure that accepts and
-returns one number, from 0 to 1 inclusive. This procedure is
-interpreted as a waveform, and is rendered as 8-bit PCM at 22050Hz.
+returns one number, from -1 to 1 inclusive. This procedure is
+interpreted as a waveform, and is rendered as 64-bit PCM at 44.1kHz.
 
 `eparens-irc` is an IRC bot that evaluates Electric Lisp. It uses the
 following environment variables:
