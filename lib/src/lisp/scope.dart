@@ -16,7 +16,12 @@
 // <https://www.gnu.org/licenses/.
 
 import "dart:collection";
-import "package:eparens/src/lisp/value.dart";
+import "value.dart";
+import "unit.dart";
+import "pair.dart";
+import "number.dart";
+import "procedure.dart";
+import "read.dart";
 
 class Scope extends Value {
   Scope parent;
@@ -54,6 +59,22 @@ class Scope extends Value {
   void operator[]=(dynamic key, dynamic value) {
     key = key.toString();
     frame[key] = value;
+  }
+
+  Value evalString(String src) {
+    var result = null;
+    for (var value in read(src)) {
+      result = value.eval(this, (x) => x);
+    }
+    print("evalString => ${result}");
+    return result;
+  }
+
+  double apply1d(Procedure proc, double value) {
+    var args = Pair(Number(value), unit);
+    var result = proc.call(args, this, (x) => x);
+    assert(result is Number);
+    return result.value;
   }
 
   @override

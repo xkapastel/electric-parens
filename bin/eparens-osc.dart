@@ -15,27 +15,38 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:eparens/lisp.dart" as elisp;
-import "dart:io" as io;
+import "package:eparens/lisp.dart" as lisp;
+import "dart:io";
+import "dart:async";
+import "dart:convert";
 
-void main() {
-  var scope = elisp.init();
-  var uid = 0;
+Future<String> drain(Stream<String> stream) async {
+  var buf = new StringBuffer();
+  await for (var chunk in stream) {
+    buf.write(chunk);
+  }
+  return buf.toString();
+}
+
+Future main() async {
+  String src = await drain(stdin.transform(utf8.decoder));
+  lisp.Scope ctx = lisp.init();
+  lisp.Value proc = ctx.evalString(src);
+  int rate = 22050;
+  double time = 0.0;
   while (true) {
-    io.stdout.write("> ");
-    var line = io.stdin.readLineSync();
+    List<int> buf = new List(rate);
+    for (var i = 0; i < buf.length; i++) {
+      double sample = ctx.apply1d(proc, time);
+      buf[i] = (sample * 255.0).toInt();
+      time += 1 / rate;
+    }
+    stdout.add(buf);
     try {
-      var values = elisp.read(line);
-      for (var value in values) {
-        var result = value.eval(scope, (x) => x);
-        var name = "\$${uid}";
-        uid++;
-        scope[name] = result;
-        print("${name} = ${result}");
-      }
+      await stdout.flush();
     } catch(e) {
-      print("ERROR: ${e}");
-      continue;
+      await stdout.close();
+      break;
     }
   }
 }

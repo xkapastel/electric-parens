@@ -30,3 +30,5 @@ class Unit extends Value {
   String toString() =>
     "unit";
 }
+
+Unit unit = new Unit();

@@ -6,5 +6,5 @@ environment:
   sdk: ">=2.0.0"
 
 executables:
-  eparens:
+  eparens-osc:
   eparens-irc:

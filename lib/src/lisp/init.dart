@@ -29,6 +29,8 @@ import "applicative.dart";
 import "operative.dart";
 import "read.dart";
 
+import "dart:math";
+
 dynamic _vau(dynamic args, dynamic scope, Function rest) {
   assert(args is Pair);
   assert(args.snd is Pair);
@@ -67,7 +69,7 @@ dynamic _shift(dynamic args, dynamic scope, Function rest0) {
   }
 
   var continuation = Applicative(Primitive(continuationBody));
-  var list = Pair(continuation, Unit());
+  var list = Pair(continuation, unit);
   return args.fst(list, scope, (x) => x);
 }
 
@@ -87,7 +89,7 @@ dynamic _define(dynamic args, dynamic scope, Function rest) {
   assert(args.snd is Pair);
   assert(args.snd.snd is Unit);
   scope[args.fst] = args.snd.fst.eval(scope, (x) => x);
-  return rest(Unit());
+  return rest(unit);
 }
 
 dynamic _initialScope(dynamic args, dynamic scope, Function rest) {
@@ -129,7 +131,7 @@ dynamic _ifz(dynamic args, dynamic scope, Function rest) {
         if (args.snd.snd is Pair) {
           return args.snd.snd.fst.eval(scope, rest);
         }
-        return rest(Unit());
+        return rest(unit);
       }
   });
 }
@@ -329,9 +331,37 @@ dynamic _divide(dynamic args, dynamic scope, Function rest) {
   return rest(Number(state));
 }
 
+dynamic _exp(dynamic args, dynamic scope, Function rest) {
+  assert(args is Pair);
+  assert(args.fst is Number);
+  assert(args.snd is Unit);
+  return rest(Number(exp(args.fst.value)));
+}
+
+dynamic _log(dynamic args, dynamic scope, Function rest) {
+  assert(args is Pair);
+  assert(args.fst is Number);
+  assert(args.snd is Unit);
+  return rest(Number(log(args.fst.value)));
+}
+
+dynamic _sin(dynamic args, dynamic scope, Function rest) {
+  assert(args is Pair);
+  assert(args.fst is Number);
+  assert(args.snd is Unit);
+  return rest(Number(sin(args.fst.value)));
+}
+
+dynamic _cos(dynamic args, dynamic scope, Function rest) {
+  assert(args is Pair);
+  assert(args.fst is Number);
+  assert(args.snd is Unit);
+  return rest(Number(cos(args.fst.value)));
+}
+
 dynamic _printz(dynamic args, dynamic scope, Function rest) {
   print(args);
-  return rest(Unit());
+  return rest(unit);
 }
 
 Scope init() {
@@ -348,7 +378,7 @@ Scope init() {
   ctx["pair"]         = Applicative(Primitive(_pair));
   ctx["fst"]          = Applicative(Primitive(_fst));
   ctx["snd"]          = Applicative(Primitive(_snd));
-  ctx["unit"]         = Unit();
+  ctx["unit"]         = unit;
   ctx["if"]           = Primitive(_ifz);
   ctx["not"]          = Applicative(Primitive(_not));
   ctx["and"]          = Applicative(Primitive(_and));
@@ -370,6 +400,10 @@ Scope init() {
   ctx["-"]            = Applicative(Primitive(_subtract));
   ctx["*"]            = Applicative(Primitive(_multiply));
   ctx["/"]            = Applicative(Primitive(_divide));
+  ctx["exp"]          = Applicative(Primitive(_exp));
+  ctx["log"]          = Applicative(Primitive(_log));
+  ctx["sin"]          = Applicative(Primitive(_sin));
+  ctx["cos"]          = Applicative(Primitive(_cos));
   ctx["pr"]           = Applicative(Primitive(_printz));
 
   return ctx;
