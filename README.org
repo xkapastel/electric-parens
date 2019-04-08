@@ -1,7 +1,40 @@
 Electric Parens is a Lisp machine written in Dart.
 
+** About
+I don't really have a goal in mind for this project. I just like Lisp
+and machine learning and wanted to hack on them. In particular, I'm
+excited about the [[https://web.cs.wpi.edu/~jshutt/kernel.html][Kernel]] dialect of Lisp, and the recent trend in deep
+learning. Dart also turned out to be a nice language with a convenient
+and easy to use standard library.
+
+** Getting Started
+There are a bunch of binaries in ~bin/~, all prefixed with
+~eparens-~. You can install them globally with pub, by executing the
+following within the repository's directory:
+
+#+BEGIN_SRC bash
+pub get
+pub global activate --source path .
+#+END_SRC
+
+~eparens-osc~ executes Lisp source code provided on standard
+input. The last expression must create a procedure that accepts and
+returns one number, from 0 to 1 inclusive. This procedure is
+interpreted as a waveform, and is rendered as 8-bit PCM at 22050Hz.
+
+~eparens-irc~ is an IRC bot that evaluates Electric Lisp. It uses the
+following environment variables:
+
+#+BEGIN_SRC
+export ELECTRIC_IRC_SERVER="irc.freenode.net"
+export ELECTRIC_IRC_NICKNAME="chunkylover53"
+export ELECTRIC_IRC_PASSWORD="password123"
+export ELECTRIC_IRC_CHANNEL="#help"
+#+END_SRC
+
 ** Electric Lisp
-Electric Lisp is a /Lisp-1/, with /fexprs/ and /delimited continuations/:
+Electric Lisp is a /Lisp-1/, with /fexprs/ and /delimited
+continuations/:
 
 - Lisp-1 means there's just one namespace for both values and
   functions, as opposed to a Lisp-2 like Emacs Lisp.
@@ -16,5 +49,20 @@ Electric Lisp is a /Lisp-1/, with /fexprs/ and /delimited continuations/:
   and in particular they allow the concise expression of /monadic/
   design patterns.
 
+** Roadmap
+*** Latent Spaces
+In my opinion, latent spaces are one of the coolest ideas to ever come
+out of computer science. Arithmetic operations are assigned meaning by
+optimizing a function, letting you implement semantics you can't
+describe explicitly.
+
+I plan on using /arrows/, a domain specific language embedded in
+Electric Lisp, to explore latent spaces. Specifically, an arrow is a
+combinator, a first class function distinct from Lisp procedures. A
+function is a tree, and so an arrow can be /linearized/ as a sequence
+of operations that reconstruct it, perhaps on a stack. From here,
+standard sequence-to-sequence models can be applied.
+
+** License
 Electric Parens is available under the GNU Affero General Public
 License, version 3; see the ~LICENSE~ file for details.
