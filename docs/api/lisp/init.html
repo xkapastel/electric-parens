@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the init function from the lisp library, for the Dart programming language.">
+  <title>init function - lisp library - Dart API</title>
+  <!-- required because all the links are pseudo-absolute -->
+  <base href="..">
+
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="static-assets/github.css">
+  <link rel="stylesheet" href="static-assets/styles.css">
+  <link rel="icon" href="static-assets/favicon.png">
+  
+</head>
+
+<body>
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="index.html">eparens</a></li>
+    <li><a href="lisp/lisp-library.html">lisp</a></li>
+    <li class="self-crumb">init function</li>
+  </ol>
+  <div class="self-name">init</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="index.html">eparens</a></li>
+      <li><a href="lisp/lisp-library.html">lisp</a></li>
+      <li class="self-crumb">init function</li>
+    </ol>
+    
+    <h5>lisp library</h5>
+    <ol>
+      <li class="section-title"><a href="lisp/lisp-library.html#classes">Classes</a></li>
+      <li><a href="lisp/Applicative-class.html">Applicative</a></li>
+      <li><a href="lisp/Boolean-class.html">Boolean</a></li>
+      <li><a href="lisp/Number-class.html">Number</a></li>
+      <li><a href="lisp/Operative-class.html">Operative</a></li>
+      <li><a href="lisp/Pair-class.html">Pair</a></li>
+      <li><a href="lisp/Primitive-class.html">Primitive</a></li>
+      <li><a href="lisp/Procedure-class.html">Procedure</a></li>
+      <li><a href="lisp/Scope-class.html">Scope</a></li>
+      <li><a href="lisp/Symbol-class.html">Symbol</a></li>
+      <li><a href="lisp/Unit-class.html">Unit</a></li>
+      <li><a href="lisp/Value-class.html">Value</a></li>
+    
+    
+    
+      <li class="section-title"><a href="lisp/lisp-library.html#properties">Properties</a></li>
+      <li><a href="lisp/unit.html">unit</a></li>
+    
+      <li class="section-title"><a href="lisp/lisp-library.html#functions">Functions</a></li>
+      <li><a href="lisp/init.html">init</a></li>
+      <li><a href="lisp/read.html">read</a></li>
+    
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-left-->
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1>init function </h1></div>
+
+    <section class="multi-line-signature">
+        <span class="returntype"><a href="lisp/Scope-class.html">Scope</a></span>
+                <span class="name ">init</span>
+(<wbr>)
+    </section>
+    
+    <section class="summary source-code" id="source">
+      <h2><span>Implementation</span></h2>
+      <pre class="language-dart"><code class="language-dart">Scope init() {
+  var ctx = Scope.empty();
+
+  ctx[&quot;vau&quot;]          = Primitive(_vau);
+  ctx[&quot;wrap&quot;]         = Applicative(Primitive(_wrap));
+  ctx[&quot;unwrap&quot;]       = Applicative(Primitive(_unwrap));
+  ctx[&quot;reset&quot;]        = Applicative(Primitive(_reset));
+  ctx[&quot;shift&quot;]        = Applicative(Primitive(_shift));
+  ctx[&quot;eval&quot;]         = Applicative(Primitive(_eval));
+  ctx[&quot;define&quot;]       = Primitive(_define);
+  ctx[&quot;init&quot;]         = Applicative(Primitive(_initialScope));
+  ctx[&quot;pair&quot;]         = Applicative(Primitive(_pair));
+  ctx[&quot;fst&quot;]          = Applicative(Primitive(_fst));
+  ctx[&quot;snd&quot;]          = Applicative(Primitive(_snd));
+  ctx[&quot;unit&quot;]         = unit;
+  ctx[&quot;if&quot;]           = Primitive(_ifz);
+  ctx[&quot;not&quot;]          = Applicative(Primitive(_not));
+  ctx[&quot;and&quot;]          = Applicative(Primitive(_and));
+  ctx[&quot;or&quot;]           = Applicative(Primitive(_or));
+  ctx[&quot;boolean?&quot;]     = Applicative(Primitive(_isBoolean));
+  ctx[&quot;symbol?&quot;]      = Applicative(Primitive(_isSymbol));
+  ctx[&quot;number?&quot;]      = Applicative(Primitive(_isNumber));
+  ctx[&quot;string?&quot;]      = Applicative(Primitive(_isString));
+  ctx[&quot;unit?&quot;]        = Applicative(Primitive(_isUnit));
+  ctx[&quot;pair?&quot;]        = Applicative(Primitive(_isPair));
+  ctx[&quot;scope?&quot;]       = Applicative(Primitive(_isScope));
+  ctx[&quot;procedure?&quot;]   = Applicative(Primitive(_isProcedure));
+  ctx[&quot;primitive?&quot;]   = Applicative(Primitive(_isPrimitive));
+  ctx[&quot;applicative?&quot;] = Applicative(Primitive(_isApplicative));
+  ctx[&quot;operative?&quot;]   = Applicative(Primitive(_isOperative));
+  ctx[&quot;true&quot;]         = Boolean(true);
+  ctx[&quot;false&quot;]        = Boolean(false);
+  ctx[&quot;+&quot;]            = Applicative(Primitive(_add));
+  ctx[&quot;-&quot;]            = Applicative(Primitive(_subtract));
+  ctx[&quot;*&quot;]            = Applicative(Primitive(_multiply));
+  ctx[&quot;&#47;&quot;]            = Applicative(Primitive(_divide));
+  ctx[&quot;exp&quot;]          = Applicative(Primitive(_exp));
+  ctx[&quot;log&quot;]          = Applicative(Primitive(_log));
+  ctx[&quot;sin&quot;]          = Applicative(Primitive(_sin));
+  ctx[&quot;cos&quot;]          = Applicative(Primitive(_cos));
+  ctx[&quot;pr&quot;]           = Applicative(Primitive(_printz));
+
+  return ctx;
+}</code></pre>
+    </section>
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    eparens 0.1.0
+  </span>
+
+  
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="static-assets/typeahead.bundle.min.js"></script>
+<script src="static-assets/highlight.pack.js"></script>
+<script src="static-assets/URI.js"></script>
+<script src="static-assets/script.js"></script>
+
+
+</body>
+
+</html>
