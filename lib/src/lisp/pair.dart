@@ -18,7 +18,7 @@
 import "value.dart";
 import "unit.dart";
 
-dynamic or(dynamic lhs, dynamic rhs) {
+dynamic _or(dynamic lhs, dynamic rhs) {
   if (lhs is! Unit) {
     return lhs;
   }
@@ -50,7 +50,7 @@ class Pair extends Value {
 
   @override
   dynamic exec(dynamic scope, Function rest) =>
-    fst.eval(scope, (fst) => snd.exec(scope, (snd) => rest(or(snd, fst))));
+    fst.eval(scope, (fst) => snd.exec(scope, (snd) => rest(_or(snd, fst))));
 
   @override
   String toString() {

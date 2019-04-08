@@ -47,13 +47,13 @@ class Client {
   }
 
   Stream<Message> get messages async* {
-    await for (var line in stringify(socket)) {
+    await for (var line in _stringify(socket)) {
       yield parse(line);
     }
   }
 }
 
-Stream<String> stringify(Socket socket) async* {
+Stream<String> _stringify(Socket socket) async* {
   List<int> buf = [];
   await for (var data in socket) {
     for (int byte in data) {
