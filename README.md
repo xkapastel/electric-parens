@@ -1,3 +1,6 @@
+# Electric Parens
+<a href="https://liberapay.com/xkapastel/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a> [![ko-fi](https://www.ko-fi.com/img/donate_sm.png)](https://ko-fi.com/T6T5QRUW)
+
 Electric Parens is a Lisp machine written in Dart.
 
 ## About
