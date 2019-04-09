@@ -1,27 +1,7 @@
 # Electric Parens
 <a href="https://liberapay.com/xkapastel/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a> [![ko-fi](https://www.ko-fi.com/img/donate_sm.png)](https://ko-fi.com/T6T5QRUW)
 
-Electric Parens is a Lisp machine written in Dart.
-
-## About
-I don't really have a goal in mind for this project. I just like Lisp
-and machine learning and wanted to hack on them. In particular, I'm
-excited about the [Kernel](https://web.cs.wpi.edu/~jshutt/kernel.html)
-dialect of Lisp, and the recent trend in deep learning. Dart also
-turned out to be a nice language with a convenient and easy to use
-standard library.
-
-There are a couple of beliefs that guide this project:
-
-### UI = API
-Users are programmers. An application's primary interface should
-provide some amount of programmatic control, rather than hiding all of
-it behind a complex "API".
-
-### PL = AI
-Programming languages and artificial intelligence are both general
-interfaces to computation. The two can and should be merged to provide
-a more expressive means of control.
+Electric Parens is a Lisp environment written in Dart.
 
 ## Getting Started
 There are a bunch of binaries in `bin/`, all prefixed with
@@ -66,32 +46,6 @@ continuations*:
   enable more well-behaved synactic abstraction than fexprs or macros,
   and in particular they allow the concise expression of *monadic*
   design patterns.
-
-### Vau Expressions
-"First class macros", fexprs, history of Lisp.
-
-### Delimited Continuations
-Monadic patterns, examples: remove evaluation etc.
-
-### Arrows
-An arrow is a function, independent of Lisp procedures. Why have a
-second type of "procedure"? Because Lisp procedures are entangled with
-their environment through the use of variables. Arrows are
-combinators, which means they do not use variables, and are therefore
-completely independent of their environment. This simplifies formal
-manipulation, in particular program synthesis.
-
-## Creative Coding
-
-## Roadmap
-### Latent Spaces
-In my opinion, latent spaces are one of the coolest ideas to ever come
-out of computer science. Arithmetic operations are assigned meaning by
-optimizing a function, letting you implement semantics you can't
-describe explicitly.
-
-I plan on using *arrows*, a domain specific language embedded in
-Electric Lisp, to explore latent spaces.
 
 ## License
 Electric Parens is available under the GNU Affero General Public
