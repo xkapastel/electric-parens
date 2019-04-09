@@ -27,10 +27,10 @@ class Task {
 }
 
 main() async {
-  var server   = io.Platform.environment["ELECTRIC_IRC_SERVER"];
-  var nickname = io.Platform.environment["ELECTRIC_IRC_NICKNAME"];
-  var password = io.Platform.environment["ELECTRIC_IRC_PASSWORD"];
-  var channel  = io.Platform.environment["ELECTRIC_IRC_CHANNEL"];
+  var server   = io.Platform.environment["EPARENS_IRC_SERVER"];
+  var nickname = io.Platform.environment["EPARENS_IRC_NICKNAME"];
+  var password = io.Platform.environment["EPARENS_IRC_PASSWORD"];
+  var channel  = io.Platform.environment["EPARENS_IRC_CHANNEL"];
   var signal   = "${nickname}:";
 
   var socket = await io.Socket.connect(server, 6667);

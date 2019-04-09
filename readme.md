@@ -22,10 +22,10 @@ interpreted as a waveform, and is rendered as 64-bit PCM at 44.1kHz.
 following environment variables:
 
 ```
-export ELECTRIC_IRC_SERVER="irc.freenode.net"
-export ELECTRIC_IRC_NICKNAME="chunkylover53"
-export ELECTRIC_IRC_PASSWORD="password123"
-export ELECTRIC_IRC_CHANNEL="#help"
+export EPARENS_IRC_SERVER="irc.freenode.net"
+export EPARENS_IRC_NICKNAME="chunkylover53"
+export EPARENS_IRC_PASSWORD="password123"
+export EPARENS_IRC_CHANNEL="#eparens"
 ```
 
 [API documentation for the Dart implementation](https://xkapastel.github.io/electric-parens/api/index.html) is available on [GitHub Pages](https://xkapastel.github.io/electric-parens/api/index.html).
