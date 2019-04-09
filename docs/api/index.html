@@ -54,23 +54,9 @@
 
   <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
       <section class="desc markdown">
-        <p>Electric Parens is a Lisp machine written in Dart.</p>
-<h2 id="about">About</h2>
-<p>I don't really have a goal in mind for this project. I just like Lisp
-and machine learning and wanted to hack on them. In particular, I'm
-excited about the <a href="https://web.cs.wpi.edu/~jshutt/kernel.html">Kernel</a>
-dialect of Lisp, and the recent trend in deep learning. Dart also
-turned out to be a nice language with a convenient and easy to use
-standard library.</p>
-<p>There are a couple of beliefs that guide this project:</p>
-<h3 id="ui--api">UI = API</h3>
-<p>Users are programmers. An application's primary interface should
-provide some amount of programmatic control, rather than hiding all of
-it behind a complex "API".</p>
-<h3 id="pl--ai">PL = AI</h3>
-<p>Programming languages and artificial intelligence are both general
-interfaces to computation. The two can and should be merged to provide
-a more expressive means of control.</p>
+        <h1 id="electric-parens">Electric Parens</h1>
+<p><a href="https://liberapay.com/xkapastel/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a> <a href="https://ko-fi.com/T6T5QRUW"><img alt="ko-fi" src="https://www.ko-fi.com/img/donate_sm.png"></a></p>
+<p>Electric Parens is a Lisp environment written in Dart.</p>
 <h2 id="getting-started">Getting Started</h2>
 <p>There are a bunch of binaries in <code>bin/</code>, all prefixed with
 <code>eparens-</code>. You can install them globally with pub, by executing the
@@ -80,8 +66,8 @@ pub global activate --source path .
 </code></pre>
 <p><code>eparens-osc</code> executes Lisp source code provided on standard
 input. The last expression must create a procedure that accepts and
-returns one number, from 0 to 1 inclusive. This procedure is
-interpreted as a waveform, and is rendered as 8-bit PCM at 22050Hz.</p>
+returns one number, from -1 to 1 inclusive. This procedure is
+interpreted as a waveform, and is rendered as 64-bit PCM at 44.1kHz.</p>
 <p><code>eparens-irc</code> is an IRC bot that evaluates Electric Lisp. It uses the
 following environment variables:</p>
 <pre class="language-dart"><code>export ELECTRIC_IRC_SERVER="irc.freenode.net"
@@ -89,6 +75,7 @@ export ELECTRIC_IRC_NICKNAME="chunkylover53"
 export ELECTRIC_IRC_PASSWORD="password123"
 export ELECTRIC_IRC_CHANNEL="#help"
 </code></pre>
+<p><a href="https://xkapastel.github.io/electric-parens/api/index.html">API documentation for the Dart implementation</a> is available on <a href="https://xkapastel.github.io/electric-parens/api/index.html">GitHub Pages</a>.</p>
 <h2 id="electric-lisp">Electric Lisp</h2>
 <p>Electric Lisp is a <em>Lisp-1</em>, with <em>fexprs</em> and <em>delimited
 continuations</em>:</p><ul><li>
@@ -102,26 +89,6 @@ to the environment at the call site.</p></li><li>
 enable more well-behaved synactic abstraction than fexprs or macros,
 and in particular they allow the concise expression of <em>monadic</em>
 design patterns.</p></li></ul>
-<h3 id="vau-expressions">Vau Expressions</h3>
-<p>"First class macros", fexprs, history of Lisp.</p>
-<h3 id="delimited-continuations">Delimited Continuations</h3>
-<p>Monadic patterns, examples: remove evaluation etc.</p>
-<h3 id="arrows">Arrows</h3>
-<p>An arrow is a function, independent of Lisp procedures. Why have a
-second type of "procedure"? Because Lisp procedures are entangled with
-their environment through the use of variables. Arrows are
-combinators, which means they do not use variables, and are therefore
-completely independent of their environment. This simplifies formal
-manipulation, in particular program synthesis.</p>
-<h2 id="creative-coding">Creative Coding</h2>
-<h2 id="roadmap">Roadmap</h2>
-<h3 id="latent-spaces">Latent Spaces</h3>
-<p>In my opinion, latent spaces are one of the coolest ideas to ever come
-out of computer science. Arithmetic operations are assigned meaning by
-optimizing a function, letting you implement semantics you can't
-describe explicitly.</p>
-<p>I plan on using <em>arrows</em>, a domain specific language embedded in
-Electric Lisp, to explore latent spaces.</p>
 <h2 id="license">License</h2>
 <p>Electric Parens is available under the GNU Affero General Public
 License, version 3; see the <code>LICENSE</code> file for details.</p>

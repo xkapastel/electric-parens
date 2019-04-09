@@ -4,3 +4,6 @@
 .*~
 build/
 .dart_tool/
+docs/.packages
+docs/packages
+docs/.build.manifest
