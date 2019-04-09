@@ -36,15 +36,15 @@ Future main() async {
   lisp.Value proc = ctx.evalString(src);
   int rate = 44100;
   double time = 0.0;
+  Float64List buf = new Float64List(rate);
+  Uint8List view = buf.buffer.asUint8List(
+    buf.offsetInBytes,
+    buf.lengthInBytes);
   while (true) {
-    Float64List buf = new Float64List(rate);
     for (var i = 0; i < buf.length; i++) {
       buf[i] = ctx.apply1d(proc, time);
       time += 1.0 / rate;
     }
-    Uint8List view = buf.buffer.asUint8List(
-      buf.offsetInBytes,
-      buf.lengthInBytes);
     stdout.add(view);
     try {
       await stdout.flush();
