@@ -23,10 +23,8 @@ class Symbol extends Value {
   Symbol(String this.value);
 
   @override
-  dynamic eval(dynamic scope, Function rest) =>
-    rest(scope[this]);
+  dynamic eval(dynamic scope, Function rest) => rest(scope[this]);
 
   @override
-  String toString() =>
-    value;
+  String toString() => value;
 }

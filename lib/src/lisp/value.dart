@@ -15,16 +15,13 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-class Value {  
-  dynamic eval(dynamic scope, Function rest) =>
-    rest(this);
+class Value {
+  dynamic eval(dynamic scope, Function rest) => rest(this);
 
-  dynamic evlis(dynamic scope, Function rest) =>
-    throw "not a list";
+  dynamic evlis(dynamic scope, Function rest) => throw "not a list";
 
-  dynamic exec(dynamic scope, Function rest) =>
-    throw "not a list";
+  dynamic exec(dynamic scope, Function rest) => throw "not a list";
 
   dynamic call(dynamic args, dynamic scope, Function rest) =>
-    throw "not a procedure";
+      throw "not a procedure";
 }

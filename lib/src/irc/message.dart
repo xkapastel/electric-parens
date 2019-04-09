@@ -20,29 +20,26 @@ class Message {
   final String type;
   final List<String> arguments;
   final String line;
-  const Message(
-    String this.source,
-    String this.type,
-    List<String> this.arguments,
-    String this.line);
+  const Message(String this.source, String this.type,
+      List<String> this.arguments, String this.line);
 
-  String args(int index) =>
-    arguments[index];
+  String args(int index) => arguments[index];
 }
 
-final RegExp irc = RegExp(r"^(?:@([^\r\n ]*) +)?(?::([^\r\n ]+) +)?([^\r\n ]+)(?: +([^:\r\n ]+[^\r\n ]*(?: +[^:\r\n ]+[^\r\n ]*)*)|)?(?: +:([^\r\n]*)| +)?[\r\n]*$");
+final RegExp irc = RegExp(
+    r"^(?:@([^\r\n ]*) +)?(?::([^\r\n ]+) +)?([^\r\n ]+)(?: +([^:\r\n ]+[^\r\n ]*(?: +[^:\r\n ]+[^\r\n ]*)*)|)?(?: +:([^\r\n]*)| +)?[\r\n]*$");
 
 Message parse(String src) {
   var match = irc.firstMatch(src);
   if (match == null) {
     throw "IRC";
   }
-  var tags       = match.group(1);
-  var source     = match.group(2);
-  var verb       = match.group(3);
+  var tags = match.group(1);
+  var source = match.group(2);
+  var verb = match.group(3);
   var parameters = match.group(4);
-  var trailing   = match.group(5);
-  List<String> arguments  = [];
+  var trailing = match.group(5);
+  List<String> arguments = [];
   if (parameters != null) {
     arguments = parameters.split(" ");
   }

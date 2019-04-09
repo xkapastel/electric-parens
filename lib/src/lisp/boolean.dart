@@ -23,6 +23,5 @@ class Boolean extends Value {
   Boolean(bool this.value);
 
   @override
-  String toString() =>
-    value.toString();
+  String toString() => value.toString();
 }

@@ -21,9 +21,8 @@ import "pair.dart";
 class Procedure extends Value {
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) =>
-    rest(Pair(this, args));
+      rest(Pair(this, args));
 
   @override
-  String toString() =>
-    "<procedure>";
+  String toString() => "<procedure>";
 }

@@ -29,7 +29,7 @@ class Pair extends Value {
   dynamic fst;
   dynamic snd;
   bool isList;
-  
+
   Pair(dynamic this.fst, dynamic this.snd) {
     if (snd is Unit) {
       isList = true;
@@ -42,15 +42,15 @@ class Pair extends Value {
 
   @override
   dynamic eval(dynamic scope, Function rest) =>
-    fst.eval(scope, (proc) => proc(snd, scope, rest));
+      fst.eval(scope, (proc) => proc(snd, scope, rest));
 
   @override
   dynamic evlis(dynamic scope, Function rest) =>
-    fst.eval(scope, (fst) => snd.evlis(scope, (snd) => rest(Pair(fst, snd))));
+      fst.eval(scope, (fst) => snd.evlis(scope, (snd) => rest(Pair(fst, snd))));
 
   @override
   dynamic exec(dynamic scope, Function rest) =>
-    fst.eval(scope, (fst) => snd.exec(scope, (snd) => rest(_or(snd, fst))));
+      fst.eval(scope, (fst) => snd.exec(scope, (snd) => rest(_or(snd, fst))));
 
   @override
   String toString() {

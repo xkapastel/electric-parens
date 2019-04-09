@@ -24,5 +24,5 @@ class Applicative extends Procedure {
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) =>
-    args.evlis(scope, (args) => body(args, scope, rest));
+      args.evlis(scope, (args) => body(args, scope, rest));
 }

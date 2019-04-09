@@ -28,12 +28,8 @@ class Operative extends Procedure {
   final dynamic statik;
   final dynamic dynamik;
 
-  Operative(
-    dynamic this.params,
-    dynamic this.body,
-    dynamic this.statik,
-    dynamic this.dynamik) {
-  }
+  Operative(dynamic this.params, dynamic this.body, dynamic this.statik,
+      dynamic this.dynamik) {}
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {

@@ -31,8 +31,7 @@ class Scope extends Value {
     frame = new HashMap();
   }
 
-  factory Scope.empty() =>
-    Scope(null);
+  factory Scope.empty() => Scope(null);
 
   bool isDefined(dynamic key) {
     key = key.toString();
@@ -45,7 +44,7 @@ class Scope extends Value {
     return false;
   }
 
-  dynamic operator[](dynamic key) {
+  dynamic operator [](dynamic key) {
     key = key.toString();
     if (frame.containsKey(key)) {
       return frame[key];
@@ -56,7 +55,7 @@ class Scope extends Value {
     throw "`${key}` is undefined";
   }
 
-  void operator[]=(dynamic key, dynamic value) {
+  void operator []=(dynamic key, dynamic value) {
     key = key.toString();
     frame[key] = value;
   }
@@ -77,6 +76,5 @@ class Scope extends Value {
   }
 
   @override
-  String toString() =>
-    "<scope>";
+  String toString() => "<scope>";
 }

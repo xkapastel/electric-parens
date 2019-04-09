@@ -78,8 +78,8 @@ dynamic _eval(dynamic args, dynamic scope, Function rest) {
   assert(args.snd is Pair);
   assert(args.snd.snd is Unit);
   return args.snd.fst.eval(scope, (local) {
-      assert(local is Scope);
-      return args.fst.eval(local, rest);
+    assert(local is Scope);
+    return args.fst.eval(local, rest);
   });
 }
 
@@ -124,15 +124,15 @@ dynamic _ifz(dynamic args, dynamic scope, Function rest) {
     assert(args.snd.snd.snd is Unit);
   }
   return args.fst.eval(scope, (flag) {
-      assert(flag is Boolean);
-      if (flag.value) {
-        return args.snd.fst.eval(scope, rest);
-      } else {
-        if (args.snd.snd is Pair) {
-          return args.snd.snd.fst.eval(scope, rest);
-        }
-        return rest(unit);
+    assert(flag is Boolean);
+    if (flag.value) {
+      return args.snd.fst.eval(scope, rest);
+    } else {
+      if (args.snd.snd is Pair) {
+        return args.snd.snd.fst.eval(scope, rest);
       }
+      return rest(unit);
+    }
   });
 }
 
@@ -367,44 +367,44 @@ dynamic _printz(dynamic args, dynamic scope, Function rest) {
 Scope init() {
   var ctx = Scope.empty();
 
-  ctx["vau"]          = Primitive(_vau);
-  ctx["wrap"]         = Applicative(Primitive(_wrap));
-  ctx["unwrap"]       = Applicative(Primitive(_unwrap));
-  ctx["reset"]        = Applicative(Primitive(_reset));
-  ctx["shift"]        = Applicative(Primitive(_shift));
-  ctx["eval"]         = Applicative(Primitive(_eval));
-  ctx["define"]       = Primitive(_define);
-  ctx["init"]         = Applicative(Primitive(_initialScope));
-  ctx["pair"]         = Applicative(Primitive(_pair));
-  ctx["fst"]          = Applicative(Primitive(_fst));
-  ctx["snd"]          = Applicative(Primitive(_snd));
-  ctx["unit"]         = unit;
-  ctx["if"]           = Primitive(_ifz);
-  ctx["not"]          = Applicative(Primitive(_not));
-  ctx["and"]          = Applicative(Primitive(_and));
-  ctx["or"]           = Applicative(Primitive(_or));
-  ctx["boolean?"]     = Applicative(Primitive(_isBoolean));
-  ctx["symbol?"]      = Applicative(Primitive(_isSymbol));
-  ctx["number?"]      = Applicative(Primitive(_isNumber));
-  ctx["string?"]      = Applicative(Primitive(_isString));
-  ctx["unit?"]        = Applicative(Primitive(_isUnit));
-  ctx["pair?"]        = Applicative(Primitive(_isPair));
-  ctx["scope?"]       = Applicative(Primitive(_isScope));
-  ctx["procedure?"]   = Applicative(Primitive(_isProcedure));
-  ctx["primitive?"]   = Applicative(Primitive(_isPrimitive));
+  ctx["vau"] = Primitive(_vau);
+  ctx["wrap"] = Applicative(Primitive(_wrap));
+  ctx["unwrap"] = Applicative(Primitive(_unwrap));
+  ctx["reset"] = Applicative(Primitive(_reset));
+  ctx["shift"] = Applicative(Primitive(_shift));
+  ctx["eval"] = Applicative(Primitive(_eval));
+  ctx["define"] = Primitive(_define);
+  ctx["init"] = Applicative(Primitive(_initialScope));
+  ctx["pair"] = Applicative(Primitive(_pair));
+  ctx["fst"] = Applicative(Primitive(_fst));
+  ctx["snd"] = Applicative(Primitive(_snd));
+  ctx["unit"] = unit;
+  ctx["if"] = Primitive(_ifz);
+  ctx["not"] = Applicative(Primitive(_not));
+  ctx["and"] = Applicative(Primitive(_and));
+  ctx["or"] = Applicative(Primitive(_or));
+  ctx["boolean?"] = Applicative(Primitive(_isBoolean));
+  ctx["symbol?"] = Applicative(Primitive(_isSymbol));
+  ctx["number?"] = Applicative(Primitive(_isNumber));
+  ctx["string?"] = Applicative(Primitive(_isString));
+  ctx["unit?"] = Applicative(Primitive(_isUnit));
+  ctx["pair?"] = Applicative(Primitive(_isPair));
+  ctx["scope?"] = Applicative(Primitive(_isScope));
+  ctx["procedure?"] = Applicative(Primitive(_isProcedure));
+  ctx["primitive?"] = Applicative(Primitive(_isPrimitive));
   ctx["applicative?"] = Applicative(Primitive(_isApplicative));
-  ctx["operative?"]   = Applicative(Primitive(_isOperative));
-  ctx["true"]         = Boolean(true);
-  ctx["false"]        = Boolean(false);
-  ctx["+"]            = Applicative(Primitive(_add));
-  ctx["-"]            = Applicative(Primitive(_subtract));
-  ctx["*"]            = Applicative(Primitive(_multiply));
-  ctx["/"]            = Applicative(Primitive(_divide));
-  ctx["exp"]          = Applicative(Primitive(_exp));
-  ctx["log"]          = Applicative(Primitive(_log));
-  ctx["sin"]          = Applicative(Primitive(_sin));
-  ctx["cos"]          = Applicative(Primitive(_cos));
-  ctx["pr"]           = Applicative(Primitive(_printz));
+  ctx["operative?"] = Applicative(Primitive(_isOperative));
+  ctx["true"] = Boolean(true);
+  ctx["false"] = Boolean(false);
+  ctx["+"] = Applicative(Primitive(_add));
+  ctx["-"] = Applicative(Primitive(_subtract));
+  ctx["*"] = Applicative(Primitive(_multiply));
+  ctx["/"] = Applicative(Primitive(_divide));
+  ctx["exp"] = Applicative(Primitive(_exp));
+  ctx["log"] = Applicative(Primitive(_log));
+  ctx["sin"] = Applicative(Primitive(_sin));
+  ctx["cos"] = Applicative(Primitive(_cos));
+  ctx["pr"] = Applicative(Primitive(_printz));
 
   return ctx;
 }

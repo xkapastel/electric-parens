@@ -37,9 +37,9 @@ class _Token {
 
   const _Token(_Tag this.tag, dynamic this.value);
 
-  factory _Token.lparen()             => _Token(_Tag.lparen, "(");
-  factory _Token.rparen()             => _Token(_Tag.rparen, ")");
-  factory _Token.space(String value)  => _Token(_Tag.space, value);
+  factory _Token.lparen() => _Token(_Tag.lparen, "(");
+  factory _Token.rparen() => _Token(_Tag.rparen, ")");
+  factory _Token.space(String value) => _Token(_Tag.space, value);
   factory _Token.symbol(String value) => _Token(_Tag.symbol, value);
   factory _Token.number(double value) => _Token(_Tag.number, value);
   factory _Token.string(String value) => _Token(_Tag.string, value);
@@ -53,11 +53,9 @@ List<Value> read(String src) {
 List<_Token> _tokenize(String runes) {
   var isLparen = (rune) => rune == "(";
   var isRparen = (rune) => rune == ")";
-  var isQuote  = (rune) => rune == '"';
-  var isSpace = (rune) =>
-    [" ", "\t", "\r", "\n"].contains(rune);
-  var isSeparator = (rune) =>
-    isLparen(rune) || isRparen(rune) || isSpace(rune);
+  var isQuote = (rune) => rune == '"';
+  var isSpace = (rune) => [" ", "\t", "\r", "\n"].contains(rune);
+  var isSeparator = (rune) => isLparen(rune) || isRparen(rune) || isSpace(rune);
 
   int index = 0;
   List<_Token> buf = [];
@@ -130,41 +128,41 @@ List<Value> _parse(List<_Token> tokens) {
   while (index < tokens.length) {
     var token = tokens[index];
     switch (token.tag) {
-    case _Tag.lparen:
-      stack.add(buf);
-      buf = [];
-      index++;
-      break;
-    case _Tag.rparen:
-      if (stack.isEmpty) {
-        throw "parens";
-      }
-      Value xs = Unit();
-      for (var value in buf.reversed) {
-        xs = Pair(value, xs);
-      }
-      buf = stack.removeLast();
-      buf.add(xs);
-      index++;
-      break;
-    case _Tag.space:
-      index++;
-      break;
-    case _Tag.symbol:
-      var value = Symbol(token.value as String);
-      buf.add(value);
-      index++;
-      break;
-    case _Tag.number:
-      var value = Number(token.value as double);
-      buf.add(value);
-      index++;
-      break;
-    case _Tag.string:
-      var value = Stringz(token.value as String);
-      buf.add(value);
-      index++;
-      break;
+      case _Tag.lparen:
+        stack.add(buf);
+        buf = [];
+        index++;
+        break;
+      case _Tag.rparen:
+        if (stack.isEmpty) {
+          throw "parens";
+        }
+        Value xs = Unit();
+        for (var value in buf.reversed) {
+          xs = Pair(value, xs);
+        }
+        buf = stack.removeLast();
+        buf.add(xs);
+        index++;
+        break;
+      case _Tag.space:
+        index++;
+        break;
+      case _Tag.symbol:
+        var value = Symbol(token.value as String);
+        buf.add(value);
+        index++;
+        break;
+      case _Tag.number:
+        var value = Number(token.value as double);
+        buf.add(value);
+        index++;
+        break;
+      case _Tag.string:
+        var value = Stringz(token.value as String);
+        buf.add(value);
+        index++;
+        break;
     }
   }
   return buf;

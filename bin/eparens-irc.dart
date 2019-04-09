@@ -27,42 +27,42 @@ class Task {
 }
 
 main() async {
-  var server   = io.Platform.environment["EPARENS_IRC_SERVER"];
+  var server = io.Platform.environment["EPARENS_IRC_SERVER"];
   var nickname = io.Platform.environment["EPARENS_IRC_NICKNAME"];
   var password = io.Platform.environment["EPARENS_IRC_PASSWORD"];
-  var channel  = io.Platform.environment["EPARENS_IRC_CHANNEL"];
-  var signal   = "${nickname}:";
+  var channel = io.Platform.environment["EPARENS_IRC_CHANNEL"];
+  var signal = "${nickname}:";
 
   var socket = await io.Socket.connect(server, 6667);
   var client = irc.Client(socket);
 
-  var scope  = lisp.init();
-  var uid    = 0;
+  var scope = lisp.init();
+  var uid = 0;
 
   Stream<Task> parse(Stream<irc.Message> messages) async* {
     await for (var message in messages) {
       print(message.line);
       switch (message.type) {
-      case "PING":
-        var body = message.args(0);
-        client.pong(body);
-        break;
-      case "PRIVMSG":
-        var target = message.args(0);
-        var string = message.args(1);
-        if (target == channel && string.startsWith(signal)) {
-          var code = string.replaceFirst(signal, "");
-          var sink = (data) => client.privmsg(channel, data);
-          yield Task(code, sink);
-        } else if (target == nickname) {
-          var source = message.source.split("!")[0];
-          var code = string;
-          var sink = (data) => client.privmsg(source, data);
-          yield Task(code, sink);
-        }
-        break;
-      default:
-        break;
+        case "PING":
+          var body = message.args(0);
+          client.pong(body);
+          break;
+        case "PRIVMSG":
+          var target = message.args(0);
+          var string = message.args(1);
+          if (target == channel && string.startsWith(signal)) {
+            var code = string.replaceFirst(signal, "");
+            var sink = (data) => client.privmsg(channel, data);
+            yield Task(code, sink);
+          } else if (target == nickname) {
+            var source = message.source.split("!")[0];
+            var code = string;
+            var sink = (data) => client.privmsg(source, data);
+            yield Task(code, sink);
+          }
+          break;
+        default:
+          break;
       }
     }
   }
@@ -81,7 +81,7 @@ main() async {
         scope[name] = result;
         task.sink("${name} = ${result}");
       }
-    } catch(e) {
+    } catch (e) {
       task.sink("?");
     }
   }

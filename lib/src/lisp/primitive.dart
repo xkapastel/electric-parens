@@ -25,5 +25,5 @@ class Primitive extends Procedure {
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) =>
-    body(args, scope, rest);
+      body(args, scope, rest);
 }

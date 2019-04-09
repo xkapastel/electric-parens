@@ -23,6 +23,5 @@ class Number extends Value {
   Number(double this.value);
 
   @override
-  String toString() =>
-    value.toString();
+  String toString() => value.toString();
 }

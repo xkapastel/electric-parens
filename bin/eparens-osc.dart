@@ -37,9 +37,7 @@ Future main() async {
   int rate = 44100;
   double time = 0.0;
   Float64List buf = new Float64List(rate);
-  Uint8List view = buf.buffer.asUint8List(
-    buf.offsetInBytes,
-    buf.lengthInBytes);
+  Uint8List view = buf.buffer.asUint8List(buf.offsetInBytes, buf.lengthInBytes);
   while (true) {
     for (var i = 0; i < buf.length; i++) {
       buf[i] = ctx.apply1d(proc, time);
@@ -48,7 +46,7 @@ Future main() async {
     stdout.add(view);
     try {
       await stdout.flush();
-    } catch(e) {
+    } catch (e) {
       await stdout.close();
       break;
     }

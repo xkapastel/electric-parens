@@ -17,18 +17,15 @@
 
 import "value.dart";
 
-class Unit extends Value {  
+class Unit extends Value {
   @override
-  dynamic evlis(dynamic scope, Function rest) =>
-    rest(this);
+  dynamic evlis(dynamic scope, Function rest) => rest(this);
 
   @override
-  dynamic exec(dynamic scope, Function rest) =>
-    rest(this);
+  dynamic exec(dynamic scope, Function rest) => rest(this);
 
   @override
-  String toString() =>
-    "unit";
+  String toString() => "unit";
 }
 
 Unit unit = new Unit();
