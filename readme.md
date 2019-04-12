@@ -1,5 +1,5 @@
 # Electric Parens
-<a href="https://liberapay.com/xkapastel/donate"><img alt="Donate using Liberapay" src="https://liberapay.com/assets/widgets/donate.svg"></a> [![ko-fi](https://www.ko-fi.com/img/donate_sm.png)](https://ko-fi.com/T6T5QRUW)
+<span class="badge-paypal"><a href="https://paypal.me/xkapastel" title="Donate to this project using Paypal"><img src="https://img.shields.io/badge/paypal-donate-yellow.svg" alt="PayPal donate button" /></a></span>
 
 Electric Parens is a Lisp environment written in Dart.
 
