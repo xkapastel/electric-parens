@@ -29,7 +29,9 @@ class Exponent extends Procedure {
   Exponent(Procedure this.fst, Procedure this.snd);
 
   @override
-  bool get isCombinator => true;
+  bool get isCombinator {
+    return fst.isCombinator && snd.isCombinator;
+  }
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
