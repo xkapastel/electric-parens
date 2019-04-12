@@ -16,26 +16,69 @@
 // <https://www.gnu.org/licenses/.
 
 import "package:eparens/lisp.dart" as lisp;
-import "dart:io" as io;
+import "dart:io";
+import "dart:async";
+import "dart:convert";
 
-void main() {
+Future<String> drain(Stream<String> stream) async {
+  var buf = new StringBuffer();
+  await for (var chunk in stream) {
+    buf.write(chunk);
+  }
+  return buf.toString();
+}
+
+class _Task {
+  final String code;
+  final Function sink;
+  _Task(String this.code, Function this.sink);
+}
+
+Stream<_Task> session(Socket socket) async* {
+  var lineDecoder = LineSplitter();
+  var lines = socket.transform(utf8.decoder).transform(lineDecoder);
+  try {
+    await for (var line in lines) {
+      print("recv: ${line}");
+      yield _Task(line, (x) {
+        print("send: ${x}");
+        socket.writeln(x);
+      });
+    }
+  } on FormatException catch (err) {
+    // When I type C-c in telnet I get this exception, complaining about an 0xff
+    // byte. So I'll just assume it's okay to use this to signal a client
+    // disconnection, but in the future I'll want to think more carefully about
+    // the exceptions that can occur here.
+    socket.close();
+  }
+}
+
+Future main() async {
+  String src = await drain(stdin.transform(utf8.decoder));
   var scope = lisp.init();
+  scope.evalString(src);
   var uid = 0;
-  while (true) {
-    io.stdout.write("> ");
-    var line = io.stdin.readLineSync();
+  const address = "127.0.0.1";
+  const port = 4000;
+
+  print("Listening on ${address}:${port}...");
+  var server = await ServerSocket.bind(address, port);
+  var socket = await server.first;
+  print("Client connected.");
+  await for (var task in session(socket)) {
     try {
-      var values = lisp.read(line);
+      var values = lisp.read(task.code);
       for (var value in values) {
         var result = value.eval(scope, (x) => x);
         var name = "\$${uid}";
         uid++;
         scope[name] = result;
-        print("${name} = ${result}");
+        task.sink("${name} = ${result}");
       }
     } catch (e) {
-      print("ERROR: ${e}");
-      continue;
+      task.sink("?");
     }
   }
+  print("Client disconnected.");
 }

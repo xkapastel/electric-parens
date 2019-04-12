@@ -362,6 +362,7 @@ Scope init() {
   ctx["wrap"] = Applicative(Primitive(_wrap));
   ctx["unwrap"] = Applicative(Primitive(_unwrap));
   ctx["eval"] = Applicative(Primitive(_eval));
+  ctx["define"] = Primitive(_define);
   ctx["reset"] = Applicative(Primitive(_reset));
   ctx["shift"] = Applicative(Primitive(_shift));
   ctx[">>>"] = Applicative(Primitive(_sequence));
