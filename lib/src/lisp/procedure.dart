@@ -16,12 +16,16 @@
 // <https://www.gnu.org/licenses/.
 
 import "value.dart";
+import "unit.dart";
 import "pair.dart";
 
-class Procedure extends Value {
+abstract class Procedure extends Value {
   @override
-  dynamic call(dynamic args, dynamic scope, Function rest) =>
-      rest(Pair(this, args));
+  dynamic call(dynamic args, dynamic scope, Function rest) {
+    return rest(unit);
+  }
+
+  bool get isCombinator;
 
   @override
   String toString() => "<procedure>";

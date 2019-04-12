@@ -15,18 +15,31 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
+import "value.dart";
+import "unit.dart";
+import "pair.dart";
 import "procedure.dart";
 
-class Applicative extends Procedure {
-  final Procedure body;
+class Closure extends Procedure {
+  final Procedure lhs;
+  final Procedure mid;
+  final Procedure rhs;
 
-  Applicative(Procedure this.body);
+  Closure(Procedure this.lhs, Procedure this.mid, Procedure this.rhs);
 
   @override
-  bool get isCombinator => body.isCombinator;
+  bool get isCombinator {
+    return lhs.isCombinator && mid.isCombinator && rhs.isCombinator;
+  }
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    return args.evlis(scope, (args) => body(args, scope, rest));
+    return lhs.call(args, scope, (result) {
+      var args = Pair(result, unit);
+      return mid.call(args, scope, (result) {
+        var args = Pair(result, unit);
+        return rhs.call(args, scope, rest);
+      });
+    });
   }
 }

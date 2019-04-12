@@ -15,18 +15,40 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
+import "value.dart";
+import "case.dart";
+import "unit.dart";
+import "pair.dart";
 import "procedure.dart";
+import "applicative.dart";
 
-class Applicative extends Procedure {
-  final Procedure body;
+class Sum extends Procedure {
+  final Procedure fst;
+  final Procedure snd;
 
-  Applicative(Procedure this.body);
+  Sum(Procedure this.fst, Procedure this.snd);
 
   @override
-  bool get isCombinator => body.isCombinator;
+  bool get isCombinator {
+    return fst.isCombinator && snd.isCombinator;
+  }
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    return args.evlis(scope, (args) => body(args, scope, rest));
+    assert(args is Pair);
+    assert(args.fst is Case);
+    assert(args.snd is Unit);
+    if (args.fst is Left) {
+      var inner = Pair(args.fst.body, unit);
+      return fst.call(inner, scope, (result) {
+        return rest(Left(result));
+      });
+    } else {
+      assert(args.fst is Right);
+      var inner = Pair(args.fst.body, unit);
+      return snd.call(inner, scope, (result) {
+        return rest(Right(result));
+      });
+    }
   }
 }

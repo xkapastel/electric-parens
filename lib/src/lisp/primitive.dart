@@ -24,6 +24,10 @@ class Primitive extends Procedure {
   Primitive(Function this.body);
 
   @override
-  dynamic call(dynamic args, dynamic scope, Function rest) =>
-      body(args, scope, rest);
+  bool get isCombinator => true;
+
+  @override
+  dynamic call(dynamic args, dynamic scope, Function rest) {
+    return body(args, scope, rest);
+  }
 }

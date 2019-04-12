@@ -25,15 +25,18 @@ import "procedure.dart";
 class Operative extends Procedure {
   final dynamic params;
   final dynamic body;
-  final dynamic statik;
+  final dynamic lexical;
   final dynamic dynamik;
 
-  Operative(dynamic this.params, dynamic this.body, dynamic this.statik,
+  Operative(dynamic this.params, dynamic this.body, dynamic this.lexical,
       dynamic this.dynamik) {}
 
   @override
+  bool get isCombinator => false;
+
+  @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    Scope local = Scope(statik);
+    Scope local = Scope(lexical);
     dynamic lhs = params;
     if (lhs is Symbol) {
       local[lhs] = args;

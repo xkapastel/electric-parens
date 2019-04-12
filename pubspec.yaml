@@ -8,6 +8,7 @@ environment:
 executables:
   eparens-osc:
   eparens-irc:
+  eparens-repl:
 
 dev_dependencies:
   build_runner: ^1.0.0

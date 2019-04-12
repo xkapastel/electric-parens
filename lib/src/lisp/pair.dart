@@ -41,8 +41,11 @@ class Pair extends Value {
   }
 
   @override
-  dynamic eval(dynamic scope, Function rest) =>
-      fst.eval(scope, (proc) => proc(snd, scope, rest));
+  dynamic eval(dynamic scope, Function rest) {
+    return fst.eval(scope, (proc) {
+      return proc(snd, scope, rest);
+    });
+  }
 
   @override
   dynamic evlis(dynamic scope, Function rest) =>

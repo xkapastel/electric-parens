@@ -22,6 +22,7 @@ class Value {
 
   dynamic exec(dynamic scope, Function rest) => throw "not a list";
 
-  dynamic call(dynamic args, dynamic scope, Function rest) =>
-      throw "not a procedure";
+  dynamic call(dynamic args, dynamic scope, Function rest) {
+    throw "not a procedure";
+  }
 }

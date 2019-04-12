@@ -52,12 +52,18 @@ main() async {
           var string = message.args(1);
           if (target == channel && string.startsWith(signal)) {
             var code = string.replaceFirst(signal, "");
-            var sink = (data) => client.privmsg(channel, data);
+            var sink = (data) {
+              print("=> ${data}");
+              client.privmsg(channel, data);
+            };
             yield Task(code, sink);
           } else if (target == nickname) {
             var source = message.source.split("!")[0];
             var code = string;
-            var sink = (data) => client.privmsg(source, data);
+            var sink = (data) {
+              print("=> ${data}");
+              client.privmsg(source, data);
+            };
             yield Task(code, sink);
           }
           break;

@@ -16,15 +16,20 @@
 // <https://www.gnu.org/licenses/.
 
 export "src/lisp/value.dart";
+export "src/lisp/case.dart";
 export "src/lisp/unit.dart";
 export "src/lisp/pair.dart";
 export "src/lisp/symbol.dart";
-export "src/lisp/boolean.dart";
 export "src/lisp/number.dart";
 export "src/lisp/scope.dart";
 export "src/lisp/procedure.dart";
 export "src/lisp/primitive.dart";
 export "src/lisp/applicative.dart";
 export "src/lisp/operative.dart";
+export "src/lisp/sum.dart";
+export "src/lisp/product.dart";
+export "src/lisp/exponent.dart";
+export "src/lisp/sequence.dart";
+export "src/lisp/closure.dart";
 export "src/lisp/read.dart";
 export "src/lisp/init.dart";

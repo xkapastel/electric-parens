@@ -15,18 +15,27 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "procedure.dart";
+import "package:eparens/lisp.dart" as lisp;
+import "dart:io" as io;
 
-class Applicative extends Procedure {
-  final Procedure body;
-
-  Applicative(Procedure this.body);
-
-  @override
-  bool get isCombinator => body.isCombinator;
-
-  @override
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    return args.evlis(scope, (args) => body(args, scope, rest));
+void main() {
+  var scope = lisp.init();
+  var uid = 0;
+  while (true) {
+    io.stdout.write("> ");
+    var line = io.stdin.readLineSync();
+    try {
+      var values = lisp.read(line);
+      for (var value in values) {
+        var result = value.eval(scope, (x) => x);
+        var name = "\$${uid}";
+        uid++;
+        scope[name] = result;
+        print("${name} = ${result}");
+      }
+    } catch (e) {
+      print("ERROR: ${e}");
+      continue;
+    }
   }
 }

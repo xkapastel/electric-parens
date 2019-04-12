@@ -17,11 +17,20 @@
 
 import "value.dart";
 
-class Boolean extends Value {
-  final bool value;
+class Case extends Value {}
 
-  Boolean(bool this.value);
+class Left extends Case {
+  final Value body;
+  Left(Value this.body);
 
   @override
-  String toString() => value.toString();
+  String toString() => "L(${body})";
+}
+
+class Right extends Case {
+  final Value body;
+  Right(Value this.body);
+
+  @override
+  String toString() => "R(${body})";
 }
