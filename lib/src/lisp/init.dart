@@ -255,7 +255,7 @@ dynamic _isProcedure(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _isPrimitive(dynamic args, dynamic scope, Function rest) {
-  return rest(_listAll((x) => x.isPrimitive, args));
+  return rest(_listAll((x) => x is Primitive, args));
 }
 
 dynamic _isApplicative(dynamic args, dynamic scope, Function rest) {
