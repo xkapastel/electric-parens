@@ -25,7 +25,7 @@ Future main() async {
   String src = await util.gets();
   lisp.Scope ctx = lisp.init();
   lisp.Value proc = ctx.evalString(src);
-  int rate = 44100;
+  int rate = 48000;
   double time = 0.0;
   Float64List buf = new Float64List(rate);
   Uint8List view = buf.buffer.asUint8List(buf.offsetInBytes, buf.lengthInBytes);
