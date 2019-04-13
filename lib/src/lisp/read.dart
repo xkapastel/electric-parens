@@ -29,6 +29,7 @@ enum _Tag {
   symbol,
   number,
   string,
+  dot,
 }
 
 class _Token {
@@ -43,6 +44,7 @@ class _Token {
   factory _Token.symbol(String value) => _Token(_Tag.symbol, value);
   factory _Token.number(double value) => _Token(_Tag.number, value);
   factory _Token.string(String value) => _Token(_Tag.string, value);
+  factory _Token.dot() => _Token(_Tag.dot, ".");
 }
 
 List<Value> read(String src) {
@@ -54,6 +56,7 @@ List<_Token> _tokenize(String runes) {
   var isLparen = (rune) => rune == "(";
   var isRparen = (rune) => rune == ")";
   var isQuote = (rune) => rune == '"';
+  var isDot = (rune) => rune == '.';
   var isSpace = (rune) => [" ", "\t", "\r", "\n"].contains(rune);
   var isSeparator = (rune) => isLparen(rune) || isRparen(rune) || isSpace(rune);
 
@@ -97,6 +100,10 @@ List<_Token> _tokenize(String runes) {
       var token = _Token.string(value);
       buf.add(token);
       index++;
+    } else if (isDot(rune)) {
+      var token = _Token.dot();
+      buf.add(token);
+      index++;
     } else {
       int start = index;
       while (index < runes.length) {
@@ -137,9 +144,16 @@ List<Value> _parse(List<_Token> tokens) {
         if (stack.isEmpty) {
           throw "parens";
         }
-        Value xs = Unit();
+        dynamic xs = unit;
         for (var value in buf.reversed) {
-          xs = Pair(value, xs);
+          if (value is Symbol && value.value == ".") {
+            assert(xs is Pair);
+            assert(xs.fst is Symbol);
+            assert(xs.snd is Unit);
+            xs = xs.fst;
+          } else {
+            xs = Pair(value, xs);
+          }
         }
         buf = stack.removeLast();
         buf.add(xs);
@@ -162,6 +176,14 @@ List<Value> _parse(List<_Token> tokens) {
         var value = Stringz(token.value as String);
         buf.add(value);
         index++;
+        break;
+      case _Tag.dot:
+        var value = Symbol(".");
+        buf.add(value);
+        index++;
+        break;
+      default:
+        throw "Unknown token: ${token}";
         break;
     }
   }

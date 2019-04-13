@@ -37,11 +37,12 @@ class Operative extends Procedure {
   dynamic call(dynamic args, dynamic scope, Function rest) {
     Scope local = Scope(lexical);
     dynamic lhs = params;
-    if (lhs is Symbol) {
-      local[lhs] = args;
-    } else {
-      dynamic rhs = args;
-      while (lhs is! Unit) {
+    dynamic rhs = args;
+    while (lhs is! Unit) {
+      if (lhs is Symbol) {
+        local[lhs] = rhs;
+        break;
+      } else {
         assert(lhs is Pair);
         assert(rhs is Pair);
         assert(lhs.fst is Symbol);
@@ -50,7 +51,11 @@ class Operative extends Procedure {
         rhs = rhs.snd;
       }
     }
-    local[dynamik] = scope;
+    if (dynamik is Symbol) {
+      local[dynamik] = scope;
+    } else {
+      assert(dynamik is Unit);
+    }
     return body.exec(local, rest);
   }
 }

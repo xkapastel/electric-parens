@@ -1,3 +1,5 @@
-(define quote (vau (x) _ x))
 (define local (vau _ e e))
-(define list (wrap (vau xs _ xs)))
+
+(define lambda
+  (vau (parameters . body) call-site
+    (wrap (eval (list* vau parameters () body) call-site))))

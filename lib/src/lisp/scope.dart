@@ -57,7 +57,9 @@ class Scope extends Value {
 
   void operator []=(dynamic key, dynamic value) {
     key = key.toString();
-    frame[key] = value;
+    if (key != "_") {
+      frame[key] = value;
+    }
   }
 
   Value evalString(String src) {

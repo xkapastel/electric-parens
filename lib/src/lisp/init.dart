@@ -364,9 +364,13 @@ dynamic _listStar(dynamic args, dynamic scope, Function rest) {
     buf.add(args.fst);
     args = args.snd;
   }
-  var state = buf[buf.length - 1];
-  for (int i = buf.length - 2; i >= 0; i--) {
-    state = Pair(buf[i], state);
+  var state = null;
+  for (var value in buf.reversed) {
+    if (state == null) {
+      state = value;
+    } else {
+      state = Pair(value, state);
+    }
   }
   return rest(state);
 }
