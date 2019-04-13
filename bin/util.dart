@@ -15,34 +15,18 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "package:eparens/lisp.dart" as lisp;
 import "dart:io";
-import "dart:math";
 import "dart:async";
 import "dart:convert";
-import "dart:typed_data";
 
-import "util.dart" as util;
-
-Future main() async {
-  String src = await util.gets();
-  lisp.Scope ctx = lisp.init();
-  lisp.Value proc = ctx.evalString(src);
-  int rate = 44100;
-  double time = 0.0;
-  Float64List buf = new Float64List(rate);
-  Uint8List view = buf.buffer.asUint8List(buf.offsetInBytes, buf.lengthInBytes);
-  while (true) {
-    for (var i = 0; i < buf.length; i++) {
-      buf[i] = ctx.apply1d(proc, time);
-      time += 1.0 / rate;
-    }
-    stdout.add(view);
-    try {
-      await stdout.flush();
-    } catch (e) {
-      await stdout.close();
-      break;
-    }
+Future<String> drain(Stream<String> stream) async {
+  var buf = new StringBuffer();
+  await for (var chunk in stream) {
+    buf.write(chunk);
   }
+  return buf.toString();
+}
+
+Future<String> gets() {
+  return drain(stdin.transform(utf8.decoder));
 }

@@ -20,13 +20,7 @@ import "dart:io";
 import "dart:async";
 import "dart:convert";
 
-Future<String> drain(Stream<String> stream) async {
-  var buf = new StringBuffer();
-  await for (var chunk in stream) {
-    buf.write(chunk);
-  }
-  return buf.toString();
-}
+import "util.dart" as util;
 
 class _Task {
   final String code;
@@ -55,7 +49,7 @@ Stream<_Task> session(Socket socket) async* {
 }
 
 Future main() async {
-  String src = await drain(stdin.transform(utf8.decoder));
+  String src = await util.gets();
   var scope = lisp.init();
   scope.evalString(src);
   var uid = 0;
