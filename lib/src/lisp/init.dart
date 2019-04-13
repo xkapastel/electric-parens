@@ -353,6 +353,24 @@ dynamic _printz(dynamic args, dynamic scope, Function rest) {
   return rest(unit);
 }
 
+dynamic _list(dynamic args, dynamic scope, Function rest) {
+  return rest(args);
+}
+
+dynamic _listStar(dynamic args, dynamic scope, Function rest) {
+  assert(args is Pair);
+  var buf = [];
+  while (args is! Unit) {
+    buf.add(args.fst);
+    args = args.snd;
+  }
+  var state = buf[buf.length - 1];
+  for (int i = buf.length - 2; i >= 0; i--) {
+    state = Pair(buf[i], state);
+  }
+  return rest(state);
+}
+
 Scope init() {
   var ctx = Scope.empty();
 
@@ -398,6 +416,8 @@ Scope init() {
   ctx["sin"] = Applicative(Primitive(_sin));
   ctx["cos"] = Applicative(Primitive(_cos));
   ctx["pr"] = Applicative(Primitive(_printz));
+  ctx["list"] = Applicative(Primitive(_list));
+  ctx["list*"] = Applicative(Primitive(_listStar));
 
   return ctx;
 }
