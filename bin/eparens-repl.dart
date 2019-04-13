@@ -39,7 +39,7 @@ Stream<_Task> session(Socket socket) async* {
         socket.writeln(x);
       });
     }
-  } on FormatException catch (err) {
+  } on FormatException {
     // When I type C-c in telnet I get this exception, complaining about an 0xff
     // byte. So I'll just assume it's okay to use this to signal a client
     // disconnection, but in the future I'll want to think more carefully about
@@ -70,7 +70,7 @@ Future main() async {
         scope[name] = result;
         task.sink("${name} = ${result}");
       }
-    } catch (e) {
+    } on Exception {
       task.sink("?");
     }
   }

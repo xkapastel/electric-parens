@@ -16,12 +16,13 @@
 // <https://www.gnu.org/licenses/.
 
 class Message {
-  final String source;
+  final String tags;
+  final String sender;
   final String type;
   final List<String> arguments;
-  final String line;
-  const Message(String this.source, String this.type,
-      List<String> this.arguments, String this.line);
+  final String rawText;
+  const Message(String this.tags, String this.sender, String this.type,
+      List<String> this.arguments, String this.rawText);
 
   String args(int index) => arguments[index];
 }
@@ -46,5 +47,5 @@ Message parse(String src) {
   if (trailing != null) {
     arguments.add(trailing);
   }
-  return Message(source, verb, arguments, src);
+  return Message(tags, source, verb, arguments, src);
 }

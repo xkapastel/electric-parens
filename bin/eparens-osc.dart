@@ -17,9 +17,6 @@
 
 import "package:eparens/lisp.dart" as lisp;
 import "dart:io";
-import "dart:math";
-import "dart:async";
-import "dart:convert";
 import "dart:typed_data";
 
 import "util.dart" as util;

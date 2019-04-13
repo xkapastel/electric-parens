@@ -15,12 +15,10 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "value.dart";
 import "case.dart";
 import "unit.dart";
 import "pair.dart";
 import "procedure.dart";
-import "applicative.dart";
 
 class Sum extends Procedure {
   final Procedure fst;

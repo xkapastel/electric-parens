@@ -18,7 +18,6 @@
 import "package:eparens/lisp.dart" as lisp;
 import "package:eparens/irc.dart" as irc;
 import "dart:io" as io;
-import "dart:async" as async;
 
 class Task {
   final String code;
@@ -41,7 +40,7 @@ main() async {
 
   Stream<Task> parse(Stream<irc.Message> messages) async* {
     await for (var message in messages) {
-      print(message.line);
+      print(message.rawText);
       switch (message.type) {
         case "PING":
           var body = message.args(0);
@@ -58,11 +57,11 @@ main() async {
             };
             yield Task(code, sink);
           } else if (target == nickname) {
-            var source = message.source.split("!")[0];
+            var sender = message.sender.split("!")[0];
             var code = string;
             var sink = (data) {
               print("=> ${data}");
-              client.privmsg(source, data);
+              client.privmsg(sender, data);
             };
             yield Task(code, sink);
           }

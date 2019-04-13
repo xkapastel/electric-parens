@@ -31,8 +31,6 @@ import "sum.dart";
 import "product.dart";
 import "exponent.dart";
 import "sequence.dart";
-import "closure.dart";
-import "read.dart";
 
 import "dart:math";
 

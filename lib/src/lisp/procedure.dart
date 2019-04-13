@@ -17,7 +17,6 @@
 
 import "value.dart";
 import "unit.dart";
-import "pair.dart";
 
 abstract class Procedure extends Value {
   @override

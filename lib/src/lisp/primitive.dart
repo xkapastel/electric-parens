@@ -15,7 +15,6 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "value.dart";
 import "procedure.dart";
 
 class Primitive extends Procedure {
