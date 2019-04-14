@@ -15,14 +15,12 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-class Value {
-  dynamic eval(dynamic scope, Function rest) => rest(this);
-
-  dynamic evlis(dynamic scope, Function rest) => throw "not a list";
-
-  dynamic exec(dynamic scope, Function rest) => throw "not a list";
-
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    throw "not a procedure";
-  }
-}
+export "value/value.dart";
+export "value/case.dart";
+export "value/unit.dart";
+export "value/pair.dart";
+export "value/symbol.dart";
+export "value/number.dart";
+export "value/stringz.dart";
+export "value/scope.dart";
+export "value/procedure.dart";

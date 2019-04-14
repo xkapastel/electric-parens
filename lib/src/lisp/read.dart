@@ -16,11 +16,6 @@
 // <https://www.gnu.org/licenses/.
 
 import "value.dart";
-import "unit.dart";
-import "pair.dart";
-import "symbol.dart";
-import "number.dart";
-import "stringz.dart";
 
 enum _Tag {
   lparen,

@@ -15,18 +15,17 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "unit.dart";
-import "pair.dart";
+import "../unit.dart";
+import "../pair.dart";
 import "procedure.dart";
+import "closure.dart";
+import "applicative.dart";
 
-class Sequence extends Procedure {
+class Exponent extends Procedure {
   final Procedure fst;
   final Procedure snd;
 
-  Sequence(Procedure this.fst, Procedure this.snd) {
-    assert(fst is Procedure);
-    assert(snd is Procedure);
-  }
+  Exponent(Procedure this.fst, Procedure this.snd);
 
   @override
   bool get isCombinator {
@@ -35,11 +34,9 @@ class Sequence extends Procedure {
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    assert(fst is Procedure);
-    return fst(args, scope, (result) {
-      var args = Pair(result, unit);
-      assert(snd is Procedure);
-      return snd(args, scope, rest);
-    });
+    assert(args is Pair);
+    assert(args.fst is Applicative);
+    assert(args.snd is Unit);
+    return rest(Applicative(Closure(fst, args.fst.body, snd)));
   }
 }

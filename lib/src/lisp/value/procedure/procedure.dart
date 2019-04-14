@@ -15,28 +15,17 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "unit.dart";
-import "pair.dart";
-import "procedure.dart";
+import "../value.dart";
+import "../unit.dart";
 
-class Product extends Procedure {
-  final Procedure fst;
-  final Procedure snd;
-
-  Product(Procedure this.fst, Procedure this.snd);
-
-  @override
-  bool get isCombinator {
-    return fst.isCombinator && snd.isCombinator;
-  }
-
+abstract class Procedure extends Value {
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    assert(args is Pair);
-    assert(args.fst is Pair);
-    assert(args.snd is Unit);
-    var lhs = fst.call(Pair(args.fst.fst, unit), scope, (x) => x);
-    var rhs = snd.call(Pair(args.fst.snd, unit), scope, (x) => x);
-    return rest(Pair(lhs, rhs));
+    return rest(unit);
   }
+
+  bool get isCombinator;
+
+  @override
+  String toString() => "<procedure>";
 }

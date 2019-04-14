@@ -15,24 +15,8 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "value.dart";
-import "case.dart";
-import "unit.dart";
-import "pair.dart";
-import "symbol.dart";
-import "number.dart";
-import "stringz.dart";
-import "scope.dart";
-import "procedure.dart";
-import "primitive.dart";
-import "applicative.dart";
-import "operative.dart";
-import "sum.dart";
-import "product.dart";
-import "exponent.dart";
-import "sequence.dart";
-
 import "dart:math";
+import "value.dart";
 
 Value _listAll(Function predicate, dynamic args) {
   bool state = true;

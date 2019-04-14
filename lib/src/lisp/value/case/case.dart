@@ -15,6 +15,6 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-export "src/lisp/value.dart";
-export "src/lisp/read.dart";
-export "src/lisp/init.dart";
+import "../value.dart";
+
+abstract class Case extends Value {}

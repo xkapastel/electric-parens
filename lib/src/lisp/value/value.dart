@@ -15,17 +15,14 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "value.dart";
-import "unit.dart";
+class Value {
+  dynamic eval(dynamic scope, Function rest) => rest(this);
 
-abstract class Procedure extends Value {
-  @override
+  dynamic evlis(dynamic scope, Function rest) => throw "not a list";
+
+  dynamic exec(dynamic scope, Function rest) => throw "not a list";
+
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    return rest(unit);
+    throw "not a procedure";
   }
-
-  bool get isCombinator;
-
-  @override
-  String toString() => "<procedure>";
 }

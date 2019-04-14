@@ -15,9 +15,8 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "value.dart";
-
-class Case extends Value {}
+import "../value.dart";
+import "case.dart";
 
 class Left extends Case {
   final Value body;
@@ -25,12 +24,4 @@ class Left extends Case {
 
   @override
   String toString() => "L(${body})";
-}
-
-class Right extends Case {
-  final Value body;
-  Right(Value this.body);
-
-  @override
-  String toString() => "R(${body})";
 }

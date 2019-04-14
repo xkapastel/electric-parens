@@ -15,16 +15,18 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "case.dart";
-import "unit.dart";
-import "pair.dart";
+import "../unit.dart";
+import "../pair.dart";
 import "procedure.dart";
 
-class Sum extends Procedure {
+class Sequence extends Procedure {
   final Procedure fst;
   final Procedure snd;
 
-  Sum(Procedure this.fst, Procedure this.snd);
+  Sequence(Procedure this.fst, Procedure this.snd) {
+    assert(fst is Procedure);
+    assert(snd is Procedure);
+  }
 
   @override
   bool get isCombinator {
@@ -33,20 +35,11 @@ class Sum extends Procedure {
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    assert(args is Pair);
-    assert(args.fst is Case);
-    assert(args.snd is Unit);
-    if (args.fst is Left) {
-      var inner = Pair(args.fst.body, unit);
-      return fst.call(inner, scope, (result) {
-        return rest(Left(result));
-      });
-    } else {
-      assert(args.fst is Right);
-      var inner = Pair(args.fst.body, unit);
-      return snd.call(inner, scope, (result) {
-        return rest(Right(result));
-      });
-    }
+    assert(fst is Procedure);
+    return fst(args, scope, (result) {
+      var args = Pair(result, unit);
+      assert(snd is Procedure);
+      return snd(args, scope, rest);
+    });
   }
 }

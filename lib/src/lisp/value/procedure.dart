@@ -15,30 +15,12 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "unit.dart";
-import "pair.dart";
-import "procedure.dart";
-
-class Closure extends Procedure {
-  final Procedure lhs;
-  final Procedure mid;
-  final Procedure rhs;
-
-  Closure(Procedure this.lhs, Procedure this.mid, Procedure this.rhs);
-
-  @override
-  bool get isCombinator {
-    return lhs.isCombinator && mid.isCombinator && rhs.isCombinator;
-  }
-
-  @override
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    return lhs.call(args, scope, (result) {
-      var args = Pair(result, unit);
-      return mid.call(args, scope, (result) {
-        var args = Pair(result, unit);
-        return rhs.call(args, scope, rest);
-      });
-    });
-  }
-}
+export "procedure/procedure.dart";
+export "procedure/sequence.dart";
+export "procedure/sum.dart";
+export "procedure/product.dart";
+export "procedure/exponent.dart";
+export "procedure/closure.dart";
+export "procedure/applicative.dart";
+export "procedure/operative.dart";
+export "procedure/primitive.dart";

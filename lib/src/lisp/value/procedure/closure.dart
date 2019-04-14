@@ -15,28 +15,30 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "unit.dart";
-import "pair.dart";
-import "closure.dart";
+import "../unit.dart";
+import "../pair.dart";
 import "procedure.dart";
-import "applicative.dart";
 
-class Exponent extends Procedure {
-  final Procedure fst;
-  final Procedure snd;
+class Closure extends Procedure {
+  final Procedure lhs;
+  final Procedure mid;
+  final Procedure rhs;
 
-  Exponent(Procedure this.fst, Procedure this.snd);
+  Closure(Procedure this.lhs, Procedure this.mid, Procedure this.rhs);
 
   @override
   bool get isCombinator {
-    return fst.isCombinator && snd.isCombinator;
+    return lhs.isCombinator && mid.isCombinator && rhs.isCombinator;
   }
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    assert(args is Pair);
-    assert(args.fst is Applicative);
-    assert(args.snd is Unit);
-    return rest(Applicative(Closure(fst, args.fst.body, snd)));
+    return lhs.call(args, scope, (result) {
+      var args = Pair(result, unit);
+      return mid.call(args, scope, (result) {
+        var args = Pair(result, unit);
+        return rhs.call(args, scope, rest);
+      });
+    });
   }
 }
