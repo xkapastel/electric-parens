@@ -16,11 +16,6 @@
 // <https://www.gnu.org/licenses/.
 
 export "procedure/procedure.dart";
-export "procedure/sequence.dart";
-export "procedure/sum.dart";
-export "procedure/product.dart";
-export "procedure/exponent.dart";
-export "procedure/closure.dart";
 export "procedure/applicative.dart";
 export "procedure/operative.dart";
 export "procedure/primitive.dart";

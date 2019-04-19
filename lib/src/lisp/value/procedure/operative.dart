@@ -26,12 +26,8 @@ class Operative extends Procedure {
   final dynamic body;
   final dynamic lexical;
   final dynamic dynamik;
-
   Operative(dynamic this.params, dynamic this.body, dynamic this.lexical,
       dynamic this.dynamik) {}
-
-  @override
-  bool get isCombinator => false;
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {

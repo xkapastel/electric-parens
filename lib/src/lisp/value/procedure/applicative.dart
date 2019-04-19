@@ -19,11 +19,7 @@ import "procedure.dart";
 
 class Applicative extends Procedure {
   final Procedure body;
-
   Applicative(Procedure this.body);
-
-  @override
-  bool get isCombinator => body.isCombinator;
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {

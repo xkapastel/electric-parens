@@ -45,30 +45,6 @@ Value _listFold(Function cons, dynamic args) {
   return state;
 }
 
-Procedure _consSum(dynamic fst, dynamic snd) {
-  assert(fst is Applicative);
-  assert(snd is Applicative);
-  return Applicative(Sum(fst.body, snd.body));
-}
-
-Procedure _consProduct(dynamic fst, dynamic snd) {
-  assert(fst is Applicative);
-  assert(snd is Applicative);
-  return Applicative(Product(fst.body, snd.body));
-}
-
-Procedure _consExponent(dynamic fst, dynamic snd) {
-  assert(fst is Applicative);
-  assert(snd is Applicative);
-  return Applicative(Exponent(fst.body, snd.body));
-}
-
-Procedure _consSequence(dynamic fst, dynamic snd) {
-  assert(fst is Applicative);
-  assert(snd is Applicative);
-  return Applicative(Sequence(fst.body, snd.body));
-}
-
 dynamic _vau(dynamic args, dynamic scope, Function rest) {
   assert(args is Pair);
   assert(args.snd is Pair);
@@ -178,22 +154,6 @@ dynamic _join(dynamic args, dynamic scope, Function rest) {
   assert(args.fst is Case);
   assert(args.snd is Unit);
   return rest(args.fst.body);
-}
-
-dynamic _sequence(dynamic args, dynamic scope, Function rest) {
-  return rest(_listFold(_consSequence, args));
-}
-
-dynamic _sum(dynamic args, dynamic scope, Function rest) {
-  return rest(_listFold(_consSum, args));
-}
-
-dynamic _product(dynamic args, dynamic scope, Function rest) {
-  return rest(_listFold(_consProduct, args));
-}
-
-dynamic _exponent(dynamic args, dynamic scope, Function rest) {
-  return rest(_listFold(_consExponent, args));
 }
 
 dynamic _isSymbol(dynamic args, dynamic scope, Function rest) {
@@ -369,10 +329,6 @@ Scope init() {
   ctx["define"] = Primitive(_define);
   ctx["reset"] = Applicative(Primitive(_reset));
   ctx["shift"] = Applicative(Primitive(_shift));
-  ctx[">>>"] = Applicative(Primitive(_sequence));
-  ctx["+++"] = Applicative(Primitive(_sum));
-  ctx["***"] = Applicative(Primitive(_product));
-  ctx["^^^"] = Applicative(Primitive(_exponent));
   ctx["init"] = Applicative(Primitive(_initialScope));
   ctx["inl"] = Applicative(Primitive(_inl));
   ctx["inr"] = Applicative(Primitive(_inr));

@@ -24,8 +24,6 @@ abstract class Procedure extends Value {
     return rest(unit);
   }
 
-  bool get isCombinator;
-
   @override
   String toString() => "<procedure>";
 }
