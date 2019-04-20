@@ -16,7 +16,7 @@
 // <https://www.gnu.org/licenses/.
 
 export "value/value.dart";
-export "value/case.dart";
+export "value/boolean.dart";
 export "value/unit.dart";
 export "value/pair.dart";
 export "value/symbol.dart";

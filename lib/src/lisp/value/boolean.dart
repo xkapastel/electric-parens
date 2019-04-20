@@ -15,13 +15,12 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "../value.dart";
-import "case.dart";
+import "value.dart";
 
-class Left extends Case {
-  final Value body;
-  Left(Value this.body);
+class Boolean extends Value {
+  final bool value;
+  Boolean(bool this.value);
 
   @override
-  String toString() => "L(${body})";
+  String toString() => value.toString();
 }

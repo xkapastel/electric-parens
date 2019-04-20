@@ -25,11 +25,7 @@ Value _listAll(Function predicate, dynamic args) {
     state = state && predicate(args.fst);
     args = args.snd;
   }
-  if (state) {
-    return Right(unit);
-  } else {
-    return Left(unit);
-  }
+  return Boolean(state);
 }
 
 Value _listFold(Function cons, dynamic args) {
@@ -131,29 +127,62 @@ dynamic _snd(dynamic args, dynamic scope, Function rest) {
   return rest(args.fst.snd);
 }
 
-dynamic _copy(dynamic args, dynamic scope, Function rest) {
+dynamic _ifz(dynamic args, dynamic scope, Function rest) {
   assert(args is Pair);
-  assert(args.snd is Unit);
-  return rest(Pair(args.fst, args.fst));
+  assert(args.snd is Pair);
+  if (args.snd.snd is Pair) {
+    assert(args.snd.snd.snd is Unit);
+  }
+  return args.fst.eval(scope, (flag) {
+    assert(flag is Boolean);
+    if (flag.value) {
+      return args.snd.fst.eval(scope, rest);
+    } else {
+      if (args.snd.snd is Pair) {
+        return args.snd.snd.fst.eval(scope, rest);
+      }
+      return rest(unit);
+    }
+  });
 }
 
-dynamic _inl(dynamic args, dynamic scope, Function rest) {
+dynamic _not(dynamic args, dynamic scope, Function rest) {
   assert(args is Pair);
+  assert(args.fst is Boolean);
   assert(args.snd is Unit);
-  return rest(Left(args.fst));
+  return rest(Boolean(!args.fst.value));
 }
 
-dynamic _inr(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.snd is Unit);
-  return rest(Right(args.fst));
+dynamic _and(dynamic args, dynamic scope, Function rest) {
+  bool state = true;
+  while (args is! Unit) {
+    assert(args is Pair);
+    assert(args.fst is Boolean);
+    state = state && args.fst.value;
+    args = args.snd;
+  }
+  return rest(Boolean(state));
 }
 
-dynamic _join(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Case);
-  assert(args.snd is Unit);
-  return rest(args.fst.body);
+dynamic _or(dynamic args, dynamic scope, Function rest) {
+  bool state = false;
+  while (args is! Unit) {
+    assert(args is Pair);
+    assert(args.fst is Boolean);
+    state = state || args.fst.value;
+    args = args.snd;
+  }
+  return rest(Boolean(state));
+}
+
+dynamic _isBoolean(dynamic args, dynamic scope, Function rest) {
+  bool state = true;
+  while (args is! Unit) {
+    assert(args is Pair);
+    state = state && (args.fst is Boolean);
+    args = args.snd;
+  }
+  return rest(Boolean(state));
 }
 
 dynamic _isSymbol(dynamic args, dynamic scope, Function rest) {
@@ -174,18 +203,6 @@ dynamic _isUnit(dynamic args, dynamic scope, Function rest) {
 
 dynamic _isPair(dynamic args, dynamic scope, Function rest) {
   return rest(_listAll((x) => x is Pair, args));
-}
-
-dynamic _isCase(dynamic args, dynamic scope, Function rest) {
-  return rest(_listAll((x) => x is Case, args));
-}
-
-dynamic _isLeft(dynamic args, dynamic scope, Function rest) {
-  return rest(_listAll((x) => x is Left, args));
-}
-
-dynamic _isRight(dynamic args, dynamic scope, Function rest) {
-  return rest(_listAll((x) => x is Right, args));
 }
 
 dynamic _isScope(dynamic args, dynamic scope, Function rest) {
@@ -329,21 +346,19 @@ Scope init() {
   ctx["define"] = Primitive(_define);
   ctx["reset"] = Applicative(Primitive(_reset));
   ctx["shift"] = Applicative(Primitive(_shift));
-  ctx["init"] = Applicative(Primitive(_initialScope));
-  ctx["inl"] = Applicative(Primitive(_inl));
-  ctx["inr"] = Applicative(Primitive(_inr));
-  ctx["join"] = Applicative(Primitive(_join));
-  ctx["fst"] = Applicative(Primitive(_fst));
-  ctx["snd"] = Applicative(Primitive(_snd));
-  ctx["copy"] = Applicative(Primitive(_copy));
+  ctx["if"] = Primitive(_ifz);
+  ctx["not"] = Applicative(Primitive(_not));
+  ctx["and"] = Applicative(Primitive(_and));
+  ctx["or"] = Applicative(Primitive(_or));
   ctx["unit"] = unit;
   ctx["pair"] = Applicative(Primitive(_pair));
+  ctx["fst"] = Applicative(Primitive(_fst));
+  ctx["snd"] = Applicative(Primitive(_snd));
+  ctx["init"] = Applicative(Primitive(_initialScope));
+  ctx["boolean?"] = Applicative(Primitive(_isBoolean));
   ctx["symbol?"] = Applicative(Primitive(_isSymbol));
   ctx["number?"] = Applicative(Primitive(_isNumber));
   ctx["string?"] = Applicative(Primitive(_isString));
-  ctx["case?"] = Applicative(Primitive(_isCase));
-  ctx["left?"] = Applicative(Primitive(_isLeft));
-  ctx["right?"] = Applicative(Primitive(_isRight));
   ctx["unit?"] = Applicative(Primitive(_isUnit));
   ctx["pair?"] = Applicative(Primitive(_isPair));
   ctx["scope?"] = Applicative(Primitive(_isScope));
@@ -351,6 +366,8 @@ Scope init() {
   ctx["primitive?"] = Applicative(Primitive(_isPrimitive));
   ctx["applicative?"] = Applicative(Primitive(_isApplicative));
   ctx["operative?"] = Applicative(Primitive(_isOperative));
+  ctx["true"] = Boolean(true);
+  ctx["false"] = Boolean(false);
   ctx["+"] = Applicative(Primitive(_add));
   ctx["-"] = Applicative(Primitive(_subtract));
   ctx["*"] = Applicative(Primitive(_multiply));
