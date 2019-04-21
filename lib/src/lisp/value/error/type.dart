@@ -22,4 +22,9 @@ class Type extends Error {
   final String expected;
   final Value actual;
   Type(String this.expected, Value this.actual);
+
+  @override
+  String get error {
+    return "`Expected value of type `${expected}`, but got `${actual}`";
+  }
 }

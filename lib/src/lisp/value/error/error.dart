@@ -20,4 +20,6 @@ import "../value.dart";
 abstract class Error extends Value {
   @override
   String toString() => "<error>";
+
+  String get error;
 }

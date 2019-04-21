@@ -19,14 +19,12 @@ import "error.dart";
 import "../value.dart";
 import "../scope.dart";
 
-class Evlis extends Error {
-  final Value self;
-  final Scope scope;
-  final Function rest;
-  Evlis(Value this.self, Scope this.scope, Function this.rest);
+class Eof extends Error {
+  final String src;
+  Eof(String this.src);
 
   @override
   String get error {
-    return "Cannot evlis `${self}`";
+    return "Unexpected end-of-file in:\n${src}";
   }
 }

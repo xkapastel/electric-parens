@@ -26,4 +26,9 @@ class Combine extends Error {
   final Function rest;
   Combine(
       Value this.self, Value this.args, Scope this.scope, Function this.rest);
+
+  @override
+  String get error {
+    return "Cannot combine `${self}` with `${args}`";
+  }
 }

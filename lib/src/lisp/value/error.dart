@@ -23,8 +23,10 @@ export "error/undefined.dart";
 export "error/redefined.dart";
 export "error/parens.dart";
 export "error/type.dart";
+export "error/eof.dart";
 
 import "error/type.dart";
+import "error/eof.dart";
 
 import "../value.dart";
 
@@ -85,5 +87,11 @@ void acceptApplicative(Value value) {
 void rejectUnit(Value value) {
   if (value is Unit) {
     throw Type("nonunit", value);
+  }
+}
+
+void rejectEof(String src, int index) {
+  if (index >= src.length) {
+    throw Eof(src);
   }
 }

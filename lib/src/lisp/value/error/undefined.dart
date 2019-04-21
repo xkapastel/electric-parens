@@ -23,4 +23,9 @@ class Undefined extends Error {
   final String symbol;
   final Function rest;
   Undefined(String this.symbol, Function this.rest);
+
+  @override
+  String get error {
+    return "`${symbol}` is undefined";
+  }
 }

@@ -19,6 +19,7 @@ import "../unit.dart";
 import "../pair.dart";
 import "../symbol.dart";
 import "../scope.dart";
+import "../error.dart";
 import "procedure.dart";
 
 class Operative extends Procedure {
@@ -39,9 +40,9 @@ class Operative extends Procedure {
         local[lhs] = rhs;
         break;
       } else {
-        assert(lhs is Pair);
-        assert(rhs is Pair);
-        assert(lhs.fst is Symbol);
+        acceptPair(lhs);
+        acceptPair(rhs);
+        acceptSymbol(lhs.fst);
         local[lhs.fst] = rhs.fst;
         lhs = lhs.snd;
         rhs = rhs.snd;

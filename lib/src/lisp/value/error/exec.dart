@@ -24,4 +24,9 @@ class Exec extends Error {
   final Scope scope;
   final Function rest;
   Exec(Value this.self, Scope this.scope, Function this.rest);
+
+  @override
+  String get error {
+    return "Cannot exec `${self}`";
+  }
 }

@@ -21,4 +21,9 @@ class Parens extends Error {
   final String src;
   final int position;
   Parens(String this.src, int this.position);
+
+  @override
+  String get error {
+    return "Unbalanced parentheses at position ${position}:\n${src}";
+  }
 }

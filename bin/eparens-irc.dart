@@ -90,13 +90,8 @@ main() async {
         scope[name] = result;
         task.sink("${name} = ${result}");
       }
-    } on lisp.Undefined catch (err) {
-      task.sink("`${err.symbol}` is undefined");
-    } on lisp.Redefined catch (err) {
-      task.sink("`${err.symbol}` is already defined as `${err.before}`");
-    } on lisp.Type catch (err) {
-      task.sink(
-          "Expected value of type `${err.expected}` but got `${err.actual}`");
+    } on lisp.Error catch (err) {
+      task.sink(err.error);
     }
   }
 }

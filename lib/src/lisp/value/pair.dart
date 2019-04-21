@@ -17,6 +17,7 @@
 
 import "value.dart";
 import "unit.dart";
+import "error.dart";
 
 dynamic _or(dynamic lhs, dynamic rhs) {
   if (lhs is! Unit) {
@@ -62,7 +63,7 @@ class Pair extends Value {
       dynamic xs = this;
       buf.write("(");
       while (xs is! Unit) {
-        assert(xs is Pair);
+        acceptPair(xs);
         buf.write(xs.fst);
         if (xs.snd is! Unit) {
           buf.write(" ");

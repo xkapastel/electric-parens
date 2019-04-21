@@ -26,4 +26,9 @@ class Redefined extends Error {
   final Function rest;
   Redefined(String this.symbol, Value this.before, Value this.after,
       Function this.rest);
+
+  @override
+  String get error {
+    return "`${symbol} is already defined as `${before}`";
+  }
 }

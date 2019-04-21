@@ -21,7 +21,7 @@ import "unit.dart";
 import "pair.dart";
 import "number.dart";
 import "procedure.dart";
-import "error.dart" as error;
+import "error.dart";
 import "../read.dart";
 
 class Scope extends Value {
@@ -56,7 +56,7 @@ class Scope extends Value {
     // Isn't passing a continuation here and then rethrowing in Symbol kind of
     // weird? It makes sense to throw errors inside scope, but it doesn't have
     // access to the continuation, so you "need" to rethrow.
-    throw error.Undefined(key, (x) => x);
+    throw Undefined(key, (x) => x);
   }
 
   void operator []=(dynamic key, dynamic value) {
@@ -65,7 +65,7 @@ class Scope extends Value {
       return;
     }
     if (frame.containsKey(key)) {
-      throw error.Redefined(key, frame[key], value, (x) => x);
+      throw Redefined(key, frame[key], value, (x) => x);
     }
     frame[key] = value;
   }
@@ -89,7 +89,7 @@ class Scope extends Value {
   double apply1d(Procedure proc, double value) {
     var args = Pair(Number(value), unit);
     var result = proc.call(args, this, (x) => x);
-    assert(result is Number);
+    acceptNumber(result);
     return result.value;
   }
 

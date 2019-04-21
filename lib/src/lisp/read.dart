@@ -94,7 +94,7 @@ List<_Token> _tokenize(String runes) {
         }
         index++;
       }
-      assert(index < runes.length);
+      rejectEof(runes, index);
       var value = runes.substring(start, index);
       var token = _Token.string(value, start);
       buf.add(token);
@@ -146,9 +146,9 @@ List<Value> _parse(List<_Token> tokens, String src) {
         dynamic xs = unit;
         for (var value in buf.reversed) {
           if (value is Symbol && value.value == ".") {
-            assert(xs is Pair);
-            assert(xs.fst is Symbol);
-            assert(xs.snd is Unit);
+            acceptPair(xs);
+            acceptSymbol(xs.fst);
+            acceptUnit(xs.snd);
             xs = xs.fst;
           } else {
             xs = Pair(value, xs);
