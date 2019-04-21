@@ -98,7 +98,8 @@ dynamic _define(dynamic args, dynamic scope, Function rest) {
   assert(args.fst is Symbol);
   assert(args.snd is Pair);
   assert(args.snd.snd is Unit);
-  scope[args.fst] = args.snd.fst.eval(scope, (x) => x);
+  var value = args.snd.fst.eval(scope, (x) => x);
+  scope.define(args.fst, value);
   return rest(unit);
 }
 

@@ -62,6 +62,17 @@ class Scope extends Value {
     }
   }
 
+  void define(dynamic key, dynamic value) {
+    if (parent != null) {
+      parent.define(key, value);
+    }
+    if (!isDefined(key)) {
+      this[key] = value;
+    } else {
+      throw "`${key}` is already defined";
+    }
+  }
+
   Value evalString(String src) {
     var result = null;
     for (var value in read(src)) {
