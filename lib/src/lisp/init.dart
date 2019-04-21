@@ -93,16 +93,6 @@ dynamic _eval(dynamic args, dynamic scope, Function rest) {
   });
 }
 
-dynamic _define(dynamic args, dynamic scope, Function rest) {
-  acceptPair(args);
-  acceptSymbol(args.fst);
-  acceptPair(args.snd);
-  acceptUnit(args.snd.snd);
-  var value = args.snd.fst.eval(scope, (x) => x);
-  scope.define(args.fst, value);
-  return rest(unit);
-}
-
 dynamic _initialScope(dynamic args, dynamic scope, Function rest) {
   return rest(init());
 }
@@ -344,7 +334,6 @@ Scope init() {
   ctx["wrap"] = Applicative(Primitive(_wrap));
   ctx["unwrap"] = Applicative(Primitive(_unwrap));
   ctx["eval"] = Applicative(Primitive(_eval));
-  ctx["define"] = Primitive(_define);
   ctx["reset"] = Applicative(Primitive(_reset));
   ctx["shift"] = Applicative(Primitive(_shift));
   ctx["if"] = Primitive(_ifz);

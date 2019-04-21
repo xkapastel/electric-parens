@@ -70,14 +70,6 @@ class Scope extends Value {
     frame[key] = value;
   }
 
-  void define(dynamic key, dynamic value) {
-    if (parent != null) {
-      parent.define(key, value);
-    } else {
-      this[key] = value;
-    }
-  }
-
   Value evalString(String src) {
     var result = null;
     for (var value in read(src)) {
