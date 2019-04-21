@@ -49,6 +49,7 @@ Stream<_Task> session(Socket socket) async* {
 }
 
 Future main() async {
+  print("Reading Lisp from standard input...");
   String src = await util.gets();
   var scope = lisp.init();
   scope.evalString(src);

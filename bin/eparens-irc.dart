@@ -18,6 +18,7 @@
 import "package:eparens/lisp.dart" as lisp;
 import "package:eparens/irc.dart" as irc;
 import "dart:io" as io;
+import "util.dart" as util;
 
 class Task {
   final String code;
@@ -35,7 +36,10 @@ main() async {
   var socket = await io.Socket.connect(server, 6667);
   var client = irc.Client(socket);
 
+  print("Reading Lisp from standard input...");
+  String src = await util.gets();
   var scope = lisp.init();
+  scope.evalString(src);
   var uid = 0;
 
   Stream<Task> parse(Stream<irc.Message> messages) async* {
