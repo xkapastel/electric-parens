@@ -15,20 +15,14 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "error.dart" as error;
+import "io.dart";
+import "../value.dart";
 
-class Value {
-  dynamic eval(dynamic scope, Function rest) => rest(this);
+class Read extends Io {
+  final Value port;
+  Read(Value this.port);
 
-  dynamic evlis(dynamic scope, Function rest) {
-    throw error.Evlis(this, scope, rest);
-  }
-
-  dynamic exec(dynamic scope, Function rest) {
-    throw error.Exec(this, scope, rest);
-  }
-
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    throw error.Combine(this, args, scope, rest);
+  void run(IoContext ctx) {
+    ctx.read(port);
   }
 }

@@ -21,7 +21,7 @@ import "value.dart";
 Value _listAll(Function predicate, dynamic args) {
   bool state = true;
   while (args is! Unit) {
-    assert(args is Pair);
+    acceptPair(args);
     state = state && predicate(args.fst);
     args = args.snd;
   }
@@ -29,12 +29,12 @@ Value _listAll(Function predicate, dynamic args) {
 }
 
 Value _listFold(Function cons, dynamic args) {
-  assert(args is Pair);
-  assert(args.snd is! Unit);
+  acceptPair(args);
+  rejectUnit(args.snd);
   Value state = args.fst;
   args = args.snd;
   while (args is! Unit) {
-    assert(args is Pair);
+    acceptPair(args);
     state = cons(state, args.fst);
     args = args.snd;
   }
@@ -42,24 +42,24 @@ Value _listFold(Function cons, dynamic args) {
 }
 
 dynamic _vau(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.snd is Pair);
-  assert(args.snd.fst is Symbol);
+  acceptPair(args);
+  acceptPair(args.snd);
+  acceptSymbol(args.snd.fst);
   var proc = Operative(args.fst, args.snd.snd, scope, args.snd.fst);
   return rest(proc);
 }
 
 dynamic _wrap(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Procedure);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptProcedure(args.fst);
+  acceptUnit(args.snd);
   return rest(Applicative(args.fst));
 }
 
 dynamic _unwrap(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Applicative);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptApplicative(args.fst);
+  acceptUnit(args.snd);
   return rest(args.fst.body);
 }
 
@@ -68,36 +68,36 @@ dynamic _reset(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _shift(dynamic args, dynamic scope, Function rest0) {
-  assert(args is Pair);
-  assert(args.fst is Procedure);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptProcedure(args.fst);
+  acceptUnit(args.snd);
 
-  dynamic continuationBody(dynamic args, dynamic scope, Function rest1) {
-    assert(args is Pair);
-    assert(args.snd is Unit);
+  dynamic body(dynamic args, dynamic scope, Function rest1) {
+    acceptPair(args);
+    acceptUnit(args.snd);
     return rest1(rest0(args.fst));
   }
 
-  var continuation = Applicative(Primitive(continuationBody));
+  var continuation = Applicative(Primitive(body));
   var list = Pair(continuation, unit);
   return args.fst(list, scope, (x) => x);
 }
 
 dynamic _eval(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.snd is Pair);
-  assert(args.snd.snd is Unit);
+  acceptPair(args);
+  acceptPair(args.snd);
+  acceptUnit(args.snd.snd);
   return args.snd.fst.eval(scope, (local) {
-    assert(local is Scope);
+    acceptScope(local);
     return args.fst.eval(local, rest);
   });
 }
 
 dynamic _define(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Symbol);
-  assert(args.snd is Pair);
-  assert(args.snd.snd is Unit);
+  acceptPair(args);
+  acceptSymbol(args.fst);
+  acceptPair(args.snd);
+  acceptUnit(args.snd.snd);
   var value = args.snd.fst.eval(scope, (x) => x);
   scope.define(args.fst, value);
   return rest(unit);
@@ -108,34 +108,34 @@ dynamic _initialScope(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _pair(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.snd is Pair);
-  assert(args.snd.snd is Unit);
+  acceptPair(args);
+  acceptPair(args.snd);
+  acceptUnit(args.snd.snd);
   return rest(Pair(args.fst, args.snd.fst));
 }
 
 dynamic _fst(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Pair);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptPair(args.fst);
+  acceptUnit(args.snd);
   return rest(args.fst.fst);
 }
 
 dynamic _snd(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Pair);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptPair(args.fst);
+  acceptUnit(args.snd);
   return rest(args.fst.snd);
 }
 
 dynamic _ifz(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.snd is Pair);
+  acceptPair(args);
+  acceptPair(args.snd);
   if (args.snd.snd is Pair) {
-    assert(args.snd.snd.snd is Unit);
+    acceptUnit(args.snd.snd.snd);
   }
   return args.fst.eval(scope, (flag) {
-    assert(flag is Boolean);
+    acceptBoolean(flag);
     if (flag.value) {
       return args.snd.fst.eval(scope, rest);
     } else {
@@ -148,17 +148,17 @@ dynamic _ifz(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _not(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Boolean);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptBoolean(args.fst);
+  acceptUnit(args.snd);
   return rest(Boolean(!args.fst.value));
 }
 
 dynamic _and(dynamic args, dynamic scope, Function rest) {
   bool state = true;
   while (args is! Unit) {
-    assert(args is Pair);
-    assert(args.fst is Boolean);
+    acceptPair(args);
+    acceptBoolean(args.fst);
     state = state && args.fst.value;
     args = args.snd;
   }
@@ -168,8 +168,8 @@ dynamic _and(dynamic args, dynamic scope, Function rest) {
 dynamic _or(dynamic args, dynamic scope, Function rest) {
   bool state = false;
   while (args is! Unit) {
-    assert(args is Pair);
-    assert(args.fst is Boolean);
+    acceptPair(args);
+    acceptBoolean(args.fst);
     state = state || args.fst.value;
     args = args.snd;
   }
@@ -179,7 +179,7 @@ dynamic _or(dynamic args, dynamic scope, Function rest) {
 dynamic _isBoolean(dynamic args, dynamic scope, Function rest) {
   bool state = true;
   while (args is! Unit) {
-    assert(args is Pair);
+    acceptPair(args);
     state = state && (args.fst is Boolean);
     args = args.snd;
   }
@@ -229,8 +229,8 @@ dynamic _isOperative(dynamic args, dynamic scope, Function rest) {
 dynamic _add(dynamic args, dynamic scope, Function rest) {
   double state = 0.0;
   while (args is! Unit) {
-    assert(args is Pair);
-    assert(args.fst is Number);
+    acceptPair(args);
+    acceptNumber(args.fst);
     state += args.fst.value;
     args = args.snd;
   }
@@ -238,16 +238,16 @@ dynamic _add(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _subtract(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Number);
+  acceptPair(args);
+  acceptNumber(args.fst);
   if (args.snd is Unit) {
     return rest(Number(0.0 - args.fst.value));
   }
   double state = args.fst.value;
   args = args.snd;
   while (args is! Unit) {
-    assert(args is Pair);
-    assert(args.fst is Number);
+    acceptPair(args);
+    acceptNumber(args.fst);
     state -= args.fst.value;
     args = args.snd;
   }
@@ -257,8 +257,8 @@ dynamic _subtract(dynamic args, dynamic scope, Function rest) {
 dynamic _multiply(dynamic args, dynamic scope, Function rest) {
   double state = 1.0;
   while (args is! Unit) {
-    assert(args is Pair);
-    assert(args.fst is Number);
+    acceptPair(args);
+    acceptNumber(args.fst);
     state *= args.fst.value;
     args = args.snd;
   }
@@ -266,16 +266,16 @@ dynamic _multiply(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _divide(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Number);
+  acceptPair(args);
+  acceptNumber(args.fst);
   if (args.snd is Unit) {
     return rest(Number(1.0 / args.fst.value));
   }
   double state = args.fst.value;
   args = args.snd;
   while (args is! Unit) {
-    assert(args is Pair);
-    assert(args.fst is Number);
+    acceptPair(args);
+    acceptNumber(args.fst);
     state /= args.fst.value;
     args = args.snd;
   }
@@ -283,30 +283,30 @@ dynamic _divide(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _exp(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Number);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptNumber(args.fst);
+  acceptUnit(args.snd);
   return rest(Number(exp(args.fst.value)));
 }
 
 dynamic _log(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Number);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptNumber(args.fst);
+  acceptUnit(args.snd);
   return rest(Number(log(args.fst.value)));
 }
 
 dynamic _sin(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Number);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptNumber(args.fst);
+  acceptUnit(args.snd);
   return rest(Number(sin(args.fst.value)));
 }
 
 dynamic _cos(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
-  assert(args.fst is Number);
-  assert(args.snd is Unit);
+  acceptPair(args);
+  acceptNumber(args.fst);
+  acceptUnit(args.snd);
   return rest(Number(cos(args.fst.value)));
 }
 
@@ -320,7 +320,7 @@ dynamic _list(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _listStar(dynamic args, dynamic scope, Function rest) {
-  assert(args is Pair);
+  acceptPair(args);
   var buf = [];
   while (args is! Unit) {
     buf.add(args.fst);

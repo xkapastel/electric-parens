@@ -15,20 +15,9 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "error.dart" as error;
+import "../value.dart";
 
-class Value {
-  dynamic eval(dynamic scope, Function rest) => rest(this);
-
-  dynamic evlis(dynamic scope, Function rest) {
-    throw error.Evlis(this, scope, rest);
-  }
-
-  dynamic exec(dynamic scope, Function rest) {
-    throw error.Exec(this, scope, rest);
-  }
-
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    throw error.Combine(this, args, scope, rest);
-  }
+abstract class Error extends Value {
+  @override
+  String toString() => "<error>";
 }

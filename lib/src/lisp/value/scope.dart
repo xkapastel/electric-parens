@@ -21,6 +21,7 @@ import "unit.dart";
 import "pair.dart";
 import "number.dart";
 import "procedure.dart";
+import "error.dart" as error;
 import "../read.dart";
 
 class Scope extends Value {
@@ -52,24 +53,28 @@ class Scope extends Value {
     if (parent != null) {
       return parent[key];
     }
-    throw "`${key}` is undefined";
+    // Isn't passing a continuation here and then rethrowing in Symbol kind of
+    // weird? It makes sense to throw errors inside scope, but it doesn't have
+    // access to the continuation, so you "need" to rethrow.
+    throw error.Undefined(key, (x) => x);
   }
 
   void operator []=(dynamic key, dynamic value) {
     key = key.toString();
-    if (key != "_") {
-      frame[key] = value;
+    if (key == "_") {
+      return;
     }
+    if (frame.containsKey(key)) {
+      throw error.Redefined(key, frame[key], value, (x) => x);
+    }
+    frame[key] = value;
   }
 
   void define(dynamic key, dynamic value) {
     if (parent != null) {
       parent.define(key, value);
-    }
-    if (!isDefined(key)) {
-      this[key] = value;
     } else {
-      throw "`${key}` is already defined";
+      this[key] = value;
     }
   }
 

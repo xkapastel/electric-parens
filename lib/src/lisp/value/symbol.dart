@@ -16,6 +16,7 @@
 // <https://www.gnu.org/licenses/.
 
 import "value.dart";
+import "error.dart" as error;
 
 class Symbol extends Value {
   final String value;
@@ -23,7 +24,14 @@ class Symbol extends Value {
   Symbol(String this.value);
 
   @override
-  dynamic eval(dynamic scope, Function rest) => rest(scope[this]);
+  dynamic eval(dynamic scope, Function rest) {
+    try {
+      var value = scope[this];
+      return rest(value);
+    } on error.Undefined catch (err) {
+      throw error.Undefined(err.symbol, rest);
+    }
+  }
 
   @override
   String toString() => value;
