@@ -22,5 +22,11 @@ class Boolean extends Value {
   Boolean(bool this.value);
 
   @override
-  String toString() => value.toString();
+  String toString() {
+    if (value) {
+      return "#t";
+    } else {
+      return "#f";
+    }
+  }
 }

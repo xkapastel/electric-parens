@@ -367,8 +367,8 @@ Scope init() {
   ctx["primitive?"] = Applicative(Primitive(_isPrimitive));
   ctx["applicative?"] = Applicative(Primitive(_isApplicative));
   ctx["operative?"] = Applicative(Primitive(_isOperative));
-  ctx["true"] = Boolean(true);
-  ctx["false"] = Boolean(false);
+  ctx["#t"] = Boolean(true);
+  ctx["#f"] = Boolean(false);
   ctx["+"] = Applicative(Primitive(_add));
   ctx["-"] = Applicative(Primitive(_subtract));
   ctx["*"] = Applicative(Primitive(_multiply));
