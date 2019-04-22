@@ -167,13 +167,7 @@ dynamic _or(dynamic args, dynamic scope, Function rest) {
 }
 
 dynamic _isBoolean(dynamic args, dynamic scope, Function rest) {
-  bool state = true;
-  while (args is! Unit) {
-    acceptPair(args);
-    state = state && (args.fst is Boolean);
-    args = args.snd;
-  }
-  return rest(Boolean(state));
+  return rest(_listAll((x) => x is Boolean, args));
 }
 
 dynamic _isSymbol(dynamic args, dynamic scope, Function rest) {
