@@ -51,7 +51,7 @@ class Operative extends Procedure {
     if (dynamik is Symbol) {
       local[dynamik] = scope;
     } else {
-      assert(dynamik is Unit);
+      acceptUnit(dynamik);
     }
     return body.exec(local, rest);
   }
