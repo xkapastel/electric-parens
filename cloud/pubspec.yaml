@@ -1,0 +1,14 @@
+name: eparens_cloud
+description: Electric Parens Cloud
+version: 0.1.0
+
+environment:
+  sdk: ">=2.2.0"
+
+dependencies:
+  eparens:
+    path: ../core
+
+executables:
+  eparens-repl:
+  eparens-irc:

@@ -16,7 +16,7 @@
 // <https://www.gnu.org/licenses/.
 
 import "package:eparens/lisp.dart" as lisp;
-import "package:eparens/irc.dart" as irc;
+import "package:eparens_cloud/irc.dart" as irc;
 import "dart:io" as io;
 import "util.dart" as util;
 
