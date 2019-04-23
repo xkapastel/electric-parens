@@ -45,7 +45,7 @@ dynamic _vau(dynamic args, dynamic scope, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
   acceptSymbol(args.snd.fst);
-  var proc = Operative(args.fst, args.snd.snd, scope, args.snd.fst);
+  var proc = Vau(args.fst, args.snd.snd, scope, args.snd.fst);
   return rest(proc);
 }
 
@@ -53,12 +53,12 @@ dynamic _wrap(dynamic args, dynamic scope, Function rest) {
   acceptPair(args);
   acceptProcedure(args.fst);
   acceptUnit(args.snd);
-  return rest(Applicative(args.fst));
+  return rest(Wrap(args.fst));
 }
 
 dynamic _unwrap(dynamic args, dynamic scope, Function rest) {
   acceptPair(args);
-  acceptApplicative(args.fst);
+  acceptWrap(args.fst);
   acceptUnit(args.snd);
   return rest(args.fst.body);
 }
@@ -78,7 +78,7 @@ dynamic _shift(dynamic args, dynamic scope, Function rest0) {
     return rest1(rest0(args.fst));
   }
 
-  var continuation = Applicative(Primitive(body));
+  var continuation = Wrap(Native(body));
   var list = Pair(continuation, unit);
   return args.fst(list, scope, (x) => x);
 }
@@ -198,16 +198,16 @@ dynamic _isProcedure(dynamic args, dynamic scope, Function rest) {
   return rest(_listAll((x) => x is Procedure, args));
 }
 
-dynamic _isPrimitive(dynamic args, dynamic scope, Function rest) {
-  return rest(_listAll((x) => x is Primitive, args));
+dynamic _isNative(dynamic args, dynamic scope, Function rest) {
+  return rest(_listAll((x) => x is Native, args));
 }
 
-dynamic _isApplicative(dynamic args, dynamic scope, Function rest) {
-  return rest(_listAll((x) => x is Applicative, args));
+dynamic _isWrap(dynamic args, dynamic scope, Function rest) {
+  return rest(_listAll((x) => x is Wrap, args));
 }
 
-dynamic _isOperative(dynamic args, dynamic scope, Function rest) {
-  return rest(_listAll((x) => x is Operative, args));
+dynamic _isVau(dynamic args, dynamic scope, Function rest) {
+  return rest(_listAll((x) => x is Vau, args));
 }
 
 dynamic _add(dynamic args, dynamic scope, Function rest) {
@@ -324,45 +324,45 @@ dynamic _listStar(dynamic args, dynamic scope, Function rest) {
 Scope init() {
   var ctx = Scope.empty();
 
-  ctx["vau"] = Primitive(_vau);
-  ctx["wrap"] = Applicative(Primitive(_wrap));
-  ctx["unwrap"] = Applicative(Primitive(_unwrap));
-  ctx["eval"] = Applicative(Primitive(_eval));
-  ctx["reset"] = Applicative(Primitive(_reset));
-  ctx["shift"] = Applicative(Primitive(_shift));
-  ctx["if"] = Primitive(_ifz);
-  ctx["not"] = Applicative(Primitive(_not));
-  ctx["and"] = Applicative(Primitive(_and));
-  ctx["or"] = Applicative(Primitive(_or));
+  ctx["vau"] = Native(_vau);
+  ctx["wrap"] = Wrap(Native(_wrap));
+  ctx["unwrap"] = Wrap(Native(_unwrap));
+  ctx["eval"] = Wrap(Native(_eval));
+  ctx["reset"] = Wrap(Native(_reset));
+  ctx["shift"] = Wrap(Native(_shift));
+  ctx["if"] = Native(_ifz);
+  ctx["not"] = Wrap(Native(_not));
+  ctx["and"] = Wrap(Native(_and));
+  ctx["or"] = Wrap(Native(_or));
   ctx["unit"] = unit;
-  ctx["pair"] = Applicative(Primitive(_pair));
-  ctx["fst"] = Applicative(Primitive(_fst));
-  ctx["snd"] = Applicative(Primitive(_snd));
-  ctx["init"] = Applicative(Primitive(_initialScope));
-  ctx["boolean?"] = Applicative(Primitive(_isBoolean));
-  ctx["symbol?"] = Applicative(Primitive(_isSymbol));
-  ctx["number?"] = Applicative(Primitive(_isNumber));
-  ctx["string?"] = Applicative(Primitive(_isString));
-  ctx["unit?"] = Applicative(Primitive(_isUnit));
-  ctx["pair?"] = Applicative(Primitive(_isPair));
-  ctx["scope?"] = Applicative(Primitive(_isScope));
-  ctx["procedure?"] = Applicative(Primitive(_isProcedure));
-  ctx["primitive?"] = Applicative(Primitive(_isPrimitive));
-  ctx["applicative?"] = Applicative(Primitive(_isApplicative));
-  ctx["operative?"] = Applicative(Primitive(_isOperative));
+  ctx["pair"] = Wrap(Native(_pair));
+  ctx["fst"] = Wrap(Native(_fst));
+  ctx["snd"] = Wrap(Native(_snd));
+  ctx["init"] = Wrap(Native(_initialScope));
+  ctx["boolean?"] = Wrap(Native(_isBoolean));
+  ctx["symbol?"] = Wrap(Native(_isSymbol));
+  ctx["number?"] = Wrap(Native(_isNumber));
+  ctx["string?"] = Wrap(Native(_isString));
+  ctx["unit?"] = Wrap(Native(_isUnit));
+  ctx["pair?"] = Wrap(Native(_isPair));
+  ctx["scope?"] = Wrap(Native(_isScope));
+  ctx["procedure?"] = Wrap(Native(_isProcedure));
+  ctx["native?"] = Wrap(Native(_isNative));
+  ctx["wrap?"] = Wrap(Native(_isWrap));
+  ctx["operative?"] = Wrap(Native(_isVau));
   ctx["#t"] = Boolean(true);
   ctx["#f"] = Boolean(false);
-  ctx["+"] = Applicative(Primitive(_add));
-  ctx["-"] = Applicative(Primitive(_subtract));
-  ctx["*"] = Applicative(Primitive(_multiply));
-  ctx["/"] = Applicative(Primitive(_divide));
-  ctx["exp"] = Applicative(Primitive(_exp));
-  ctx["log"] = Applicative(Primitive(_log));
-  ctx["sin"] = Applicative(Primitive(_sin));
-  ctx["cos"] = Applicative(Primitive(_cos));
-  ctx["pr"] = Applicative(Primitive(_printz));
-  ctx["list"] = Applicative(Primitive(_list));
-  ctx["list*"] = Applicative(Primitive(_listStar));
+  ctx["+"] = Wrap(Native(_add));
+  ctx["-"] = Wrap(Native(_subtract));
+  ctx["*"] = Wrap(Native(_multiply));
+  ctx["/"] = Wrap(Native(_divide));
+  ctx["exp"] = Wrap(Native(_exp));
+  ctx["log"] = Wrap(Native(_log));
+  ctx["sin"] = Wrap(Native(_sin));
+  ctx["cos"] = Wrap(Native(_cos));
+  ctx["pr"] = Wrap(Native(_printz));
+  ctx["list"] = Wrap(Native(_list));
+  ctx["list*"] = Wrap(Native(_listStar));
 
   return ctx;
 }

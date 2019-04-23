@@ -15,7 +15,14 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-export "procedure/procedure.dart";
-export "procedure/native.dart";
-export "procedure/vau.dart";
-export "procedure/wrap.dart";
+import "procedure.dart";
+
+class Wrap extends Procedure {
+  final Procedure body;
+  Wrap(Procedure this.body);
+
+  @override
+  dynamic call(dynamic args, dynamic scope, Function rest) {
+    return args.evlis(scope, (args) => body(args, scope, rest));
+  }
+}

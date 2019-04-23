@@ -17,12 +17,12 @@
 
 import "procedure.dart";
 
-class Applicative extends Procedure {
-  final Procedure body;
-  Applicative(Procedure this.body);
+class Native extends Procedure {
+  final Function body;
+  Native(Function this.body);
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    return args.evlis(scope, (args) => body(args, scope, rest));
+    return body(args, scope, rest);
   }
 }

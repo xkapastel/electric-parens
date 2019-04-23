@@ -15,14 +15,44 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
+import "../unit.dart";
+import "../pair.dart";
+import "../symbol.dart";
+import "../scope.dart";
+import "../error.dart";
 import "procedure.dart";
 
-class Primitive extends Procedure {
-  final Function body;
-  Primitive(Function this.body);
+class Vau extends Procedure {
+  final dynamic params;
+  final dynamic body;
+  final dynamic lexical;
+  final dynamic dynamik;
+  Vau(dynamic this.params, dynamic this.body, dynamic this.lexical,
+      dynamic this.dynamik) {}
 
   @override
   dynamic call(dynamic args, dynamic scope, Function rest) {
-    return body(args, scope, rest);
+    Scope local = Scope(lexical);
+    dynamic lhs = params;
+    dynamic rhs = args;
+    while (lhs is! Unit) {
+      if (lhs is Symbol) {
+        local[lhs] = rhs;
+        break;
+      } else {
+        acceptPair(lhs);
+        acceptPair(rhs);
+        acceptSymbol(lhs.fst);
+        local[lhs.fst] = rhs.fst;
+        lhs = lhs.snd;
+        rhs = rhs.snd;
+      }
+    }
+    if (dynamik is Symbol) {
+      local[dynamik] = scope;
+    } else {
+      acceptUnit(dynamik);
+    }
+    return body.exec(local, rest);
   }
 }

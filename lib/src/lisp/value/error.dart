@@ -78,9 +78,9 @@ void acceptProcedure(Value value) {
   }
 }
 
-void acceptApplicative(Value value) {
-  if (value is! Applicative) {
-    throw Type("applicative", value);
+void acceptWrap(Value value) {
+  if (value is! Wrap) {
+    throw Type("wrap", value);
   }
 }
 
