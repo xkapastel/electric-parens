@@ -24,6 +24,7 @@ export "error/redefined.dart";
 export "error/parens.dart";
 export "error/type.dart";
 export "error/eof.dart";
+export "error/token.dart";
 
 import "error/type.dart";
 import "error/eof.dart";

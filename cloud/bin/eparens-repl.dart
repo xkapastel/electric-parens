@@ -16,6 +16,7 @@
 // <https://www.gnu.org/licenses/.
 
 import "package:eparens/lisp.dart" as lisp;
+import "package:eparens/image.dart" as image;
 import "dart:io";
 import "dart:async";
 import "dart:convert";
@@ -49,10 +50,13 @@ Stream<_Task> session(Socket socket) async* {
 }
 
 Future main() async {
-  print("Reading Lisp from standard input...");
-  String src = await util.gets();
-  var scope = lisp.init();
-  scope.evalString(src);
+  var scope = null;
+  try {
+    scope = await image.open("./src");
+  } on lisp.Error catch (err) {
+    print(err.error);
+    return;
+  }
   var uid = 0;
   const address = "127.0.0.1";
   const port = 4000;

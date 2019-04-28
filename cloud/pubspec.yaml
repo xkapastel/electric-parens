@@ -8,6 +8,7 @@ environment:
 dependencies:
   eparens:
     path: ../core
+  path: ^1.6.2
 
 executables:
   eparens-repl:

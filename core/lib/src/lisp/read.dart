@@ -162,7 +162,21 @@ List<Value> _parse(List<_Token> tokens, String src) {
         index++;
         break;
       case _Tag.symbol:
-        var value = Symbol(token.value as String);
+        var value = null;
+        if (token.value.startsWith("#")) {
+          switch (token.value) {
+            case "#t":
+              value = Boolean(true);
+              break;
+            case "#f":
+              value = Boolean(false);
+              break;
+            default:
+              throw Token(token.value);
+          }
+        } else {
+          value = Symbol(token.value as String);
+        }
         buf.add(value);
         index++;
         break;
@@ -182,8 +196,7 @@ List<Value> _parse(List<_Token> tokens, String src) {
         index++;
         break;
       default:
-        throw "Unknown token: ${token}";
-        break;
+        throw Token(token.value);
     }
   }
   return buf;

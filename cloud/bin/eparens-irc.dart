@@ -16,6 +16,7 @@
 // <https://www.gnu.org/licenses/.
 
 import "package:eparens/lisp.dart" as lisp;
+import "package:eparens/image.dart" as image;
 import "package:eparens_cloud/irc.dart" as irc;
 import "dart:io" as io;
 import "util.dart" as util;
@@ -36,10 +37,13 @@ main() async {
   var socket = await io.Socket.connect(server, 6667);
   var client = irc.Client(socket);
 
-  print("Reading Lisp from standard input...");
-  String src = await util.gets();
-  var scope = lisp.init();
-  scope.evalString(src);
+  var scope = null;
+  try {
+    scope = await image.open("./src");
+  } on lisp.Error catch (err) {
+    print(err.error);
+    return;
+  }
   var uid = 0;
 
   Stream<Task> parse(Stream<irc.Message> messages) async* {
