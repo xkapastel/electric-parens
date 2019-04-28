@@ -1,0 +1,2 @@
+(vau (parameters . body) dynamic
+  (wrap (eval (list* vau parameters _ body) dynamic)))

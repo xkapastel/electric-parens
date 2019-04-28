@@ -1,0 +1,13 @@
+name: eparens_audio
+description: Electric Parens Audio
+version: 0.1.0
+
+environment:
+  sdk: ">=2.1.0"
+
+dependencies:
+  eparens:
+    path: ../core
+
+executables:
+  eparens-osc:

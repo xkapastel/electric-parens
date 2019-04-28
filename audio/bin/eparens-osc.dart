@@ -22,7 +22,6 @@ import "dart:typed_data";
 import "util.dart" as util;
 
 Future main() async {
-  print("Reading Lisp from standard input...");
   String src = await util.gets();
   lisp.Scope ctx = lisp.init();
   lisp.Value proc = ctx.evalString(src);

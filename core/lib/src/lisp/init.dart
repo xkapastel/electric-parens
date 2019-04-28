@@ -44,7 +44,10 @@ Value _listFold(Function cons, dynamic args) {
 dynamic _vau(dynamic args, dynamic scope, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
-  acceptSymbol(args.snd.fst);
+  // Hack, need disjunction for accept.
+  if (args.snd.fst is! Unit) {
+    acceptSymbol(args.snd.fst);
+  }
   var proc = Vau(args.fst, args.snd.snd, scope, args.snd.fst);
   return rest(proc);
 }
