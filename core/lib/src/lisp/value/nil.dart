@@ -17,7 +17,7 @@
 
 import "value.dart";
 
-class Unit extends Value {
+class Nil extends Value {
   @override
   dynamic evlis(dynamic env, Function rest) => rest(this);
 
@@ -25,7 +25,7 @@ class Unit extends Value {
   dynamic exec(dynamic env, Function rest) => rest(this);
 
   @override
-  String toString() => "unit";
+  String toString() => "nil";
 }
 
-Unit unit = new Unit();
+Nil nil = new Nil();

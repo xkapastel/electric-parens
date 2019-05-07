@@ -15,7 +15,7 @@
 // License along with this program.  If not, see
 // <https://www.gnu.org/licenses/.
 
-import "../unit.dart";
+import "../nil.dart";
 import "../pair.dart";
 import "../symbol.dart";
 import "../environment.dart";
@@ -35,7 +35,7 @@ class Vau extends Procedure {
     Environment local = Environment(lexical);
     dynamic lhs = params;
     dynamic rhs = args;
-    while (lhs is! Unit) {
+    while (lhs is! Nil) {
       if (lhs is Symbol) {
         local[lhs] = rhs;
         break;
@@ -51,7 +51,7 @@ class Vau extends Procedure {
     if (dynamik is Symbol) {
       local[dynamik] = env;
     } else {
-      acceptUnit(dynamik);
+      acceptNil(dynamik);
     }
     return body.exec(local, rest);
   }

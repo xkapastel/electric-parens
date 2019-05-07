@@ -55,9 +55,9 @@ void acceptString(Value value) {
   }
 }
 
-void acceptUnit(Value value) {
-  if (value is! Unit) {
-    throw Type("unit", value);
+void acceptNil(Value value) {
+  if (value is! Nil) {
+    throw Type("nil", value);
   }
 }
 
@@ -85,9 +85,9 @@ void acceptWrap(Value value) {
   }
 }
 
-void rejectUnit(Value value) {
-  if (value is Unit) {
-    throw Type("nonunit", value);
+void rejectNil(Value value) {
+  if (value is Nil) {
+    throw Type("nonnil", value);
   }
 }
 

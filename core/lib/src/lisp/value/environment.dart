@@ -17,7 +17,7 @@
 
 import "dart:collection";
 import "value.dart";
-import "unit.dart";
+import "nil.dart";
 import "pair.dart";
 import "number.dart";
 import "procedure.dart";
@@ -79,7 +79,7 @@ class Environment extends Value {
   }
 
   double apply1d(Procedure proc, double value) {
-    var args = Pair(Number(value), unit);
+    var args = Pair(Number(value), nil);
     var result = proc.call(args, this, (x) => x);
     acceptNumber(result);
     return result.value;

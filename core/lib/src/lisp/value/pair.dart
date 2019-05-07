@@ -16,11 +16,11 @@
 // <https://www.gnu.org/licenses/.
 
 import "value.dart";
-import "unit.dart";
+import "nil.dart";
 import "error.dart";
 
 dynamic _or(dynamic lhs, dynamic rhs) {
-  if (lhs is! Unit) {
+  if (lhs is! Nil) {
     return lhs;
   }
   return rhs;
@@ -32,7 +32,7 @@ class Pair extends Value {
   bool isList;
 
   Pair(dynamic this.fst, dynamic this.snd) {
-    if (snd is Unit) {
+    if (snd is Nil) {
       isList = true;
     } else if (snd is Pair) {
       isList = snd.isList;
@@ -62,10 +62,10 @@ class Pair extends Value {
       var buf = new StringBuffer();
       dynamic xs = this;
       buf.write("(");
-      while (xs is! Unit) {
+      while (xs is! Nil) {
         acceptPair(xs);
         buf.write(xs.fst);
-        if (xs.snd is! Unit) {
+        if (xs.snd is! Nil) {
           buf.write(" ");
         }
         xs = xs.snd;

@@ -20,7 +20,7 @@ import "value.dart";
 
 Value _listAll(Function predicate, dynamic args) {
   bool state = true;
-  while (args is! Unit) {
+  while (args is! Nil) {
     acceptPair(args);
     state = state && predicate(args.fst);
     args = args.snd;
@@ -30,10 +30,10 @@ Value _listAll(Function predicate, dynamic args) {
 
 Value _listFold(Function cons, dynamic args) {
   acceptPair(args);
-  rejectUnit(args.snd);
+  rejectNil(args.snd);
   Value state = args.fst;
   args = args.snd;
-  while (args is! Unit) {
+  while (args is! Nil) {
     acceptPair(args);
     state = cons(state, args.fst);
     args = args.snd;
@@ -45,7 +45,7 @@ dynamic _vau(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
   // Hack, need disjunction for accept.
-  if (args.snd.fst is! Unit) {
+  if (args.snd.fst is! Nil) {
     acceptSymbol(args.snd.fst);
   }
   var proc = Vau(args.fst, args.snd.snd, env, args.snd.fst);
@@ -55,14 +55,14 @@ dynamic _vau(dynamic args, dynamic env, Function rest) {
 dynamic _wrap(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptProcedure(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(Wrap(args.fst));
 }
 
 dynamic _unwrap(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptWrap(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(args.fst.body);
 }
 
@@ -73,23 +73,23 @@ dynamic _reset(dynamic args, dynamic env, Function rest) {
 dynamic _shift(dynamic args, dynamic env, Function rest0) {
   acceptPair(args);
   acceptProcedure(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
 
   dynamic body(dynamic args, dynamic env, Function rest1) {
     acceptPair(args);
-    acceptUnit(args.snd);
+    acceptNil(args.snd);
     return rest1(rest0(args.fst));
   }
 
   var continuation = Wrap(Native(body));
-  var list = Pair(continuation, unit);
+  var list = Pair(continuation, nil);
   return args.fst(list, env, (x) => x);
 }
 
 dynamic _eval(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
-  acceptUnit(args.snd.snd);
+  acceptNil(args.snd.snd);
   return args.snd.fst.eval(env, (local) {
     acceptEnvironment(local);
     return args.fst.eval(local, rest);
@@ -103,21 +103,21 @@ dynamic _initialEnvironment(dynamic args, dynamic env, Function rest) {
 dynamic _pair(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
-  acceptUnit(args.snd.snd);
+  acceptNil(args.snd.snd);
   return rest(Pair(args.fst, args.snd.fst));
 }
 
 dynamic _fst(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(args.fst.fst);
 }
 
 dynamic _snd(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(args.fst.snd);
 }
 
@@ -125,7 +125,7 @@ dynamic _ifz(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
   if (args.snd.snd is Pair) {
-    acceptUnit(args.snd.snd.snd);
+    acceptNil(args.snd.snd.snd);
   }
   return args.fst.eval(env, (flag) {
     acceptBoolean(flag);
@@ -135,7 +135,7 @@ dynamic _ifz(dynamic args, dynamic env, Function rest) {
       if (args.snd.snd is Pair) {
         return args.snd.snd.fst.eval(env, rest);
       }
-      return rest(unit);
+      return rest(nil);
     }
   });
 }
@@ -143,13 +143,13 @@ dynamic _ifz(dynamic args, dynamic env, Function rest) {
 dynamic _not(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptBoolean(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(Boolean(!args.fst.value));
 }
 
 dynamic _and(dynamic args, dynamic env, Function rest) {
   bool state = true;
-  while (args is! Unit) {
+  while (args is! Nil) {
     acceptPair(args);
     acceptBoolean(args.fst);
     state = state && args.fst.value;
@@ -160,7 +160,7 @@ dynamic _and(dynamic args, dynamic env, Function rest) {
 
 dynamic _or(dynamic args, dynamic env, Function rest) {
   bool state = false;
-  while (args is! Unit) {
+  while (args is! Nil) {
     acceptPair(args);
     acceptBoolean(args.fst);
     state = state || args.fst.value;
@@ -185,8 +185,8 @@ dynamic _isString(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Stringz, args));
 }
 
-dynamic _isUnit(dynamic args, dynamic env, Function rest) {
-  return rest(_listAll((x) => x is Unit, args));
+dynamic _isNil(dynamic args, dynamic env, Function rest) {
+  return rest(_listAll((x) => x is Nil, args));
 }
 
 dynamic _isPair(dynamic args, dynamic env, Function rest) {
@@ -215,7 +215,7 @@ dynamic _isVau(dynamic args, dynamic env, Function rest) {
 
 dynamic _add(dynamic args, dynamic env, Function rest) {
   double state = 0.0;
-  while (args is! Unit) {
+  while (args is! Nil) {
     acceptPair(args);
     acceptNumber(args.fst);
     state += args.fst.value;
@@ -227,12 +227,12 @@ dynamic _add(dynamic args, dynamic env, Function rest) {
 dynamic _subtract(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
-  if (args.snd is Unit) {
+  if (args.snd is Nil) {
     return rest(Number(0.0 - args.fst.value));
   }
   double state = args.fst.value;
   args = args.snd;
-  while (args is! Unit) {
+  while (args is! Nil) {
     acceptPair(args);
     acceptNumber(args.fst);
     state -= args.fst.value;
@@ -243,7 +243,7 @@ dynamic _subtract(dynamic args, dynamic env, Function rest) {
 
 dynamic _multiply(dynamic args, dynamic env, Function rest) {
   double state = 1.0;
-  while (args is! Unit) {
+  while (args is! Nil) {
     acceptPair(args);
     acceptNumber(args.fst);
     state *= args.fst.value;
@@ -255,12 +255,12 @@ dynamic _multiply(dynamic args, dynamic env, Function rest) {
 dynamic _divide(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
-  if (args.snd is Unit) {
+  if (args.snd is Nil) {
     return rest(Number(1.0 / args.fst.value));
   }
   double state = args.fst.value;
   args = args.snd;
-  while (args is! Unit) {
+  while (args is! Nil) {
     acceptPair(args);
     acceptNumber(args.fst);
     state /= args.fst.value;
@@ -272,34 +272,34 @@ dynamic _divide(dynamic args, dynamic env, Function rest) {
 dynamic _exp(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(Number(exp(args.fst.value)));
 }
 
 dynamic _log(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(Number(log(args.fst.value)));
 }
 
 dynamic _sin(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(Number(sin(args.fst.value)));
 }
 
 dynamic _cos(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
-  acceptUnit(args.snd);
+  acceptNil(args.snd);
   return rest(Number(cos(args.fst.value)));
 }
 
 dynamic _printz(dynamic args, dynamic env, Function rest) {
   print(args);
-  return rest(unit);
+  return rest(nil);
 }
 
 dynamic _list(dynamic args, dynamic env, Function rest) {
@@ -309,7 +309,7 @@ dynamic _list(dynamic args, dynamic env, Function rest) {
 dynamic _listStar(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   var buf = [];
-  while (args is! Unit) {
+  while (args is! Nil) {
     buf.add(args.fst);
     args = args.snd;
   }
@@ -337,7 +337,7 @@ Environment init() {
   ctx["not"] = Wrap(Native(_not));
   ctx["and"] = Wrap(Native(_and));
   ctx["or"] = Wrap(Native(_or));
-  ctx["unit"] = unit;
+  ctx["nil"] = nil;
   ctx["pair"] = Wrap(Native(_pair));
   ctx["fst"] = Wrap(Native(_fst));
   ctx["snd"] = Wrap(Native(_snd));
@@ -346,7 +346,7 @@ Environment init() {
   ctx["symbol?"] = Wrap(Native(_isSymbol));
   ctx["number?"] = Wrap(Native(_isNumber));
   ctx["string?"] = Wrap(Native(_isString));
-  ctx["unit?"] = Wrap(Native(_isUnit));
+  ctx["nil?"] = Wrap(Native(_isNil));
   ctx["pair?"] = Wrap(Native(_isPair));
   ctx["env?"] = Wrap(Native(_isEnvironment));
   ctx["procedure?"] = Wrap(Native(_isProcedure));

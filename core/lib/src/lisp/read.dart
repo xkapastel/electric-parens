@@ -143,12 +143,12 @@ List<Value> _parse(List<_Token> tokens, String src) {
         if (stack.isEmpty) {
           throw Parens(src, token.position);
         }
-        dynamic xs = unit;
+        dynamic xs = nil;
         for (var value in buf.reversed) {
           if (value is Symbol && value.value == ".") {
             acceptPair(xs);
             acceptSymbol(xs.fst);
-            acceptUnit(xs.snd);
+            acceptNil(xs.snd);
             xs = xs.fst;
           } else {
             xs = Pair(value, xs);

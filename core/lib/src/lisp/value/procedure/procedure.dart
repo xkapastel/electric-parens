@@ -16,12 +16,12 @@
 // <https://www.gnu.org/licenses/.
 
 import "../value.dart";
-import "../unit.dart";
+import "../nil.dart";
 
 abstract class Procedure extends Value {
   @override
   dynamic call(dynamic args, dynamic env, Function rest) {
-    return rest(unit);
+    return rest(nil);
   }
 
   @override
