@@ -23,7 +23,7 @@ import "util.dart" as util;
 
 Future main() async {
   String src = await util.gets();
-  lisp.Scope ctx = lisp.init();
+  lisp.Environment ctx = lisp.init();
   lisp.Value proc = ctx.evalString(src);
   int rate = 48000;
   double time = 0.0;

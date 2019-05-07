@@ -20,16 +20,16 @@ import "package:path/path.dart";
 import "dart:io";
 import "dart:async";
 
-Future<lisp.Scope> open(String path) async {
-  var scope = lisp.init();
+Future<lisp.Environment> open(String path) async {
+  var env = lisp.init();
   var directory = Directory(path);
   await for (var entity in directory.list()) {
     if (entity is File) {
       var name = basename(entity.path);
       var source = await entity.readAsString();
-      var value = scope.evalString(source);
-      scope[name] = value;
+      var value = env.evalString(source);
+      env[name] = value;
     }
   }
-  return scope;
+  return env;
 }

@@ -18,17 +18,17 @@
 import "error.dart" as error;
 
 class Value {
-  dynamic eval(dynamic scope, Function rest) => rest(this);
+  dynamic eval(dynamic env, Function rest) => rest(this);
 
-  dynamic evlis(dynamic scope, Function rest) {
-    throw error.Evlis(this, scope, rest);
+  dynamic evlis(dynamic env, Function rest) {
+    throw error.Evlis(this, env, rest);
   }
 
-  dynamic exec(dynamic scope, Function rest) {
-    throw error.Exec(this, scope, rest);
+  dynamic exec(dynamic env, Function rest) {
+    throw error.Exec(this, env, rest);
   }
 
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    throw error.Combine(this, args, scope, rest);
+  dynamic call(dynamic args, dynamic env, Function rest) {
+    throw error.Combine(this, args, env, rest);
   }
 }

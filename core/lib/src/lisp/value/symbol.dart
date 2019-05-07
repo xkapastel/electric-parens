@@ -24,9 +24,9 @@ class Symbol extends Value {
   Symbol(String this.value);
 
   @override
-  dynamic eval(dynamic scope, Function rest) {
+  dynamic eval(dynamic env, Function rest) {
     try {
-      var value = scope[this];
+      var value = env[this];
       return rest(value);
     } on error.Undefined catch (err) {
       throw error.Undefined(err.symbol, rest);

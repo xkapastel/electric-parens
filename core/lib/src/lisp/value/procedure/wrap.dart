@@ -22,7 +22,7 @@ class Wrap extends Procedure {
   Wrap(Procedure this.body);
 
   @override
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    return args.evlis(scope, (args) => body(args, scope, rest));
+  dynamic call(dynamic args, dynamic env, Function rest) {
+    return args.evlis(env, (args) => body(args, env, rest));
   }
 }

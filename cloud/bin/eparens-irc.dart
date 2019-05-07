@@ -37,9 +37,9 @@ main() async {
   var socket = await io.Socket.connect(server, 6667);
   var client = irc.Client(socket);
 
-  var scope = null;
+  var env = null;
   try {
-    scope = await image.open("./src");
+    env = await image.open("./src");
   } on lisp.Error catch (err) {
     print(err.error);
     return;
@@ -88,10 +88,10 @@ main() async {
     try {
       var values = lisp.read(task.code);
       for (var value in values) {
-        var result = value.eval(scope, (x) => x);
+        var result = value.eval(env, (x) => x);
         var name = "\$${uid}";
         uid++;
-        scope[name] = result;
+        env[name] = result;
         task.sink("${name} = ${result}");
       }
     } on lisp.Error catch (err) {

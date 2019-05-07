@@ -20,7 +20,7 @@ import "../unit.dart";
 
 abstract class Procedure extends Value {
   @override
-  dynamic call(dynamic args, dynamic scope, Function rest) {
+  dynamic call(dynamic args, dynamic env, Function rest) {
     return rest(unit);
   }
 

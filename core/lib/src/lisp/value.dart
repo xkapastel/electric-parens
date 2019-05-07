@@ -23,5 +23,5 @@ export "value/pair.dart";
 export "value/symbol.dart";
 export "value/number.dart";
 export "value/stringz.dart";
-export "value/scope.dart";
+export "value/environment.dart";
 export "value/procedure.dart";

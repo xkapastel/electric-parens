@@ -24,15 +24,15 @@ import "procedure.dart";
 import "error.dart";
 import "../read.dart";
 
-class Scope extends Value {
-  Scope parent;
+class Environment extends Value {
+  Environment parent;
   Map<String, dynamic> frame;
 
-  Scope(Scope this.parent) {
+  Environment(Environment this.parent) {
     frame = new HashMap();
   }
 
-  factory Scope.empty() => Scope(null);
+  factory Environment.empty() => Environment(null);
 
   bool isDefined(dynamic key) {
     key = key.toString();
@@ -54,7 +54,7 @@ class Scope extends Value {
       return parent[key];
     }
     // Isn't passing a continuation here and then rethrowing in Symbol kind of
-    // weird? It makes sense to throw errors inside scope, but it doesn't have
+    // weird? It makes sense to throw errors inside env, but it doesn't have
     // access to the continuation, so you "need" to rethrow.
     throw Undefined(key, (x) => x);
   }
@@ -86,5 +86,5 @@ class Scope extends Value {
   }
 
   @override
-  String toString() => "<scope>";
+  String toString() => "<env>";
 }

@@ -17,13 +17,13 @@
 
 import "error.dart";
 import "../value.dart";
-import "../scope.dart";
+import "../environment.dart";
 
 class Evlis extends Error {
   final Value self;
-  final Scope scope;
+  final Environment env;
   final Function rest;
-  Evlis(Value this.self, Scope this.scope, Function this.rest);
+  Evlis(Value this.self, Environment this.env, Function this.rest);
 
   @override
   String get error {

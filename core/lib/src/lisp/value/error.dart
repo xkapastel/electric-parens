@@ -67,9 +67,9 @@ void acceptPair(Value value) {
   }
 }
 
-void acceptScope(Value value) {
-  if (value is! Scope) {
-    throw Type("scope", value);
+void acceptEnvironment(Value value) {
+  if (value is! Environment) {
+    throw Type("env", value);
   }
 }
 

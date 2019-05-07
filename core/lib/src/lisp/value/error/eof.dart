@@ -17,7 +17,7 @@
 
 import "error.dart";
 import "../value.dart";
-import "../scope.dart";
+import "../environment.dart";
 
 class Eof extends Error {
   final String src;

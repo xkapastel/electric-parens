@@ -41,41 +41,41 @@ Value _listFold(Function cons, dynamic args) {
   return state;
 }
 
-dynamic _vau(dynamic args, dynamic scope, Function rest) {
+dynamic _vau(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
   // Hack, need disjunction for accept.
   if (args.snd.fst is! Unit) {
     acceptSymbol(args.snd.fst);
   }
-  var proc = Vau(args.fst, args.snd.snd, scope, args.snd.fst);
+  var proc = Vau(args.fst, args.snd.snd, env, args.snd.fst);
   return rest(proc);
 }
 
-dynamic _wrap(dynamic args, dynamic scope, Function rest) {
+dynamic _wrap(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptProcedure(args.fst);
   acceptUnit(args.snd);
   return rest(Wrap(args.fst));
 }
 
-dynamic _unwrap(dynamic args, dynamic scope, Function rest) {
+dynamic _unwrap(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptWrap(args.fst);
   acceptUnit(args.snd);
   return rest(args.fst.body);
 }
 
-dynamic _reset(dynamic args, dynamic scope, Function rest) {
-  return rest(args.exec(scope, (x) => x));
+dynamic _reset(dynamic args, dynamic env, Function rest) {
+  return rest(args.exec(env, (x) => x));
 }
 
-dynamic _shift(dynamic args, dynamic scope, Function rest0) {
+dynamic _shift(dynamic args, dynamic env, Function rest0) {
   acceptPair(args);
   acceptProcedure(args.fst);
   acceptUnit(args.snd);
 
-  dynamic body(dynamic args, dynamic scope, Function rest1) {
+  dynamic body(dynamic args, dynamic env, Function rest1) {
     acceptPair(args);
     acceptUnit(args.snd);
     return rest1(rest0(args.fst));
@@ -83,71 +83,71 @@ dynamic _shift(dynamic args, dynamic scope, Function rest0) {
 
   var continuation = Wrap(Native(body));
   var list = Pair(continuation, unit);
-  return args.fst(list, scope, (x) => x);
+  return args.fst(list, env, (x) => x);
 }
 
-dynamic _eval(dynamic args, dynamic scope, Function rest) {
+dynamic _eval(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
   acceptUnit(args.snd.snd);
-  return args.snd.fst.eval(scope, (local) {
-    acceptScope(local);
+  return args.snd.fst.eval(env, (local) {
+    acceptEnvironment(local);
     return args.fst.eval(local, rest);
   });
 }
 
-dynamic _initialScope(dynamic args, dynamic scope, Function rest) {
+dynamic _initialEnvironment(dynamic args, dynamic env, Function rest) {
   return rest(init());
 }
 
-dynamic _pair(dynamic args, dynamic scope, Function rest) {
+dynamic _pair(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
   acceptUnit(args.snd.snd);
   return rest(Pair(args.fst, args.snd.fst));
 }
 
-dynamic _fst(dynamic args, dynamic scope, Function rest) {
+dynamic _fst(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.fst);
   acceptUnit(args.snd);
   return rest(args.fst.fst);
 }
 
-dynamic _snd(dynamic args, dynamic scope, Function rest) {
+dynamic _snd(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.fst);
   acceptUnit(args.snd);
   return rest(args.fst.snd);
 }
 
-dynamic _ifz(dynamic args, dynamic scope, Function rest) {
+dynamic _ifz(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptPair(args.snd);
   if (args.snd.snd is Pair) {
     acceptUnit(args.snd.snd.snd);
   }
-  return args.fst.eval(scope, (flag) {
+  return args.fst.eval(env, (flag) {
     acceptBoolean(flag);
     if (flag.value) {
-      return args.snd.fst.eval(scope, rest);
+      return args.snd.fst.eval(env, rest);
     } else {
       if (args.snd.snd is Pair) {
-        return args.snd.snd.fst.eval(scope, rest);
+        return args.snd.snd.fst.eval(env, rest);
       }
       return rest(unit);
     }
   });
 }
 
-dynamic _not(dynamic args, dynamic scope, Function rest) {
+dynamic _not(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptBoolean(args.fst);
   acceptUnit(args.snd);
   return rest(Boolean(!args.fst.value));
 }
 
-dynamic _and(dynamic args, dynamic scope, Function rest) {
+dynamic _and(dynamic args, dynamic env, Function rest) {
   bool state = true;
   while (args is! Unit) {
     acceptPair(args);
@@ -158,7 +158,7 @@ dynamic _and(dynamic args, dynamic scope, Function rest) {
   return rest(Boolean(state));
 }
 
-dynamic _or(dynamic args, dynamic scope, Function rest) {
+dynamic _or(dynamic args, dynamic env, Function rest) {
   bool state = false;
   while (args is! Unit) {
     acceptPair(args);
@@ -169,51 +169,51 @@ dynamic _or(dynamic args, dynamic scope, Function rest) {
   return rest(Boolean(state));
 }
 
-dynamic _isBoolean(dynamic args, dynamic scope, Function rest) {
+dynamic _isBoolean(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Boolean, args));
 }
 
-dynamic _isSymbol(dynamic args, dynamic scope, Function rest) {
+dynamic _isSymbol(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Symbol, args));
 }
 
-dynamic _isNumber(dynamic args, dynamic scope, Function rest) {
+dynamic _isNumber(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Number, args));
 }
 
-dynamic _isString(dynamic args, dynamic scope, Function rest) {
+dynamic _isString(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Stringz, args));
 }
 
-dynamic _isUnit(dynamic args, dynamic scope, Function rest) {
+dynamic _isUnit(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Unit, args));
 }
 
-dynamic _isPair(dynamic args, dynamic scope, Function rest) {
+dynamic _isPair(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Pair, args));
 }
 
-dynamic _isScope(dynamic args, dynamic scope, Function rest) {
-  return rest(_listAll((x) => x is Scope, args));
+dynamic _isEnvironment(dynamic args, dynamic env, Function rest) {
+  return rest(_listAll((x) => x is Environment, args));
 }
 
-dynamic _isProcedure(dynamic args, dynamic scope, Function rest) {
+dynamic _isProcedure(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Procedure, args));
 }
 
-dynamic _isNative(dynamic args, dynamic scope, Function rest) {
+dynamic _isNative(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Native, args));
 }
 
-dynamic _isWrap(dynamic args, dynamic scope, Function rest) {
+dynamic _isWrap(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Wrap, args));
 }
 
-dynamic _isVau(dynamic args, dynamic scope, Function rest) {
+dynamic _isVau(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Vau, args));
 }
 
-dynamic _add(dynamic args, dynamic scope, Function rest) {
+dynamic _add(dynamic args, dynamic env, Function rest) {
   double state = 0.0;
   while (args is! Unit) {
     acceptPair(args);
@@ -224,7 +224,7 @@ dynamic _add(dynamic args, dynamic scope, Function rest) {
   return rest(Number(state));
 }
 
-dynamic _subtract(dynamic args, dynamic scope, Function rest) {
+dynamic _subtract(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
   if (args.snd is Unit) {
@@ -241,7 +241,7 @@ dynamic _subtract(dynamic args, dynamic scope, Function rest) {
   return rest(Number(state));
 }
 
-dynamic _multiply(dynamic args, dynamic scope, Function rest) {
+dynamic _multiply(dynamic args, dynamic env, Function rest) {
   double state = 1.0;
   while (args is! Unit) {
     acceptPair(args);
@@ -252,7 +252,7 @@ dynamic _multiply(dynamic args, dynamic scope, Function rest) {
   return rest(Number(state));
 }
 
-dynamic _divide(dynamic args, dynamic scope, Function rest) {
+dynamic _divide(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
   if (args.snd is Unit) {
@@ -269,44 +269,44 @@ dynamic _divide(dynamic args, dynamic scope, Function rest) {
   return rest(Number(state));
 }
 
-dynamic _exp(dynamic args, dynamic scope, Function rest) {
+dynamic _exp(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
   acceptUnit(args.snd);
   return rest(Number(exp(args.fst.value)));
 }
 
-dynamic _log(dynamic args, dynamic scope, Function rest) {
+dynamic _log(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
   acceptUnit(args.snd);
   return rest(Number(log(args.fst.value)));
 }
 
-dynamic _sin(dynamic args, dynamic scope, Function rest) {
+dynamic _sin(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
   acceptUnit(args.snd);
   return rest(Number(sin(args.fst.value)));
 }
 
-dynamic _cos(dynamic args, dynamic scope, Function rest) {
+dynamic _cos(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   acceptNumber(args.fst);
   acceptUnit(args.snd);
   return rest(Number(cos(args.fst.value)));
 }
 
-dynamic _printz(dynamic args, dynamic scope, Function rest) {
+dynamic _printz(dynamic args, dynamic env, Function rest) {
   print(args);
   return rest(unit);
 }
 
-dynamic _list(dynamic args, dynamic scope, Function rest) {
+dynamic _list(dynamic args, dynamic env, Function rest) {
   return rest(args);
 }
 
-dynamic _listStar(dynamic args, dynamic scope, Function rest) {
+dynamic _listStar(dynamic args, dynamic env, Function rest) {
   acceptPair(args);
   var buf = [];
   while (args is! Unit) {
@@ -324,8 +324,8 @@ dynamic _listStar(dynamic args, dynamic scope, Function rest) {
   return rest(state);
 }
 
-Scope init() {
-  var ctx = Scope.empty();
+Environment init() {
+  var ctx = Environment.empty();
 
   ctx["vau"] = Native(_vau);
   ctx["wrap"] = Wrap(Native(_wrap));
@@ -341,14 +341,14 @@ Scope init() {
   ctx["pair"] = Wrap(Native(_pair));
   ctx["fst"] = Wrap(Native(_fst));
   ctx["snd"] = Wrap(Native(_snd));
-  ctx["init"] = Wrap(Native(_initialScope));
+  ctx["init"] = Wrap(Native(_initialEnvironment));
   ctx["boolean?"] = Wrap(Native(_isBoolean));
   ctx["symbol?"] = Wrap(Native(_isSymbol));
   ctx["number?"] = Wrap(Native(_isNumber));
   ctx["string?"] = Wrap(Native(_isString));
   ctx["unit?"] = Wrap(Native(_isUnit));
   ctx["pair?"] = Wrap(Native(_isPair));
-  ctx["scope?"] = Wrap(Native(_isScope));
+  ctx["env?"] = Wrap(Native(_isEnvironment));
   ctx["procedure?"] = Wrap(Native(_isProcedure));
   ctx["native?"] = Wrap(Native(_isNative));
   ctx["wrap?"] = Wrap(Native(_isWrap));

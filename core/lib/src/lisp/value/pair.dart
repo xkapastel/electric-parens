@@ -42,19 +42,19 @@ class Pair extends Value {
   }
 
   @override
-  dynamic eval(dynamic scope, Function rest) {
-    return fst.eval(scope, (proc) {
-      return proc(snd, scope, rest);
+  dynamic eval(dynamic env, Function rest) {
+    return fst.eval(env, (proc) {
+      return proc(snd, env, rest);
     });
   }
 
   @override
-  dynamic evlis(dynamic scope, Function rest) =>
-      fst.eval(scope, (fst) => snd.evlis(scope, (snd) => rest(Pair(fst, snd))));
+  dynamic evlis(dynamic env, Function rest) =>
+      fst.eval(env, (fst) => snd.evlis(env, (snd) => rest(Pair(fst, snd))));
 
   @override
-  dynamic exec(dynamic scope, Function rest) =>
-      fst.eval(scope, (fst) => snd.exec(scope, (snd) => rest(_or(snd, fst))));
+  dynamic exec(dynamic env, Function rest) =>
+      fst.eval(env, (fst) => snd.exec(env, (snd) => rest(_or(snd, fst))));
 
   @override
   String toString() {

@@ -22,7 +22,7 @@ class Native extends Procedure {
   Native(Function this.body);
 
   @override
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    return body(args, scope, rest);
+  dynamic call(dynamic args, dynamic env, Function rest) {
+    return body(args, env, rest);
   }
 }

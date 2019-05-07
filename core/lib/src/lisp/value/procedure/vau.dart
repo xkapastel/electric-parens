@@ -18,7 +18,7 @@
 import "../unit.dart";
 import "../pair.dart";
 import "../symbol.dart";
-import "../scope.dart";
+import "../environment.dart";
 import "../error.dart";
 import "procedure.dart";
 
@@ -31,8 +31,8 @@ class Vau extends Procedure {
       dynamic this.dynamik) {}
 
   @override
-  dynamic call(dynamic args, dynamic scope, Function rest) {
-    Scope local = Scope(lexical);
+  dynamic call(dynamic args, dynamic env, Function rest) {
+    Environment local = Environment(lexical);
     dynamic lhs = params;
     dynamic rhs = args;
     while (lhs is! Unit) {
@@ -49,7 +49,7 @@ class Vau extends Procedure {
       }
     }
     if (dynamik is Symbol) {
-      local[dynamik] = scope;
+      local[dynamik] = env;
     } else {
       acceptUnit(dynamik);
     }

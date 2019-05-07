@@ -17,15 +17,15 @@
 
 import "error.dart";
 import "../value.dart";
-import "../scope.dart";
+import "../environment.dart";
 
 class Combine extends Error {
   final Value self;
   final Value args;
-  final Scope scope;
+  final Environment env;
   final Function rest;
   Combine(
-      Value this.self, Value this.args, Scope this.scope, Function this.rest);
+      Value this.self, Value this.args, Environment this.env, Function this.rest);
 
   @override
   String get error {

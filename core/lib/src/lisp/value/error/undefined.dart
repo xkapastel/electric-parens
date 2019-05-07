@@ -17,7 +17,7 @@
 
 import "error.dart";
 import "../value.dart";
-import "../scope.dart";
+import "../environment.dart";
 
 class Undefined extends Error {
   final String symbol;
