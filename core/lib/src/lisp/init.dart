@@ -209,8 +209,8 @@ dynamic _isWrap(dynamic args, dynamic env, Function rest) {
   return rest(_listAll((x) => x is Wrap, args));
 }
 
-dynamic _isVau(dynamic args, dynamic env, Function rest) {
-  return rest(_listAll((x) => x is Vau, args));
+dynamic _isOperative(dynamic args, dynamic env, Function rest) {
+  return rest(_listAll((x) => (x is Vau) || (x is Native), args));
 }
 
 dynamic _add(dynamic args, dynamic env, Function rest) {
@@ -348,11 +348,10 @@ Environment init() {
   ctx["string?"] = Wrap(Native(_isString));
   ctx["nil?"] = Wrap(Native(_isNil));
   ctx["pair?"] = Wrap(Native(_isPair));
-  ctx["env?"] = Wrap(Native(_isEnvironment));
+  ctx["environment?"] = Wrap(Native(_isEnvironment));
   ctx["procedure?"] = Wrap(Native(_isProcedure));
-  ctx["native?"] = Wrap(Native(_isNative));
   ctx["wrap?"] = Wrap(Native(_isWrap));
-  ctx["operative?"] = Wrap(Native(_isVau));
+  ctx["operative?"] = Wrap(Native(_isOperative));
   ctx["#t"] = Boolean(true);
   ctx["#f"] = Boolean(false);
   ctx["+"] = Wrap(Native(_add));
